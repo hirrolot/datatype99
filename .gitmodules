@@ -1,0 +1,3 @@
+[submodule "epilepsy"]
+	path = epilepsy
+	url = https://github.com/Hirrolot/epilepsy.git
