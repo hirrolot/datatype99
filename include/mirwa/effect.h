@@ -6,9 +6,6 @@
 #include <mirwa/aux.h>
 #include <mirwa/unit_t.h>
 
-#define EXPAND(...)       __VA_ARGS__
-#define UNPARENTHESISE(x) EXPAND(EXPAND x)
-
 #define Effect(...)    EPILEPSY_EVAL(EPILEPSY_OVERLOAD_CALL(v(Effect_), v(__VA_ARGS__)))
 #define Effect_1(name) Effect_2(name, { MirwaUnitT mirwa_priv_dummy; })
 #define Effect_2(name, state)                                                                      \
@@ -17,7 +14,8 @@
 #define EffectHandler(effect, return_ty, op, params, ...)                                          \
     struct effect##Effect_##op##_Args {                                                            \
         MirwaUnitT mirwa_priv_dummy;                                                               \
-        UNPARENTHESISE(params);                                                                    \
+        EPILEPSY_EVAL(EPILEPSY_ListUnwrap(EPILEPSY_ListIntersperse(                                \
+            EPILEPSY_List(v(EPILEPSY_PLAIN_UNPARENTHESISE(params))), v(;))));                      \
     };                                                                                             \
                                                                                                    \
     return_ty effect##Effect_##op(                                                                 \
@@ -51,8 +49,7 @@
             &mirwa_priv_handler_exec_point,                                                        \
             (effect##EffectState *)mirwa_find_handler(&mirwa_handlers, &effect##Effect)            \
                 ->effect_state,                                                                    \
-            (effect##Effect##_##op##_Args){mirwa_unit,                                             \
-                                           EPILEPSY_EVAL(EPILEPSY_UNPARENTHESISE(v((v(args)))))}); \
+            (effect##Effect##_##op##_Args){mirwa_unit, EPILEPSY_PLAIN_UNPARENTHESISE(args)});      \
                                                                                                    \
         if (mirwa_priv_handler_exec_point == -1) {                                                 \
             break;                                                                                 \
