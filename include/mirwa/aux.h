@@ -10,4 +10,10 @@
  */
 #define MIRWA_OBJ(T, expr) ((T *)(T[]){expr})
 
+#define MIRWA_TYPEDEF_STRUCT(T) typedef struct T T
+
+#define MIRWA_SEMICOLON_IN_BLOCK()                                                                 \
+    do {                                                                                           \
+    } while (0)
+
 #endif // MIRWA_AUX_H
