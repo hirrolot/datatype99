@@ -37,7 +37,7 @@
                                                                                                    \
     typedef struct effect##Effect_##op##_Args effect##Effect_##op##_Args
 
-#define performEffect(effect, op, args, ...)                                                       \
+#define perform_effect(effect, op, args, ...)                                                      \
     MirwaHandlers *mirwa_priv_stack = &mirwa_handlers;                                             \
     while (mirwa_priv_stack->effect_discriminant != &effect##Effect) {                             \
         mirwa_priv_stack = (MirwaHandlers *)mirwa_priv_stack->prev;                                \

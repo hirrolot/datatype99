@@ -21,8 +21,9 @@ int main(void) {
     MirwaHandlers mirwa_handlers = {0};
     handle_with(Print);
 
-    performEffect(Print, print, ("1"), {
-        performEffect(
-            Print, print, ("2"), { performEffect(Print, print, ("3"), { puts("abracadabra"); }); });
+    perform_effect(Print, print, ("1"), {
+        perform_effect(Print, print, ("2"), {
+            perform_effect(Print, print, ("3"), { puts("abracadabra"); });
+        });
     });
 }
