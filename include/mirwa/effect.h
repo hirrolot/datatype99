@@ -28,6 +28,7 @@
     return_ty effect##Effect_##op(                                                                 \
         int mirwa_priv_line[const restrict MIRWA_NON_NULL], effect##EffectState *self,             \
         struct effect##Effect_##op##_Args args) {                                                  \
+        (void)self;                                                                                \
         switch (*mirwa_priv_line) {                                                                \
         case 0:                                                                                    \
             __VA_ARGS__ *mirwa_priv_line = -1;                                                     \
