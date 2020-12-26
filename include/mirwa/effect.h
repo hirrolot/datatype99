@@ -10,7 +10,7 @@
 #define UNPARENTHESISE(x) EXPAND(EXPAND x)
 
 #define resume(...)                                                                                \
-    *mirwa_priv_line = __LINE__;                                                                   \
+    *mirwa_priv_handler_exec_point = __LINE__;                                                     \
     return __VA_ARGS__;                                                                            \
     case __LINE__:
 
@@ -26,12 +26,12 @@
     };                                                                                             \
                                                                                                    \
     return_ty effect##Effect_##op(                                                                 \
-        int mirwa_priv_line[const restrict MIRWA_NON_NULL], effect##EffectState *self,             \
-        struct effect##Effect_##op##_Args args) {                                                  \
+        int mirwa_priv_handler_exec_point[const restrict MIRWA_NON_NULL],                          \
+        effect##EffectState *self, struct effect##Effect_##op##_Args args) {                       \
         (void)self;                                                                                \
-        switch (*mirwa_priv_line) {                                                                \
+        switch (*mirwa_priv_handler_exec_point) {                                                  \
         case 0:                                                                                    \
-            __VA_ARGS__ *mirwa_priv_line = -1;                                                     \
+            __VA_ARGS__ *mirwa_priv_handler_exec_point = -1;                                       \
         }                                                                                          \
     }                                                                                              \
                                                                                                    \
@@ -43,13 +43,13 @@
         mirwa_priv_stack = (MirwaHandlers *)mirwa_priv_stack->prev;                                \
     }                                                                                              \
                                                                                                    \
-    int mirwa_priv_line = 0;                                                                       \
+    int mirwa_priv_handler_exec_point = 0;                                                         \
     while (1) {                                                                                    \
         effect##Effect##_##op(                                                                     \
-            &mirwa_priv_line, (effect##EffectState *)mirwa_priv_stack->effect_state,               \
+            &mirwa_priv_handler_exec_point, (effect##EffectState *)mirwa_priv_stack->effect_state, \
             (effect##Effect##_##op##_Args){mirwa_unit, UNPARENTHESISE(args)});                     \
                                                                                                    \
-        if (mirwa_priv_line == -1) {                                                               \
+        if (mirwa_priv_handler_exec_point == -1) {                                                 \
             break;                                                                                 \
         }                                                                                          \
                                                                                                    \
