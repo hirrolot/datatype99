@@ -3,53 +3,59 @@
 
 #include <epilepsy.h>
 
+#include <mirwa/aux.h>
+#include <mirwa/unit.h>
+
 #define EXPAND(...)       __VA_ARGS__
 #define UNPARENTHESISE(x) EXPAND(EXPAND x)
 
-#define resume()                                                                                   \
-    *line = __LINE__;                                                                              \
-    return;                                                                                        \
+#define resume(...)                                                                                \
+    *mirwa_priv_line = __LINE__;                                                                   \
+    return __VA_ARGS__;                                                                            \
     case __LINE__:
 
 #define Effect(...)    EPILEPSY_EVAL(EPILEPSY_OVERLOAD_CALL(v(Effect_), v(__VA_ARGS__)))
-#define Effect_1(name) Effect_2(name, { char dummy; })
+#define Effect_1(name) Effect_2(name, { MirwaUnit mirwa_priv_dummy; })
 #define Effect_2(name, state)                                                                      \
-    v(struct name##EffectState state; const struct { char dummy; } name##Effect)
+    v(typedef struct name##EffectState state name##EffectState; const MirwaUnit name##Effect)
 
 #define EffectHandler(effect, return_ty, op, params, ...)                                          \
     struct effect##Effect_##op##_Args {                                                            \
-        char dummy;                                                                                \
+        MirwaUnit mirwa_priv_dummy;                                                                \
         UNPARENTHESISE(params);                                                                    \
     };                                                                                             \
                                                                                                    \
     return_ty effect##Effect_##op(                                                                 \
-        int line[const restrict static 1], struct effect##EffectState *self,                       \
+        int mirwa_priv_line[const restrict MIRWA_NON_NULL], effect##EffectState *self,             \
         struct effect##Effect_##op##_Args args) {                                                  \
-        switch (*line) {                                                                           \
+        switch (*mirwa_priv_line) {                                                                \
         case 0:                                                                                    \
-            __VA_ARGS__ *line = -1;                                                                \
+            __VA_ARGS__ *mirwa_priv_line = -1;                                                     \
         }                                                                                          \
     }                                                                                              \
                                                                                                    \
-    static const char effect_handler##__LINE__
+    typedef struct effect##Effect_##op##_Args effect##Effect_##op##_Args
 
 #define performEffect(effect, op, args, ...)                                                       \
-    do {                                                                                           \
-        MirwaHandlers *stack = &mirwa_handlers;                                                    \
-        while (stack->effect_discriminant != &(effect##Effect)) {                                  \
-            stack = (MirwaHandlers *)stack->prev;                                                  \
-        }                                                                                          \
-        int line = 0;                                                                              \
-        while (1) {                                                                                \
-            effect##Effect##_##op(                                                                 \
-                &line, (struct effect##EffectState *)stack->effect_state,                          \
-                (struct effect##Effect##_##op##_Args){'\0', UNPARENTHESISE(args)});                \
+    MirwaHandlers *mirwa_priv_stack = &mirwa_handlers;                                             \
+    while (mirwa_priv_stack->effect_discriminant != &effect##Effect) {                             \
+        mirwa_priv_stack = (MirwaHandlers *)mirwa_priv_stack->prev;                                \
+    }                                                                                              \
                                                                                                    \
-            if (line == -1) {                                                                      \
-                break;                                                                             \
-            }                                                                                      \
-            __VA_ARGS__                                                                            \
+    int mirwa_priv_line = 0;                                                                       \
+    while (1) {                                                                                    \
+        effect##Effect##_##op(                                                                     \
+            &mirwa_priv_line, (effect##EffectState *)mirwa_priv_stack->effect_state,               \
+            (effect##Effect##_##op##_Args){mirwa_unit, UNPARENTHESISE(args)});                     \
+                                                                                                   \
+        if (mirwa_priv_line == -1) {                                                               \
+            break;                                                                                 \
         }                                                                                          \
+                                                                                                   \
+        __VA_ARGS__                                                                                \
+    }                                                                                              \
+                                                                                                   \
+    do {                                                                                           \
     } while (0)
 
 typedef struct MirwaHandlers {
@@ -60,14 +66,8 @@ typedef struct MirwaHandlers {
 
 #define handle_with(effect)                                                                        \
     mirwa_handlers = (MirwaHandlers) {                                                             \
-        .prev =                                                                                    \
-            &(MirwaHandlers){                                                                      \
-                .prev = mirwa_handlers.prev,                                                       \
-                .effect_discriminant = mirwa_handlers.effect_discriminant,                         \
-                .effect_state = mirwa_handlers.effect_state,                                       \
-            },                                                                                     \
-        .effect_discriminant = &(effect##Effect),                                                  \
-        .effect_state = &(struct effect##EffectState){0},                                          \
+        .prev = MIRWA_OBJ(MirwaHandlers, mirwa_handlers), .effect_discriminant = &effect##Effect,  \
+        .effect_state = &(effect##EffectState){0},                                                 \
     }
 
 #endif // MIRWA_EFFECT_H
