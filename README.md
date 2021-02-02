@@ -1,4 +1,9 @@
 # datatype99
+[![CI](https://github.com/Hirrolot/datatype99/workflows/C/C++%20CI/badge.svg)](https://github.com/Hirrolot/datatype99/actions)
+
+datatype99 is a header-only library that augments C99 with [sum types]. It looks like this:
+
+[sum types]: https://en.wikipedia.org/wiki/Tagged_union
 
 [ [`examples/binary_tree.c`](examples/binary_tree.c) ]
 ```c
@@ -39,3 +44,18 @@ int main(void) {
     printf("%d\n", sum(tree));
 }
 ```
+
+## Table of contents
+
+ - [Highlights](#highlights)
+ - [Usage](#usage)
+
+## Highlights
+
+ - **Type-safe.** In contrast to manually implemented tagged unions, datatype99 provides a type-safe interface (you cannot access an invalid data and cannot construct an invalid variant).
+
+ - **Pure C99.** No external tools are required; datatype99 is implemented using only preprocessor macros.
+
+ - **Zero boilerplate.** datatype99 deals with all the dirty stuff.
+
+## Usage
