@@ -58,4 +58,6 @@ int main(void) {
 
  - **Zero boilerplate.** datatype99 deals with all the dirty stuff.
 
+ - **Can be used everywhere.** Literally everywhere provided that you have a standard-confirming C99 preprocessor. Even on freestanding environments.
+
 ## Usage
