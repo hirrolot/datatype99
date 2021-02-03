@@ -37,13 +37,20 @@ int sum(const BinaryTree *tree) {
 int main(void) {
     const BinaryTree *tree = NODE(NODE(LEAF(1), 2, NODE(LEAF(3), 4, LEAF(5))), 6, LEAF(7));
 
-    /*
-     * Output:
-     * 28
-     */
     printf("%d\n", sum(tree));
 }
 ```
+
+<details>
+    <summary>Output</summary>
+
+```
+28
+```
+
+</details>
+
+... and it compiles in <0.2 secs -- no slowdown of your development workflow.
 
 ## Table of contents
 
@@ -72,6 +79,8 @@ Pattern matching is likewise intuitive. Just two brief notes:
 Happy hacking!
 
 ## Syntax and semantics
+
+Having a well-defined semantics of the macros, you can write an FFI which is quite common in C.
 
 ### EBNF syntax
 
