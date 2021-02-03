@@ -67,6 +67,8 @@ int main(void) {
 
  - **Can be used everywhere.** Literally everywhere provided that you have a standard-confirming C99 preprocessor. Even on freestanding environments.
 
+ - **Intuitive.** You already know how to use it!
+
 ## Usage
 
 A sum type is created using the `datatype` macro. I guess you have already caught the syntax but actually there exist one more kind of a variant: an empty variant which is expressed simply as `(Foo)`. It holds no data.
@@ -154,6 +156,10 @@ inline static <datatype99-name> <variant-name>(...) { /* ... */ }
 This macro implements [pattern matching] for an instance of a sum type. It accepts an expression of a sum type as a single argument. Afterwards, a chain of arms shall follow.
 
 `match99` has the expected semantics: it tries to match the given instance of a sum type with the given variants, and, if a match has succeeded, it executes the corresponding statement and moves down to the next instruction. If all matches have failed, it executes the statement after `otherwise99` and moves down to the next instruction.
+
+### `of99`
+
+This macro accepts a variant name as a first argument and the rest of arguments comprise a list of variable names. Each variable name is a pointer to a corresponding data of the variant (e.g., let there be `(Foo, T1, T2)` and `of99(Foo, x, y)`, then `x` has the type `T1 *` and `y` is `T2 *`). To match an empty variant, write `of99(Bar)`.
 
 ### `matches99`
 
