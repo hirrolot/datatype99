@@ -57,6 +57,9 @@ int main(void) {
  - [Highlights](#highlights)
  - [Installation](#installation)
  - [Usage](#usage)
+ - [Syntax and semantics](#syntax-and-semantics)
+   - [EBNF syntax](#ebnf-syntax)
+   - [Semantics](#semantics)
 
 ## Highlights
 
