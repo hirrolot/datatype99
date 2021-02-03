@@ -82,6 +82,8 @@ To use datatype99, just `#include <datatype99.h>` beforehand. No additional setu
 
 To speed up compilation, consider using [precompiled headers] and `-ftrack-macro-expansion=0` (GCC-only). The last option is especially useful because it tells GCC not to print big bullshit macro errors.
 
+If you do **not** want the shortened versions to appear (e.g., `datatype` and `match` instead of `datatype99` and `match99`), define `DATATYPE99_NO_ALIASES` before `#include <datatype99.h>`.
+
 [precompiled headers]: https://en.wikipedia.org/wiki/Precompiled_header
 
 ## Usage
