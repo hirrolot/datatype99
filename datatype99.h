@@ -45,8 +45,7 @@
             v(__VA_ARGS__)))
 
 #define DATATYPE99_PRIV_GEN_BOUNDED_VAR_IMPL(tag_, x, i)                                           \
-    v(for (tag_##_##i *x = &((tag_##ChoiceT *)datatype99_priv_match_expr)->data.tag_._##i;         \
-           x != NULL;                                                                              \
+    v(for (tag_##_##i *x = &((tag_##SumT *)datatype99_priv_match_expr)->data.tag_._##i; x != NULL; \
            x = NULL))
 
 #define otherwise99                                                                                \
@@ -86,7 +85,7 @@
     EPILEPSY_braced(DATATYPE99_PRIV_GEN_VARIANT_FIELDS(__VA_ARGS__))                               \
     v(name##tag;)                                                                                  \
     DATATYPE99_PRIV_GEN_TYPEDEF_TO_FIELDS(tag, __VA_ARGS__)                                        \
-    v(typedef struct name tag##ChoiceT;)
+    v(typedef struct name tag##SumT;)
 
 #define DATATYPE99_PRIV_GEN_VARIANT_FIELDS(...)                                                    \
     EPILEPSY_variadicsMapI(v(DATATYPE99_PRIV_GEN_VARIANT_FIELDS_MAP), v(__VA_ARGS__))
