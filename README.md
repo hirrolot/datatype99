@@ -55,6 +55,7 @@ int main(void) {
 ## Table of contents
 
  - [Highlights](#highlights)
+ - [Installation](#installation)
  - [Usage](#usage)
 
 ## Highlights
@@ -68,6 +69,20 @@ int main(void) {
  - **Can be used everywhere.** Literally everywhere provided that you have a standard-confirming C99 preprocessor. Even on freestanding environments.
 
  - **Intuitive.** You already know how to use it!
+
+## Installation
+
+```sh
+$ git clone https://github.com/Hirrolot/datatype99.git --recursive
+```
+
+Then add `datatype99` and `datatype99/epilepsy/include` to your include paths.
+
+To use datatype99, just `#include <datatype99.h>` beforehand. No additional setup is needed: datatype99 is implemented using only preprocessor macros.
+
+To speed up compilation, consider using [precompiled headers] and `-ftrack-macro-expansion=0` (GCC-only). The last option is especially useful because it tells GCC not to print big bullshit macro errors.
+
+[precompiled headers]: https://en.wikipedia.org/wiki/Precompiled_header
 
 ## Usage
 
