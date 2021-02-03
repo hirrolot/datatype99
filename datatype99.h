@@ -45,7 +45,8 @@
             v(__VA_ARGS__)))
 
 #define DATATYPE99_PRIV_GEN_BOUNDED_VAR_IMPL(tag_, x, i)                                           \
-    v(for (tag_##i *x = &((tag_##ChoiceT *)datatype99_priv_match_expr)->data.tag_._##i; x != NULL; \
+    v(for (tag_##_##i *x = &((tag_##ChoiceT *)datatype99_priv_match_expr)->data.tag_._##i;         \
+           x != NULL;                                                                              \
            x = NULL))
 
 #define otherwise99                                                                                \
@@ -96,7 +97,7 @@
         EPILEPSY_callTrivial(EPILEPSY_appl, DATATYPE99_PRIV_GEN_TYPEDEF_TO_FIELDS_MAP, tag),       \
         v(__VA_ARGS__))
 #define DATATYPE99_PRIV_GEN_TYPEDEF_TO_FIELDS_MAP_IMPL(tag, field_type, i)                         \
-    v(typedef field_type tag##i;)
+    v(typedef field_type tag##_##i;)
 // }
 
 // Generate tags of variants {
@@ -142,17 +143,23 @@
     DATATYPE99_PRIV_GEN_CTOR_AUX(                                                                  \
         v(name),                                                                                   \
         v(tag),                                                                                    \
-        EPILEPSY_parenthesise(                                                                     \
-            EPILEPSY_variadicsMapICommaSep(v(DATATYPE99_PRIV_GEN_PARAM), v(__VA_ARGS__))),         \
-        EPILEPSY_variadicsMapICommaSep(v(DATATYPE99_PRIV_GEN_PARAM_NAME), v(__VA_ARGS__)))
+        EPILEPSY_parenthesise(DATATYPE99_PRIV_GEN_CTOR_PARAMS(__VA_ARGS__)),                       \
+        DATATYPE99_PRIV_GEN_CTOR_PARAM_NAMES(__VA_ARGS__))
+
+#define DATATYPE99_PRIV_GEN_CTOR_PARAMS(...)                                                       \
+    EPILEPSY_variadicsMapICommaSep(v(DATATYPE99_PRIV_GEN_CTOR_PARAMS_MAP), v(__VA_ARGS__))
+#define DATATYPE99_PRIV_GEN_CTOR_PARAMS_MAP_IMPL(type, i) v(type _##i)
+
+#define DATATYPE99_PRIV_GEN_CTOR_PARAM_NAMES(...)                                                  \
+    EPILEPSY_repeat(                                                                               \
+        v(DATATYPE99_PRIV_GEN_CTOR_PARAM_NAMES_MAP),                                               \
+        EPILEPSY_variadicsCount(v(__VA_ARGS__)))
+#define DATATYPE99_PRIV_GEN_CTOR_PARAM_NAMES_MAP_IMPL(i) v(_##i, )
 
 #define DATATYPE99_PRIV_GEN_CTOR_AUX_IMPL(name, tag_, params, ...)                                 \
     v(inline static name tag_ params {                                                             \
         return ((name){.tag = tag_##Tag, .data.tag_ = {__VA_ARGS__}});                             \
     })
-
-#define DATATYPE99_PRIV_GEN_PARAM_IMPL(type, i)       v(type _##i)
-#define DATATYPE99_PRIV_GEN_PARAM_NAME_IMPL(_type, i) v(_##i)
 // }
 
 #define DATATYPE99_PRIV_IS_EMPTY_VARIANT(...)                                                      \
@@ -177,8 +184,9 @@
 #define DATATYPE99_PRIV_GEN_BOUNDED_VAR_ARITY           3
 #define DATATYPE99_PRIV_GEN_VARIANT_FIELDS_MAP_ARITY    2
 #define DATATYPE99_PRIV_GEN_TYPEDEF_TO_FIELDS_MAP_ARITY 3
-#define DATATYPE99_PRIV_GEN_PARAM_ARITY                 2
-#define DATATYPE99_PRIV_GEN_PARAM_NAME_ARITY            2
+#define DATATYPE99_PRIV_GEN_CTOR_PARAMS_MAP_ARITY       2
+
+#define DATATYPE99_PRIV_GEN_CTOR_PARAM_NAMES_MAP_ARITY 1
 // }
 
 #endif // DATATYPE99_H
