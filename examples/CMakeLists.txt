@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 project(examples LANGUAGES C)
 
-include_directories(../include ../epilepsy/include)
+include_directories(.. ../epilepsy/include)
 
 if(CMAKE_C_COMPILER_ID STREQUAL "Clang")
   add_compile_options(-Weverything)
