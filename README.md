@@ -85,7 +85,7 @@ int main(void) {
 $ git clone https://github.com/Hirrolot/datatype99.git --recursive
 ```
 
-Then add `datatype99` and `datatype99/epilepsy/include` to your include paths.
+Then add `datatype99` and `datatype99/metalang99/include` to your include paths.
 
 To use datatype99, just `#include <datatype99.h>` beforehand. No additional setup is needed: datatype99 is implemented using only preprocessor macros.
 

@@ -102,7 +102,7 @@ int main(void) {
         }                                                                                          \
     }                                                                                              \
                                                                                                    \
-    E_semicolon()
+    M_semicolon()
 
     TEST_MATCH(a);
     assert(0 == foo);

@@ -1,3 +1,3 @@
-[submodule "epilepsy"]
-	path = epilepsy
-	url = https://github.com/Hirrolot/epilepsy.git
+[submodule "metalang99"]
+	path = metalang99
+	url = https://github.com/Hirrolot/metalang99.git
