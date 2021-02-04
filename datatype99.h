@@ -19,7 +19,7 @@
     DATATYPE99_PRIV_GEN_TYPEDEFS(name, __VA_ARGS__)                                                \
                                                                                                    \
     typedef struct name {                                                                          \
-        enum { DATATYPE99_PRIV_GEN_TAGS(name, __VA_ARGS__) } tag;                                  \
+        enum { DATATYPE99_PRIV_GEN_TAGS(__VA_ARGS__) } tag;                                        \
                                                                                                    \
         union {                                                                                    \
             char dummy;                                                                            \
@@ -37,8 +37,16 @@
                                                                                                    \
         switch ((val).tag)
 
-#define of99(tag, ...)                                                                             \
+#define of99(...)                                                                                  \
     break;                                                                                         \
+    EPILEPSY_ifPlain(                                                                              \
+        DATATYPE99_PRIV_IS_EMPTY_VARIANT(__VA_ARGS__),                                             \
+        DATATYPE99_PRIV_OF_EMPTY,                                                                  \
+        DATATYPE99_PRIV_OF_NON_EMPTY)(__VA_ARGS__)
+
+#define DATATYPE99_PRIV_OF_EMPTY(tag) case tag##Tag:
+
+#define DATATYPE99_PRIV_OF_NON_EMPTY(tag, ...)                                                     \
     case tag##Tag:                                                                                 \
         EPILEPSY_eval(EPILEPSY_variadicsMapI(                                                      \
             EPILEPSY_appl(v(DATATYPE99_PRIV_GEN_BOUNDED_VAR), v(tag)),                             \
@@ -78,14 +86,15 @@
             DATATYPE99_PRIV_IS_EMPTY_VARIANT(__VA_ARGS__),                                         \
             EPILEPSY_consume,                                                                      \
             DATATYPE99_PRIV_GEN_TYPEDEFS_MAP_AUX),                                                 \
-        v(name, __VA_ARGS__))
+        v(name, __VA_ARGS__))                                                                      \
+                                                                                                   \
+        v(typedef struct name EPILEPSY_catPlain(EPILEPSY_variadicsHeadPlain(__VA_ARGS__), SumT);)
 
 #define DATATYPE99_PRIV_GEN_TYPEDEFS_MAP_AUX_IMPL(name, tag, ...)                                  \
-    v(typedef struct)                                                                              \
+    v(typedef struct name##tag)                                                                    \
     EPILEPSY_braced(DATATYPE99_PRIV_GEN_VARIANT_FIELDS(__VA_ARGS__))                               \
     v(name##tag;)                                                                                  \
-    DATATYPE99_PRIV_GEN_TYPEDEF_TO_FIELDS(tag, __VA_ARGS__)                                        \
-    v(typedef struct name tag##SumT;)
+    DATATYPE99_PRIV_GEN_TYPEDEF_TO_FIELDS(tag, __VA_ARGS__)
 
 #define DATATYPE99_PRIV_GEN_VARIANT_FIELDS(...)                                                    \
     EPILEPSY_variadicsMapI(v(DATATYPE99_PRIV_GEN_VARIANT_FIELDS_MAP), v(__VA_ARGS__))
@@ -100,12 +109,12 @@
 // }
 
 // Generate tags of variants {
-#define DATATYPE99_PRIV_GEN_TAGS(name, ...)                                                        \
-    EPILEPSY_eval(DATATYPE99_PRIV_MAP_VARIANTS_COMMA_SEP(                                          \
-        EPILEPSY_callTrivial(EPILEPSY_appl, DATATYPE99_PRIV_GEN_TAGS_MAP, name),                   \
-        v(__VA_ARGS__)))
+#define DATATYPE99_PRIV_GEN_TAGS(...)                                                              \
+    EPILEPSY_eval(                                                                                 \
+        DATATYPE99_PRIV_MAP_VARIANTS_COMMA_SEP(v(DATATYPE99_PRIV_GEN_TAGS_MAP), v(__VA_ARGS__)))
 
-#define DATATYPE99_PRIV_GEN_TAGS_MAP_IMPL(name, tag, ...) v(tag##Tag)
+#define DATATYPE99_PRIV_GEN_TAGS_MAP_IMPL(...)                                                     \
+    v(EPILEPSY_catPlain(EPILEPSY_variadicsHeadPlain(__VA_ARGS__), Tag))
 // }
 
 // Generate a union of fields of possible data {
@@ -177,7 +186,7 @@
 
 // Arity specifiers {
 #define DATATYPE99_PRIV_GEN_TYPEDEFS_MAP_ARITY          2
-#define DATATYPE99_PRIV_GEN_TAGS_MAP_ARITY              2
+#define DATATYPE99_PRIV_GEN_TAGS_MAP_ARITY              1
 #define DATATYPE99_PRIV_GEN_UNION_FIELDS_MAP_ARITY      2
 #define DATATYPE99_PRIV_GEN_CTORS_MAP_ARITY             2
 #define DATATYPE99_PRIV_GEN_BOUNDED_VAR_ARITY           3
