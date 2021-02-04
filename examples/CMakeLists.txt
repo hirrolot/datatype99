@@ -10,6 +10,7 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
 endif()
 
 add_executable(binary_tree binary_tree.c)
+add_executable(binary_tree_malloc binary_tree_malloc.c)
 add_executable(ast ast.c)
 
 foreach(TARGET ${BUILDSYSTEM_TARGETS})
