@@ -69,7 +69,7 @@ int main(void) {
 
 ## Highlights
 
- - **Type-safe.** In contrast to manually implemented tagged unions, datatype99 provides a type-safe interface (you cannot access an invalid data and cannot construct an invalid variant).
+ - **Type-safe.** In contrast to manually implemented tagged unions, datatype99 provides a type-safe interface: normally you cannot access invalid data or construct an invalid variant. Pattern matching is exhaustive too.
 
  - **Pure C99.** No external tools are required; datatype99 is implemented using only preprocessor macros.
 
