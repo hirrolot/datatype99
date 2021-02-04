@@ -30,7 +30,11 @@
     DATATYPE99_PRIV_GEN_CTORS(name, __VA_ARGS__)                                                   \
     EPILEPSY_semicolon()
 
-#define match99(val, ...)                                                                          \
+#define match99(val)                                                                               \
+    _Pragma("GCC diagnostic push")                                                                 \
+    _Pragma("GCC diagnostic ignored \"-Wmisleading-indentation\"")                                 \
+    _Pragma("GCC diagnostic ignored \"-Wreturn-type\"")                                            \
+                                                                                                   \
     for (const void *datatype99_priv_match_expr = (const void *)&(val);                            \
          datatype99_priv_match_expr != NULL;                                                       \
          datatype99_priv_match_expr = NULL)                                                        \
@@ -39,10 +43,16 @@
 
 #define of99(...)                                                                                  \
     break;                                                                                         \
+    _Pragma("GCC diagnostic pop")                                                                  \
+    _Pragma("GCC diagnostic push")                                                                 \
+    _Pragma("GCC diagnostic ignored \"-Wmisleading-indentation\"")                                 \
+    _Pragma("GCC diagnostic ignored \"-Wreturn-type\"")                                            \
+                                                                                                   \
     EPILEPSY_ifPlain(                                                                              \
         DATATYPE99_PRIV_IS_EMPTY_VARIANT(__VA_ARGS__),                                             \
         DATATYPE99_PRIV_OF_EMPTY,                                                                  \
-        DATATYPE99_PRIV_OF_NON_EMPTY)(__VA_ARGS__)
+        DATATYPE99_PRIV_OF_NON_EMPTY)                                                              \
+    (__VA_ARGS__)
 
 #define DATATYPE99_PRIV_OF_EMPTY(tag) case tag##Tag:
 
@@ -58,7 +68,8 @@
 
 #define otherwise99                                                                                \
     break;                                                                                         \
-    default:
+    default:                                                                                       \
+        _Pragma("GCC diagnostic pop")
 
 #define matches99(val, tag_) ((val).tag == tag_##Tag)
 
@@ -88,7 +99,9 @@
             DATATYPE99_PRIV_GEN_TYPEDEFS_MAP_AUX),                                                 \
         v(name, __VA_ARGS__))                                                                      \
                                                                                                    \
-        v(typedef struct name EPILEPSY_catPlain(EPILEPSY_variadicsHeadPlain(__VA_ARGS__), SumT);)
+        v(typedef struct name EPILEPSY_catPlain(                                                   \
+              EPILEPSY_variadicsHeadPlain(__VA_ARGS__, ~),                                         \
+              SumT);)
 
 #define DATATYPE99_PRIV_GEN_TYPEDEFS_MAP_AUX_IMPL(name, tag, ...)                                  \
     v(typedef struct name##tag)                                                                    \
@@ -114,7 +127,7 @@
         DATATYPE99_PRIV_MAP_VARIANTS_COMMA_SEP(v(DATATYPE99_PRIV_GEN_TAGS_MAP), v(__VA_ARGS__)))
 
 #define DATATYPE99_PRIV_GEN_TAGS_MAP_IMPL(...)                                                     \
-    v(EPILEPSY_catPlain(EPILEPSY_variadicsHeadPlain(__VA_ARGS__), Tag))
+    v(EPILEPSY_catPlain(EPILEPSY_variadicsHeadPlain(__VA_ARGS__, ~), Tag))
 // }
 
 // Generate a union of fields of possible data {
@@ -142,7 +155,8 @@
     EPILEPSY_ifPlain(                                                                              \
         DATATYPE99_PRIV_IS_EMPTY_VARIANT(__VA_ARGS__),                                             \
         DATATYPE99_PRIV_GEN_EMPTY_CTOR,                                                            \
-        DATATYPE99_PRIV_GEN_NON_EMPTY_CTOR)(name, __VA_ARGS__)
+        DATATYPE99_PRIV_GEN_NON_EMPTY_CTOR)                                                        \
+    (name, __VA_ARGS__)
 
 #define DATATYPE99_PRIV_GEN_EMPTY_CTOR(name, tag_)                                                 \
     v(inline static name tag_(void) { return ((name){.tag = tag_##Tag, .data.dummy = '\0'}); })
