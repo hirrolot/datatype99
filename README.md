@@ -1,5 +1,6 @@
 # datatype99
 [![CI](https://github.com/Hirrolot/datatype99/workflows/C/C++%20CI/badge.svg)](https://github.com/Hirrolot/datatype99/actions)
+[![Support me on Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dhirrolot%26type%3Dpatrons&style=flat)](https://patreon.com/hirrolot)
 
 datatype99 is a header-only library that augments C99 with [sum types]. It looks like this:
 
