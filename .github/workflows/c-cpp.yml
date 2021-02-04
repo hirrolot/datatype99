@@ -18,7 +18,8 @@ jobs:
       run: git submodule update --init --recursive
 
     - name: Test examples
-      run: cd examples |
+      run: |
+        cd examples
         mkdir build
         cd build
         cmake ..
