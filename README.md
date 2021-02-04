@@ -61,8 +61,8 @@ int main(void) {
    - [EBNF syntax](#ebnf-syntax)
    - [Semantics](#semantics)
      - [`datatype99`](#datatype99-1)
-     - [`of99`](#of99)
      - [`match99`](#match99)
+     - [`of99`](#of99)
      - [`matches99`](#matches99)
  - [Credits](#credits)
 
