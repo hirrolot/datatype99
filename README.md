@@ -60,6 +60,11 @@ int main(void) {
  - [Syntax and semantics](#syntax-and-semantics)
    - [EBNF syntax](#ebnf-syntax)
    - [Semantics](#semantics)
+     - [`datatype99`](#datatype99-1)
+     - [`of99`](#of99)
+     - [`match99`](#match99)
+     - [`matches99`](#matches99)
+ - [Credits](#credits)
 
 ## Highlights
 
@@ -186,3 +191,7 @@ This macro accepts a variant name as a first argument and the rest of arguments 
 This macro just tests an instance of a sum type for a given variant. If the given instance corresponds to the given variant, it expands to truthfulness, otherwise, it expands to falsehood.
 
 [pattern matching]: https://en.wikipedia.org/wiki/Pattern_matching
+
+## Credits
+
+Thanks to Rust and ML for their implementations of sum types.
