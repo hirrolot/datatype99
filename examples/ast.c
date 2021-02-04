@@ -29,23 +29,23 @@ double eval(const Expr *expr) {
         of(Const, number) {
             return *number;
         }
-        of(Add, left, right) {
-            return eval(*left) + eval(*right);
+        of(Add, lhs, rhs) {
+            return eval(*lhs) + eval(*rhs);
         }
-        of(Sub, left, right) {
-            return eval(*left) - eval(*right);
+        of(Sub, lhs, rhs) {
+            return eval(*lhs) - eval(*rhs);
         }
-        of(Mul, left, right) {
-            return eval(*left) * eval(*right);
+        of(Mul, lhs, rhs) {
+            return eval(*lhs) * eval(*rhs);
         }
-        of(Div, left, right) {
-            return eval(*left) / eval(*right);
+        of(Div, lhs, rhs) {
+            return eval(*lhs) / eval(*rhs);
         }
     }
 }
 
-#define EXPR(expr)          ((Expr *)(Expr[]){expr})
-#define OP(op, left, right) op(EXPR(left), EXPR(right))
+#define EXPR(expr)       ((Expr *)(Expr[]){expr})
+#define OP(op, lhs, rhs) op(EXPR(lhs), EXPR(rhs))
 
 int main(void) {
     Expr expr = OP(Add, Const(53), OP(Sub, OP(Div, Const(155), Const(5)), Const(113)));
