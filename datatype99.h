@@ -217,7 +217,7 @@
 #define DATATYPE99_PRIV_isEmptyVariant(...)                                                        \
     METALANG99_uintEqPlain(METALANG99_variadicsCountPlain(__VA_ARGS__), 1)
 
-#define DATATYPE99_PRIV_extractTag(...) METALANG99_variadicsHeadPlain(__VA_ARGS__, ~)
+#define DATATYPE99_PRIV_extractTag METALANG99_variadicsHeadPlain
 
 #define DATATYPE99_PRIV_mapVariants_IMPL(f, ...)                                                   \
     METALANG99_variadicsMap(                                                                       \
