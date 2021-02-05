@@ -159,7 +159,7 @@ typedef struct <datatype-name> <variant-name>SumT;
 ```
 typedef struct <datatype-name> {
     enum {
-        <variant-name>0Tag, ..., <variant-name>NTag 
+        <variant-name>0Tag, ..., <variant-name>NTag
     } tag;
 
     union {
