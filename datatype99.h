@@ -36,6 +36,10 @@
     _Pragma("GCC diagnostic ignored \"-Wmisleading-indentation\"")                                 \
     _Pragma("GCC diagnostic ignored \"-Wreturn-type\"")                                            \
                                                                                                    \
+    /* `for` is used to extend the context with a bounded variable (`datatype99_priv_match_expr`   \
+     * below). The reason we use `for` is that we can't do the same with a simple variable         \
+     * definition because the next use of `match99` will define this variable again, unlike `for`  \
+     * which creates a new scope. */                                                               \
     for (const void *datatype99_priv_match_expr = (const void *)&(val);                            \
          datatype99_priv_match_expr != NULL;                                                       \
          datatype99_priv_match_expr = NULL)                                                        \
@@ -100,20 +104,31 @@
             DATATYPE99_PRIV_genTypedefsMapAux),                                                    \
         v(name, __VA_ARGS__))                                                                      \
                                                                                                    \
-        v(typedef struct name METALANG99_catPlain(                                                 \
-              METALANG99_variadicsHeadPlain(__VA_ARGS__, ~),                                       \
-              SumT);)
+        v(typedef struct name METALANG99_catPlain(DATATYPE99_PRIV_extractTag(__VA_ARGS__), SumT);)
 
 #define DATATYPE99_PRIV_genTypedefsMapAux_IMPL(name, tag, ...)                                     \
-    v(typedef struct name##tag)                                                                    \
-    METALANG99_braced(DATATYPE99_PRIV_genVariantFields(__VA_ARGS__))                               \
-    v(name##tag;)                                                                                  \
+    DATATYPE99_PRIV_genStructOfVariantFields(name, tag, __VA_ARGS__)                               \
     DATATYPE99_PRIV_genTypedefsToFields(tag, __VA_ARGS__)
 
-#define DATATYPE99_PRIV_genVariantFields(...)                                                      \
-    METALANG99_variadicsMapI(v(DATATYPE99_PRIV_genVariantFields_MAP), v(__VA_ARGS__))
-#define DATATYPE99_PRIV_genVariantFields_MAP_IMPL(field_type, i) v(field_type _##i;)
+/*
+ * typedef struct <datatype-name><variant-name> {
+ *     <type>0 _0;
+ *     ...
+ *     <type>N _N;
+ * } <datatype-name><variant-name>;
+ */
+#define DATATYPE99_PRIV_genStructOfVariantFields(name, tag, ...)                                   \
+    v(typedef struct name##tag)                                                                    \
+    METALANG99_braced(                                                                             \
+        METALANG99_variadicsMapI(v(DATATYPE99_PRIV_genStructOfVariantFields_MAP), v(__VA_ARGS__))) \
+    v(name##tag;)
+#define DATATYPE99_PRIV_genStructOfVariantFields_MAP_IMPL(field_type, i) v(field_type _##i;)
 
+/*
+ * typedef <type>0 <variant-name>_0;
+ * ...
+ * typedef <type>N <variant-name>_N;
+ */
 #define DATATYPE99_PRIV_genTypedefsToFields(tag, ...)                                              \
     METALANG99_variadicsMapI(                                                                      \
         METALANG99_callTrivial(METALANG99_appl, DATATYPE99_PRIV_genTypedefToField, tag),           \
@@ -122,15 +137,23 @@
 // }
 
 // Generate tags of variants {
+
+// <variant-name>0Tag, ..., <variant-name>NTag
 #define DATATYPE99_PRIV_genTags(...)                                                               \
     METALANG99_eval(                                                                               \
         DATATYPE99_PRIV_mapVariantsCommaSep(v(DATATYPE99_PRIV_genTags_MAP), v(__VA_ARGS__)))
 
 #define DATATYPE99_PRIV_genTags_MAP_IMPL(...)                                                      \
-    v(METALANG99_catPlain(METALANG99_variadicsHeadPlain(__VA_ARGS__, ~), Tag))
+    v(METALANG99_catPlain(DATATYPE99_PRIV_extractTag(__VA_ARGS__), Tag))
 // }
 
 // Generate a union of fields of possible data {
+
+/*
+ * <datatype-name><variant-name>0 <variant-name>0;
+ * ...
+ * <datatype-name><variant-name>N <variant-name>N;
+ */
 #define DATATYPE99_PRIV_genUnionFields(name, ...)                                                  \
     METALANG99_eval(DATATYPE99_PRIV_mapVariants(                                                   \
         METALANG99_callTrivial(METALANG99_appl, DATATYPE99_PRIV_genUnionFieldsMap, name),          \
@@ -146,6 +169,12 @@
 // }
 
 // Generate value constructors {
+
+/*
+ * inline static <datatype99-name> <variant-name>0(...) { ... }
+ * ...
+ * inline static <datatype99-name> <variant-name>N(...) { ... }
+ */
 #define DATATYPE99_PRIV_genCtors(name, ...)                                                        \
     METALANG99_eval(DATATYPE99_PRIV_mapVariants(                                                   \
         METALANG99_callTrivial(METALANG99_appl, DATATYPE99_PRIV_genCtorsMap, name),                \
@@ -184,8 +213,11 @@
     })
 // }
 
+// Auxiliary stuff {
 #define DATATYPE99_PRIV_isEmptyVariant(...)                                                        \
     METALANG99_uintEqPlain(METALANG99_variadicsCountPlain(__VA_ARGS__), 1)
+
+#define DATATYPE99_PRIV_extractTag(...) METALANG99_variadicsHeadPlain(__VA_ARGS__, ~)
 
 #define DATATYPE99_PRIV_mapVariants_IMPL(f, ...)                                                   \
     METALANG99_variadicsMap(                                                                       \
@@ -196,17 +228,19 @@
     METALANG99_variadicsMapCommaSep(                                                               \
         METALANG99_callTrivial(METALANG99_compose, f, METALANG99_unparenthesise),                  \
         v(__VA_ARGS__))
+// }
+
 // } (Implementation)
 
 // Arity specifiers {
-#define DATATYPE99_PRIV_genTypedefsMap_ARITY       2
-#define DATATYPE99_PRIV_genTags_MAP_ARITY          1
-#define DATATYPE99_PRIV_genUnionFieldsMap_ARITY    2
-#define DATATYPE99_PRIV_genCtorsMap_ARITY          2
-#define DATATYPE99_PRIV_genBoundedVar_ARITY        3
-#define DATATYPE99_PRIV_genVariantFields_MAP_ARITY 2
-#define DATATYPE99_PRIV_genTypedefToField_ARITY    3
-#define DATATYPE99_PRIV_genCtorParams_MAP_ARITY    2
+#define DATATYPE99_PRIV_genTypedefsMap_ARITY               2
+#define DATATYPE99_PRIV_genTags_MAP_ARITY                  1
+#define DATATYPE99_PRIV_genUnionFieldsMap_ARITY            2
+#define DATATYPE99_PRIV_genCtorsMap_ARITY                  2
+#define DATATYPE99_PRIV_genBoundedVar_ARITY                3
+#define DATATYPE99_PRIV_genStructOfVariantFields_MAP_ARITY 2
+#define DATATYPE99_PRIV_genTypedefToField_ARITY            3
+#define DATATYPE99_PRIV_genCtorParams_MAP_ARITY            2
 
 #define DATATYPE99_PRIV_genCtorParamNames_MAP_ARITY 1
 // }
