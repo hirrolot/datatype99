@@ -42,7 +42,10 @@
 ## Installation
 
 ```sh
-$ git clone https://github.com/Hirrolot/datatype99.git --recursive
+$ git clone https://github.com/Hirrolot/datatype99.git
+$ cd datatype99
+$ git submodule init metalang99
+$ git submodule update --remote metalang99
 ```
 
 Then add `datatype99` and `datatype99/metalang99/include` to your include paths.
