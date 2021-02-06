@@ -26,6 +26,7 @@
      - [`of99`](#of99)
      - [`matches99`](#matches99)
  - [Credits](#credits)
+ - [Learning resources](#learning-resources)
 
 ## Highlights
 
@@ -161,3 +162,7 @@ This macro just tests an instance of a sum type for a given variant. If the give
 ## Credits
 
 Thanks to Rust and ML for their implementations of sum types.
+
+## Learning resources
+
+ - [_Unleashing Sum Types in Pure C99_](https://medium.com/@hirrolot/unleashing-sum-types-in-pure-c99-31544302d2ba) by Hirrolot
