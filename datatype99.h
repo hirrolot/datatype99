@@ -119,9 +119,9 @@
 #define DATATYPE99_PRIV_genStructOfVariantFields(name, tag, ...)                                   \
     v(typedef struct name##tag)                                                                    \
     METALANG99_braced(                                                                             \
-        METALANG99_variadicsMapI(v(DATATYPE99_PRIV_genStructOfVariantFields_MAP), v(__VA_ARGS__))) \
+        METALANG99_variadicsMapI(v(DATATYPE99_PRIV_genStructOfVariantFieldsMap), v(__VA_ARGS__)))  \
     v(name##tag;)
-#define DATATYPE99_PRIV_genStructOfVariantFields_MAP_IMPL(field_type, i) v(field_type _##i;)
+#define DATATYPE99_PRIV_genStructOfVariantFieldsMap_IMPL(field_type, i) v(field_type _##i;)
 
 /*
  * typedef <type>0 <variant-name>_0;
@@ -140,9 +140,9 @@
 // <variant-name>0Tag, ..., <variant-name>NTag
 #define DATATYPE99_PRIV_genTags(...)                                                               \
     METALANG99_eval(                                                                               \
-        DATATYPE99_PRIV_mapVariantsCommaSep(v(DATATYPE99_PRIV_genTags_MAP), v(__VA_ARGS__)))
+        DATATYPE99_PRIV_mapVariantsCommaSep(v(DATATYPE99_PRIV_genTagsMap), v(__VA_ARGS__)))
 
-#define DATATYPE99_PRIV_genTags_MAP_IMPL(...)                                                      \
+#define DATATYPE99_PRIV_genTagsMap_IMPL(...)                                                       \
     v(METALANG99_catPlain(DATATYPE99_PRIV_extractTag(__VA_ARGS__), Tag))
 // }
 
@@ -202,9 +202,9 @@
 
 #define DATATYPE99_PRIV_genCtorParamNames(...)                                                     \
     METALANG99_repeat(                                                                             \
-        v(DATATYPE99_PRIV_genCtorParamNames_MAP),                                                  \
+        v(DATATYPE99_PRIV_genCtorParamNamesMap),                                                   \
         METALANG99_variadicsCount(v(__VA_ARGS__)))
-#define DATATYPE99_PRIV_genCtorParamNames_MAP_IMPL(i) v(_##i, )
+#define DATATYPE99_PRIV_genCtorParamNamesMap_IMPL(i) v(_##i, )
 
 #define DATATYPE99_PRIV_genCtorAux_IMPL(name, tag_, params, ...)                                   \
     v(inline static name tag_ params {                                                             \
@@ -232,15 +232,15 @@
 // } (Implementation)
 
 // Arity specifiers {
-#define DATATYPE99_PRIV_genTypedefsMap_ARITY               2
-#define DATATYPE99_PRIV_genTags_MAP_ARITY                  1
-#define DATATYPE99_PRIV_genUnionFieldsMap_ARITY            2
-#define DATATYPE99_PRIV_genCtorsMap_ARITY                  2
-#define DATATYPE99_PRIV_genBoundedVar_ARITY                3
-#define DATATYPE99_PRIV_genStructOfVariantFields_MAP_ARITY 2
-#define DATATYPE99_PRIV_genTypedefToField_ARITY            3
-#define DATATYPE99_PRIV_genCtorParamsMap_ARITY             2
-#define DATATYPE99_PRIV_genCtorParamNames_MAP_ARITY        1
+#define DATATYPE99_PRIV_genBoundedVar_ARITY               3
+#define DATATYPE99_PRIV_genTypedefsMap_ARITY              2
+#define DATATYPE99_PRIV_genStructOfVariantFieldsMap_ARITY 2
+#define DATATYPE99_PRIV_genTypedefToField_ARITY           3
+#define DATATYPE99_PRIV_genTagsMap_ARITY                  1
+#define DATATYPE99_PRIV_genUnionFieldsMap_ARITY           2
+#define DATATYPE99_PRIV_genCtorsMap_ARITY                 2
+#define DATATYPE99_PRIV_genCtorParamsMap_ARITY            2
+#define DATATYPE99_PRIV_genCtorParamNamesMap_ARITY        1
 // }
 
 #endif // DATATYPE99_H
