@@ -240,8 +240,7 @@
 #define DATATYPE99_PRIV_genStructOfVariantFields_MAP_ARITY 2
 #define DATATYPE99_PRIV_genTypedefToField_ARITY            3
 #define DATATYPE99_PRIV_genCtorParamsMap_ARITY             2
-
-#define DATATYPE99_PRIV_genCtorParamNames_MAP_ARITY 1
+#define DATATYPE99_PRIV_genCtorParamNames_MAP_ARITY        1
 // }
 
 #endif // DATATYPE99_H
