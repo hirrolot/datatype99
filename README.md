@@ -1,10 +1,61 @@
-# datatype99
-[![CI](https://github.com/Hirrolot/datatype99/workflows/C/C++%20CI/badge.svg)](https://github.com/Hirrolot/datatype99/actions)
-[![Support me on Patreon](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dhirrolot%26type%3Dpatrons&style=flat)](https://patreon.com/hirrolot)
-
-datatype99 is a header-only library that augments C99 with [sum types]. It looks like this:
+<div align="center">
+  <img src="datatype99.png" width="600"/>
+  <h1>datatype99</h1>
+  <a href="https://github.com/Hirrolot/datatype99/actions">
+    <img src="https://github.com/Hirrolot/datatype99/workflows/C/C++%20CI/badge.svg">
+  </a>
+  <a href="https://patreon.com/hirrolot">
+    <img src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dhirrolot%26type%3Dpatrons&style=flat">
+  </a>
+    
+  A header-only library featuring [sum types] with exhaustive pattern matching in pure C99. Alternative data representations in C made easy.
+</div>
 
 [sum types]: https://en.wikipedia.org/wiki/Tagged_union
+
+## Table of contents
+
+ - [Highlights](#highlights)
+ - [Installation](#installation)
+ - [Usage](#usage)
+ - [Syntax and semantics](#syntax-and-semantics)
+   - [EBNF syntax](#ebnf-syntax)
+   - [Semantics](#semantics)
+     - [`datatype99`](#datatype99-1)
+     - [`match99`](#match99)
+     - [`of99`](#of99)
+     - [`matches99`](#matches99)
+ - [Credits](#credits)
+
+## Highlights
+
+ - **Type-safe.** Unlike manually written tagged unions, datatype99 is type-safe: normally you cannot access invalid data or construct an invalid variant. Pattern matching is exhaustive too.
+
+ - **Pure C99.** No external tools are required; datatype99 is implemented using only preprocessor macros.
+
+ - **Zero boilerplate.** datatype99 deals with all the dirty stuff.
+
+ - **Can be used everywhere.** Literally everywhere provided that you have a standard-confirming C99 preprocessor. Even on freestanding environments.
+
+ - **Intuitive.** You already know how to use it!
+
+## Installation
+
+```sh
+$ git clone https://github.com/Hirrolot/datatype99.git --recursive
+```
+
+Then add `datatype99` and `datatype99/metalang99/include` to your include paths.
+
+To use datatype99, just `#include <datatype99.h>` beforehand. No additional setup is needed: datatype99 is implemented using only preprocessor macros.
+
+To speed up compilation, consider using [precompiled headers] and `-ftrack-macro-expansion=0` (GCC-only). The last option is especially useful because it tells GCC not to print big bullshit macro errors.
+
+If you do **not** want the shortened versions to appear (e.g., `datatype` and `match` instead of `datatype99` and `match99`), define `DATATYPE99_NO_ALIASES` before `#include <datatype99.h>`.
+
+[precompiled headers]: https://en.wikipedia.org/wiki/Precompiled_header
+
+## Usage
 
 [ [`examples/binary_tree.c`](examples/binary_tree.c) ]
 ```c
@@ -51,51 +102,7 @@ int main(void) {
 
 </details>
 
-... and it compiles in <0.2 secs -- no slowdown of your development workflow.
-
-## Table of contents
-
- - [Highlights](#highlights)
- - [Installation](#installation)
- - [Usage](#usage)
- - [Syntax and semantics](#syntax-and-semantics)
-   - [EBNF syntax](#ebnf-syntax)
-   - [Semantics](#semantics)
-     - [`datatype99`](#datatype99-1)
-     - [`match99`](#match99)
-     - [`of99`](#of99)
-     - [`matches99`](#matches99)
- - [Credits](#credits)
-
-## Highlights
-
- - **Type-safe.** Unlike manually written tagged unions, datatype99 is type-safe: normally you cannot access invalid data or construct an invalid variant. Pattern matching is exhaustive too.
-
- - **Pure C99.** No external tools are required; datatype99 is implemented using only preprocessor macros.
-
- - **Zero boilerplate.** datatype99 deals with all the dirty stuff.
-
- - **Can be used everywhere.** Literally everywhere provided that you have a standard-confirming C99 preprocessor. Even on freestanding environments.
-
- - **Intuitive.** You already know how to use it!
-
-## Installation
-
-```sh
-$ git clone https://github.com/Hirrolot/datatype99.git --recursive
-```
-
-Then add `datatype99` and `datatype99/metalang99/include` to your include paths.
-
-To use datatype99, just `#include <datatype99.h>` beforehand. No additional setup is needed: datatype99 is implemented using only preprocessor macros.
-
-To speed up compilation, consider using [precompiled headers] and `-ftrack-macro-expansion=0` (GCC-only). The last option is especially useful because it tells GCC not to print big bullshit macro errors.
-
-If you do **not** want the shortened versions to appear (e.g., `datatype` and `match` instead of `datatype99` and `match99`), define `DATATYPE99_NO_ALIASES` before `#include <datatype99.h>`.
-
-[precompiled headers]: https://en.wikipedia.org/wiki/Precompiled_header
-
-## Usage
+It compiles in <0.2 secs -- no slowdown of your development workflow.
 
 A sum type is created using the `datatype` macro. I guess you have already caught the syntax but actually there exist one more kind of a variant: an empty variant which is expressed simply as `(Foo)`. It holds no data.
 
