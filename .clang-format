@@ -9,4 +9,4 @@ AllowAllArgumentsOnNextLine: false
 AlignAfterOpenBracket: AlwaysBreak
 ContinuationIndentWidth: 4
 BinPackArguments: false
-StatementMacros: ["_Pragma", "METALANG99_eval", "v", "METALANG99_ifPlain", "METALANG99_braced", "METALANG99_variadicsMapI", "DATATYPE99_PRIV_genStructOfVariantFields", "DATATYPE99_PRIV_genTypedefsToFields", "DATATYPE99_PRIV_genTypedefs", "DATATYPE99_PRIV_genTags", "DATATYPE99_PRIV_genUnionFields", "DATATYPE99_PRIV_genCtors"]
+StatementMacros: ["_Pragma", "METALANG99_eval", "v", "METALANG99_call", "METALANG99_ifPlain", "METALANG99_braced", "METALANG99_variadicsMapI", "DATATYPE99_PRIV_genStructOfVariantFields", "DATATYPE99_PRIV_genTypedefsToFields", "DATATYPE99_PRIV_genTypedefs", "DATATYPE99_PRIV_genTags", "DATATYPE99_PRIV_genUnionFields", "DATATYPE99_PRIV_genCtors"]

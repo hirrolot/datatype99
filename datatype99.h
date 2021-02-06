@@ -47,25 +47,23 @@
         switch ((val).tag)
 
 #define of99(...)                                                                                  \
-    break;                                                                                         \
     _Pragma("GCC diagnostic pop")                                                                  \
     _Pragma("GCC diagnostic push")                                                                 \
     _Pragma("GCC diagnostic ignored \"-Wmisleading-indentation\"")                                 \
     _Pragma("GCC diagnostic ignored \"-Wreturn-type\"")                                            \
                                                                                                    \
-    METALANG99_ifPlain(                                                                            \
-        DATATYPE99_PRIV_isEmptyVariant(__VA_ARGS__),                                               \
-        DATATYPE99_PRIV_ofEmpty,                                                                   \
-        DATATYPE99_PRIV_ofNonEmpty)                                                                \
-    (__VA_ARGS__)
-
-#define DATATYPE99_PRIV_ofEmpty(tag) case tag##Tag:
+    break;                                                                                         \
+    case METALANG99_catPlain(DATATYPE99_PRIV_extractTag(__VA_ARGS__), Tag):                        \
+        METALANG99_ifPlain(                                                                        \
+            DATATYPE99_PRIV_isEmptyVariant(__VA_ARGS__),                                           \
+            METALANG99_consumePlain,                                                               \
+            DATATYPE99_PRIV_ofNonEmpty)                                                            \
+        (__VA_ARGS__)
 
 #define DATATYPE99_PRIV_ofNonEmpty(tag, ...)                                                       \
-    case tag##Tag:                                                                                 \
-        METALANG99_eval(METALANG99_variadicsMapI(                                                  \
-            METALANG99_appl(v(DATATYPE99_PRIV_genBoundedVar), v(tag)),                             \
-            v(__VA_ARGS__)))
+    METALANG99_eval(METALANG99_variadicsMapI(                                                      \
+        METALANG99_appl(v(DATATYPE99_PRIV_genBoundedVar), v(tag)),                                 \
+        v(__VA_ARGS__)))
 
 #define DATATYPE99_PRIV_genBoundedVar_IMPL(tag_, x, i)                                             \
     v(for (tag_##_##i *x = &((tag_##SumT *)datatype99_priv_match_expr)->data.tag_._##i; x != NULL; \
@@ -104,7 +102,8 @@
             DATATYPE99_PRIV_genTypedefsMapAux),                                                    \
         v(name, __VA_ARGS__))                                                                      \
                                                                                                    \
-        v(typedef struct name METALANG99_catPlain(DATATYPE99_PRIV_extractTag(__VA_ARGS__), SumT);)
+    /* typedef struct <datatype-name> <variant-name>SumT; */                                       \
+    v(typedef struct name METALANG99_catPlain(DATATYPE99_PRIV_extractTag(__VA_ARGS__), SumT);)
 
 #define DATATYPE99_PRIV_genTypedefsMapAux_IMPL(name, tag, ...)                                     \
     DATATYPE99_PRIV_genStructOfVariantFields(name, tag, __VA_ARGS__)                               \
@@ -198,8 +197,8 @@
         DATATYPE99_PRIV_genCtorParamNames(__VA_ARGS__))
 
 #define DATATYPE99_PRIV_genCtorParams(...)                                                         \
-    METALANG99_variadicsMapICommaSep(v(DATATYPE99_PRIV_genCtorParams_MAP), v(__VA_ARGS__))
-#define DATATYPE99_PRIV_genCtorParams_MAP_IMPL(type, i) v(type _##i)
+    METALANG99_variadicsMapICommaSep(v(DATATYPE99_PRIV_genCtorParamsMap), v(__VA_ARGS__))
+#define DATATYPE99_PRIV_genCtorParamsMap_IMPL(type, i) v(type _##i)
 
 #define DATATYPE99_PRIV_genCtorParamNames(...)                                                     \
     METALANG99_repeat(                                                                             \
@@ -240,7 +239,7 @@
 #define DATATYPE99_PRIV_genBoundedVar_ARITY                3
 #define DATATYPE99_PRIV_genStructOfVariantFields_MAP_ARITY 2
 #define DATATYPE99_PRIV_genTypedefToField_ARITY            3
-#define DATATYPE99_PRIV_genCtorParams_MAP_ARITY            2
+#define DATATYPE99_PRIV_genCtorParamsMap_ARITY             2
 
 #define DATATYPE99_PRIV_genCtorParamNames_MAP_ARITY 1
 // }
