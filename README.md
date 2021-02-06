@@ -57,52 +57,7 @@ If you do **not** want the shortened versions to appear (e.g., `datatype` and `m
 
 ## Usage
 
-[ [`examples/binary_tree.c`](examples/binary_tree.c) ]
-```c
-// Sums all nodes of a binary tree.
-
-#include <datatype99.h>
-
-#include <stdio.h>
-
-datatype(
-    BinaryTree,
-    (Leaf, int),
-    (Node, struct BinaryTree *, int, struct BinaryTree *)
-);
-
-int sum(const BinaryTree *tree) {
-    match(*tree) {
-        of(Leaf, x) {
-            return *x;
-        }
-        of(Node, lhs, x, rhs) {
-            return sum(*lhs) + *x + sum(*rhs);
-        }
-    }
-}
-
-#define TREE(tree)                ((BinaryTree *)(BinaryTree[]){tree})
-#define NODE(left, number, right) TREE(Node(left, number, right))
-#define LEAF(number)              TREE(Leaf(number))
-
-int main(void) {
-    const BinaryTree *tree = NODE(NODE(LEAF(1), 2, NODE(LEAF(3), 4, LEAF(5))), 6, LEAF(7));
-
-    printf("%d\n", sum(tree));
-}
-```
-
-<details>
-    <summary>Output</summary>
-
-```
-28
-```
-
-</details>
-
-It compiles in <0.2 secs -- no slowdown of your development workflow.
+(The full example: [`examples/binary_tree.c`](examples/binary_tree.c).)
 
 A sum type is created using the `datatype` macro. I guess you have already caught the syntax but actually there exist one more kind of a variant: an empty variant which is expressed simply as `(Foo)`. It holds no data.
 
