@@ -8,7 +8,7 @@
     <img src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dhirrolot%26type%3Dpatrons&style=flat">
   </a>
     
-  A header-only library featuring safe, intuitive [sum types] with exhaustive pattern matching in pure C99, implemented using only preprocessor macros.
+  A header-only library featuring safe, intuitive [sum types] with exhaustive pattern matching, implemented using only C99 preprocessor macros.
 </div>
 
 [sum types]: https://en.wikipedia.org/wiki/Tagged_union
