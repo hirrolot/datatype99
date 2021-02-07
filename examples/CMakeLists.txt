@@ -13,6 +13,7 @@ add_executable(binary_tree binary_tree.c)
 add_executable(binary_tree_malloc binary_tree_malloc.c)
 add_executable(ast ast.c)
 add_executable(token token.c)
+add_executable(array_in_variant array_in_variant.c)
 
 foreach(TARGET ${BUILDSYSTEM_TARGETS})
   set_target_properties(TARGET PROPERTIES C_STANDARD 99 C_STANDARD_REQUIRED ON)

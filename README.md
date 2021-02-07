@@ -27,6 +27,7 @@
      - [`matches99`](#matches99)
  - [Credits](#credits)
  - [Learning resources](#learning-resources)
+ - [FAQ](#faq)
 
 ## Highlights
 
@@ -167,3 +168,9 @@ Thanks to Rust and ML for their implementations of sum types.
 ## Learning resources
 
  - [_Unleashing Sum Types in Pure C99_](https://medium.com/@hirrolot/unleashing-sum-types-in-pure-c99-31544302d2ba) by Hirrolot
+
+## FAQ
+
+### Q: How to use an array inside a variant?
+
+A: See [`examples/array_in_variant.c`](examples/array_in_variant.c).
