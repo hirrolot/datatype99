@@ -44,12 +44,10 @@
 
 ```sh
 $ git clone https://github.com/Hirrolot/datatype99.git
-$ cd datatype99
-$ git submodule init metalang99
-$ git submodule update --remote metalang99
+$ git clone https://github.com/Hirrolot/metalang99.git
 ```
 
-Then add `datatype99` and `datatype99/metalang99/include` to your include paths.
+Then add `datatype99` and `metalang99/include` to your include paths.
 
 To use datatype99, just `#include <datatype99.h>` beforehand. No additional setup is needed: datatype99 is implemented using only preprocessor macros.
 
