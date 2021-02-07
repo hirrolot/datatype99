@@ -35,11 +35,11 @@
 
  - **Pure C99.** No external tools are required; datatype99 is implemented using only preprocessor macros.
 
- - **Zero boilerplate.** datatype99 deals with all the dirty stuff.
-
  - **Can be used everywhere.** Literally everywhere provided that you have a standard-confirming C99 preprocessor. Even on freestanding environments.
 
- - **Intuitive.** You already know how to use it!
+ - **Transparent.** datatype99 comes with formal [code generation semantics], meaning if you try to look at `datatype`'s output, normally you will not see something unexpected.
+
+ - **FFI-tolerant.** Because of transparency, writing an FFI is not a challenge.
 
 ## Installation
 
