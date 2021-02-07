@@ -171,6 +171,12 @@ Thanks to Rust and ML for their implementations of sum types.
 
 ## FAQ
 
+### Q: What about compile-time errors?
+
+A: With `-ftrack-macro-expansion=0` (GCC), there are no chances that compile-time errors will be longer than usual (remember templates!). However, they can be still quite obscured -- in this case, try to look at generated code (`-E` flag). Hopefully, the [code generation semantics] is formally defined.
+
+[code generation semantics]: #semantics
+
 ### Q: How to use an array inside a variant?
 
 A: See [`examples/array_in_variant.c`](examples/array_in_variant.c).
