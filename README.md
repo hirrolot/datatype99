@@ -42,12 +42,8 @@
 
 ## Installation
 
-```sh
-$ git clone https://github.com/Hirrolot/datatype99.git
-$ git clone https://github.com/Hirrolot/metalang99.git
-```
-
-Then add `datatype99` and `metalang99/include` to your include paths.
+ 1. Download datatype99 and [metalang99].
+ 2. Add `datatype99` and `metalang99/include` to your include paths.
 
 To use datatype99, just `#include <datatype99.h>` beforehand. No additional setup is needed: datatype99 is implemented using only preprocessor macros.
 
@@ -55,6 +51,7 @@ To speed up compilation, consider using [precompiled headers] and `-ftrack-macro
 
 If you do **not** want the shortened versions to appear (e.g., `datatype` and `match` instead of `datatype99` and `match99`), define `DATATYPE99_NO_ALIASES` before `#include <datatype99.h>`.
 
+[metalang99]: https://github.com/Hirrolot/metalang99
 [precompiled headers]: https://en.wikipedia.org/wiki/Precompiled_header
 
 ## Usage
