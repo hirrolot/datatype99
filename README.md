@@ -92,7 +92,13 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 
 This macro accepts a sum type name as a first argument and the rest of arguments shall be comma-separated variants.
 
- 1. For each non-empty variant, the following type definition is generated (the metavariable `<type>` ranges over a corresponding variant's types):
+ 1. Before everything, the following type definition is generated:
+
+```
+typedef struct <datatype-name> <datatype-name>;
+```
+
+ 2. For each non-empty variant, the following type definition is generated (the metavariable `<type>` ranges over a corresponding variant's types):
 
 ```
 typedef struct <datatype-name><variant-name> {
@@ -102,7 +108,7 @@ typedef struct <datatype-name><variant-name> {
 } <datatype-name><variant-name>;
 ```
 
- 2. For each non-empty variant, the following type definitions to types of each field of `<datatype-name><variant-name>` are generated:
+ 3. For each non-empty variant, the following type definitions to types of each field of `<datatype-name><variant-name>` are generated:
 
 ```
 typedef <type>0 <variant-name>_0;
@@ -110,16 +116,16 @@ typedef <type>0 <variant-name>_0;
 typedef <type>N <variant-name>_N;
 ```
 
- 3. For each variant, the following type definition to a corresponding sum type is generated:
+ 4. For each variant, the following type definition to a corresponding sum type is generated:
 
 ```
 typedef struct <datatype-name> <variant-name>SumT;
 ```
 
- 4. For each sum type, the following tagged union is generated (inside the union, only fields to structures of non-empty variants are generated):
+ 5. For each sum type, the following tagged union is generated (inside the union, only fields to structures of non-empty variants are generated):
 
 ```
-typedef struct <datatype-name> {
+struct <datatype-name> {
     enum {
         <variant-name>0Tag, ..., <variant-name>NTag
     } tag;
@@ -130,10 +136,10 @@ typedef struct <datatype-name> {
         ...
         <datatype-name><variant-name>N <variant-name>N;
     } data;
-} <datatype-name> ;
+};
 ```
 
- 5. For each variant, the following function called a _value constructor_ is generated:
+ 6. For each variant, the following function called a _value constructor_ is generated:
 
 ```
 inline static <datatype99-name> <variant-name>(...) { /* ... */ }

@@ -11,7 +11,7 @@
 datatype(
     BinaryTree,
     (Leaf, int),
-    (Node, struct BinaryTree *, int, struct BinaryTree *)
+    (Node, BinaryTree *, int, BinaryTree *)
 );
 // clang-format on
 

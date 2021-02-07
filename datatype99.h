@@ -18,14 +18,14 @@
 #define datatype99(name, ...)                                                                      \
     DATATYPE99_PRIV_genTypedefs(name, __VA_ARGS__)                                                 \
                                                                                                    \
-    typedef struct name {                                                                          \
+    struct name {                                                                                  \
         enum { DATATYPE99_PRIV_genTags(__VA_ARGS__) } tag;                                         \
                                                                                                    \
         union {                                                                                    \
             char dummy;                                                                            \
             DATATYPE99_PRIV_genUnionFields(name, __VA_ARGS__)                                      \
         } data;                                                                                    \
-    } name;                                                                                        \
+    };                                                                                             \
                                                                                                    \
     DATATYPE99_PRIV_genCtors(name, __VA_ARGS__)                                                    \
                                                                                                    \
@@ -90,6 +90,8 @@
 
 // Generate type definitions for variants {
 #define DATATYPE99_PRIV_genTypedefs(name, ...)                                                     \
+    typedef struct name name;                                                                      \
+                                                                                                   \
     METALANG99_eval(DATATYPE99_PRIV_mapVariants(                                                   \
         METALANG99_callTrivial(METALANG99_appl, DATATYPE99_PRIV_genTypedefsMap, name),             \
         v(__VA_ARGS__)))

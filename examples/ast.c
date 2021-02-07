@@ -17,10 +17,10 @@
 datatype(
     Expr,
     (Const, double),
-    (Add, const struct Expr *,  const struct Expr *),
-    (Sub, const struct Expr *,  const struct Expr *),
-    (Mul, const struct Expr *,  const struct Expr *),
-    (Div, const struct Expr *,  const struct Expr *)
+    (Add, Expr *, Expr *),
+    (Sub, Expr *, Expr *),
+    (Mul, Expr *, Expr *),
+    (Div, Expr *, Expr *)
 );
 // clang-format on
 
