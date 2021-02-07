@@ -45,8 +45,7 @@
 
  1. Download datatype99 and [metalang99].
  2. Add `datatype99` and `metalang99/include` to your include paths.
-
-To use datatype99, just `#include <datatype99.h>` beforehand. No additional setup is needed: datatype99 is implemented using only preprocessor macros.
+ 3. `#include <datatype99.h>` beforehand.
 
 To speed up compilation, consider using [precompiled headers] and `-ftrack-macro-expansion=0` (GCC-only). The last option is especially useful because it tells GCC not to print big bullshit macro errors.
 
