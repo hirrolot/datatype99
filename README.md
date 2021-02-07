@@ -33,7 +33,7 @@
 
  - **Type-safe.** Unlike manually written tagged unions, datatype99 is type-safe: normally you cannot access invalid data or construct an invalid variant. Pattern matching is exhaustive too.
 
- - **Pure C99.** No external tools are required; datatype99 is implemented using only preprocessor macros.
+ - **Pure C99.** No external tools are required -- datatype99 is implemented using only preprocessor macros.
 
  - **Can be used everywhere.** Literally everywhere provided that you have a standard-confirming C99 preprocessor. Even on freestanding environments.
 
