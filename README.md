@@ -1,6 +1,6 @@
 <div align="center">
   <img src="preview.png" width="550"/>
-  <h1>datatype99</h1>
+  <h1>Datatype99</h1>
   <a href="https://github.com/Hirrolot/datatype99/actions">
     <img src="https://github.com/Hirrolot/datatype99/workflows/C/C++%20CI/badge.svg">
   </a>
@@ -31,19 +31,19 @@
 
 ## Highlights
 
- - **Type-safe.** Unlike manually written tagged unions, datatype99 is type-safe: normally you cannot access invalid data or construct an invalid variant. Pattern matching is exhaustive too.
+ - **Type-safe.** Unlike manually written tagged unions, Datatype99 is type-safe: normally you cannot access invalid data or construct an invalid variant. Pattern matching is exhaustive too.
 
- - **Pure C99.** No external tools are required -- datatype99 is implemented using only preprocessor macros.
+ - **Pure C99.** No external tools are required -- Datatype99 is implemented using only preprocessor macros.
 
  - **Can be used everywhere.** Literally everywhere provided that you have a standard-confirming C99 preprocessor. Even on freestanding environments.
 
- - **Transparent.** datatype99 comes with formal [code generation semantics], meaning if you try to look at `datatype`'s output, normally you will not see something unexpected.
+ - **Transparent.** Datatype99 comes with formal [code generation semantics], meaning if you try to look at `datatype`'s output, normally you will not see something unexpected.
 
  - **FFI-tolerant.** Because of transparency, writing an FFI is not a challenge.
 
 ## Installation
 
- 1. Download datatype99 and [metalang99].
+ 1. Download Datatype99 and [metalang99].
  2. Add `datatype99` and `metalang99/include` to your include paths.
  3. `#include <datatype99.h>` beforehand.
 
@@ -179,3 +179,13 @@ A: With `-ftrack-macro-expansion=0` (GCC), there are no chances that compile-tim
 ### Q: How to use an array inside a variant?
 
 A: See [`examples/array_in_variant.c`](examples/array_in_variant.c).
+
+### Q: Why not just use third-party code generators?
+
+A: See [Metalang99's README](https://github.com/Hirrolot/metalang99#q-why-not-just-use-third-party-code-generators).
+
+## Troubleshooting
+
+### Problem: I can't make it work on MSVC
+
+Solution: See [Metalang99's README](https://github.com/Hirrolot/metalang99#problem-i-cant-make-it-work-on-msvc).
