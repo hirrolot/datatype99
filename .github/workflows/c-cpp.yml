@@ -8,22 +8,28 @@ on:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: Download metalang99
+    - name: Download Metalang99
       run: git clone https://github.com/Hirrolot/metalang99.git
 
-    - name: Test
-      run: bash scripts/test.sh
-
-    - name: Test the examples
+    - name: Tests
       run: |
-        cd examples
-        mkdir build
-        cd build
+        mkdir tests/build
+        cd tests/build
+        cmake ..
+        cmake --build .
+
+    - name: Examples
+      run: |
+        mkdir examples/build
+        cd examples/build
         cmake ..
         cmake --build .
