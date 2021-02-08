@@ -28,6 +28,7 @@
  - [Credits](#credits)
  - [Learning resources](#learning-resources)
  - [FAQ](#faq)
+ - [Troubleshooting](#troubleshooting)
 
 ## Highlights
 
