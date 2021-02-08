@@ -16,6 +16,18 @@
 #endif // DATATYPE99_NO_ALIASES
 
 #define datatype99(name, ...)                                                                      \
+    METALANG99_ifPlain(                                                                            \
+        DATATYPE99_PRIV_CHECK_VARIANTS(__VA_ARGS__),                                               \
+        DATATYPE99_PRIV_genDatatype,                                                               \
+        DATATYPE99_PRIV_reportVariantsError)                                                       \
+    (name, __VA_ARGS__)
+
+// Checks that all given variants are parenthesised.
+#define DATATYPE99_PRIV_CHECK_VARIANTS(...) 1 /* TODO */
+
+#define DATATYPE99_PRIV_reportVariantsError(...) /* TODO */
+
+#define DATATYPE99_PRIV_genDatatype(name, ...)                                                     \
     DATATYPE99_PRIV_genTypedefs(name, __VA_ARGS__)                                                 \
                                                                                                    \
     struct name {                                                                                  \
@@ -32,9 +44,9 @@
     METALANG99_semicolon()
 
 #define match99(val)                                                                               \
-    _Pragma("GCC diagnostic push")                                                                 \
-    _Pragma("GCC diagnostic ignored \"-Wmisleading-indentation\"")                                 \
-    _Pragma("GCC diagnostic ignored \"-Wreturn-type\"")                                            \
+    DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic push")                                              \
+    DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic ignored \"-Wmisleading-indentation\"")              \
+    DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic ignored \"-Wreturn-type\"")                         \
                                                                                                    \
     /* `for` is used to extend the context with a bounded variable (`datatype99_priv_match_expr`   \
      * below). The reason we use `for` is that we can't do the same with a simple variable         \
@@ -47,10 +59,10 @@
         switch ((val).tag)
 
 #define of99(...)                                                                                  \
-    _Pragma("GCC diagnostic pop")                                                                  \
-    _Pragma("GCC diagnostic push")                                                                 \
-    _Pragma("GCC diagnostic ignored \"-Wmisleading-indentation\"")                                 \
-    _Pragma("GCC diagnostic ignored \"-Wreturn-type\"")                                            \
+    DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic pop")                                               \
+    DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic push")                                              \
+    DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic ignored \"-Wmisleading-indentation\"")              \
+    DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic ignored \"-Wreturn-type\"")                         \
                                                                                                    \
     break;                                                                                         \
     case METALANG99_catPlain(DATATYPE99_PRIV_extractTag(__VA_ARGS__), Tag):                        \
@@ -72,7 +84,7 @@
 #define otherwise99                                                                                \
     break;                                                                                         \
     default:                                                                                       \
-        _Pragma("GCC diagnostic pop")
+        DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic pop")
 
 #define matches99(val, tag_) ((val).tag == tag_##Tag)
 
@@ -229,6 +241,12 @@
     METALANG99_variadicsMapCommaSep(                                                               \
         METALANG99_callTrivial(METALANG99_compose, f, METALANG99_unparenthesise),                  \
         v(__VA_ARGS__))
+
+#if defined(__GNUC__) && !defined(__clang__)
+#define DATATYPE99_PRIV_GCC_PRAGMA(str) _Pragma(str)
+#else
+#define DATATYPE99_PRIV_GCC_PRAGMA(str)
+#endif
 // }
 
 // } (Implementation)
