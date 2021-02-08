@@ -173,7 +173,7 @@ Thanks to Rust and ML for their implementations of sum types.
 
 ### Q: What about compile-time errors?
 
-A: With `-ftrack-macro-expansion=0` (GCC), there are no chances that compile-time errors will be longer than usual (remember templates!). However, they can be still quite obscured -- in this case, try to look at generated code (`-E` flag). Hopefully, the [code generation semantics] is formally defined so normally you will not see something unexpected.
+A: With `-ftrack-macro-expansion=0` (GCC), there are no chances that compile-time errors will be longer than usual (remember templates!). However, they can be still quite obscured -- in this case, try to look at generated code (`-E` GCC flag). Hopefully, the [code generation semantics] is formally defined so normally you will not see something unexpected.
 
 [code generation semantics]: #semantics
 
