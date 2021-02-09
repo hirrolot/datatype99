@@ -103,7 +103,7 @@
     typedef struct name name;                                                                      \
                                                                                                    \
     METALANG99_eval(DATATYPE99_PRIV_mapVariants(                                                   \
-        METALANG99_callTrivial(METALANG99_appl, DATATYPE99_PRIV_genTypedefsMap, name),             \
+        METALANG99_appl(v(DATATYPE99_PRIV_genTypedefsMap), v(name)),                               \
         v(__VA_ARGS__)))
 
 #define DATATYPE99_PRIV_genTypedefsMap_IMPL(name, ...)                                             \
@@ -127,8 +127,10 @@
  */
 #define DATATYPE99_PRIV_genStructOfVariantFields(name, tag, ...)                                   \
     v(typedef struct name##tag)                                                                    \
-    METALANG99_braced(                                                                             \
-        METALANG99_variadicsMapI(v(DATATYPE99_PRIV_genStructOfVariantFieldsMap), v(__VA_ARGS__)))  \
+    METALANG99_braced(METALANG99_callTrivial(                                                      \
+        METALANG99_variadicsMapI,                                                                  \
+        DATATYPE99_PRIV_genStructOfVariantFieldsMap,                                               \
+        __VA_ARGS__))                                                                              \
     v(name##tag;)
 #define DATATYPE99_PRIV_genStructOfVariantFieldsMap_IMPL(field_type, i) v(field_type _##i;)
 
@@ -164,7 +166,7 @@
  */
 #define DATATYPE99_PRIV_genUnionFields(name, ...)                                                  \
     METALANG99_eval(DATATYPE99_PRIV_mapVariants(                                                   \
-        METALANG99_callTrivial(METALANG99_appl, DATATYPE99_PRIV_genUnionFieldsMap, name),          \
+        METALANG99_appl(v(DATATYPE99_PRIV_genUnionFieldsMap), v(name)),                            \
         v(__VA_ARGS__)))
 
 #define DATATYPE99_PRIV_genUnionFieldsMap_IMPL(name, ...)                                          \
@@ -184,7 +186,7 @@
  */
 #define DATATYPE99_PRIV_genCtors(name, ...)                                                        \
     METALANG99_eval(DATATYPE99_PRIV_mapVariants(                                                   \
-        METALANG99_callTrivial(METALANG99_appl, DATATYPE99_PRIV_genCtorsMap, name),                \
+        METALANG99_appl(v(DATATYPE99_PRIV_genCtorsMap), v(name)),                                  \
         v(__VA_ARGS__)))
 
 #define DATATYPE99_PRIV_genCtorsMap_IMPL(name, ...)                                                \
@@ -205,13 +207,17 @@
         DATATYPE99_PRIV_genCtorParamNames(__VA_ARGS__))
 
 #define DATATYPE99_PRIV_genCtorParams(...)                                                         \
-    METALANG99_variadicsMapICommaSep(v(DATATYPE99_PRIV_genCtorParamsMap), v(__VA_ARGS__))
+    METALANG99_callTrivial(                                                                        \
+        METALANG99_variadicsMapICommaSep,                                                          \
+        DATATYPE99_PRIV_genCtorParamsMap,                                                          \
+        __VA_ARGS__)
 #define DATATYPE99_PRIV_genCtorParamsMap_IMPL(type, i) v(type _##i)
 
 #define DATATYPE99_PRIV_genCtorParamNames(...)                                                     \
-    METALANG99_repeat(                                                                             \
-        v(DATATYPE99_PRIV_genCtorParamNamesMap),                                                   \
-        METALANG99_variadicsCount(v(__VA_ARGS__)))
+    METALANG99_callTrivial(                                                                        \
+        METALANG99_repeat,                                                                         \
+        DATATYPE99_PRIV_genCtorParamNamesMap,                                                      \
+        METALANG99_variadicsCountPlain(__VA_ARGS__))
 #define DATATYPE99_PRIV_genCtorParamNamesMap_IMPL(i) v(_##i, )
 
 #define DATATYPE99_PRIV_genCtorAux_IMPL(name, tag_, params, ...)                                   \
