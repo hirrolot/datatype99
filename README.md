@@ -88,9 +88,11 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 
 ### Semantics
 
+(It might be helpful to look at the [generated code](https://godbolt.org/z/GqTP3E) of [`examples/binary_tree.c`](examples/binary_tree.c)'s `BinaryTree`.)
+
 #### `datatype99`
 
-This macro accepts a sum type name as a first argument and the rest of arguments shall be comma-separated variants.
+This macro accepts a sum type name as a first argument and the rest of arguments must be comma-separated variants.
 
  1. Before everything, the following type definition is generated:
 
@@ -147,7 +149,7 @@ inline static <datatype99-name> <variant-name>(...) { /* ... */ }
 
 ### `match99`
 
-This macro implements [pattern matching] for an instance of a sum type. It accepts an expression of a sum type as a single argument. Afterwards, a chain of arms shall follow.
+This macro implements [pattern matching] for an instance of a sum type. It accepts an expression of a sum type as a single argument. All the other parameters represent arms.
 
 `match99` has the expected semantics: it tries to match the given instance of a sum type with the given variants, and, if a match has succeeded, it executes the corresponding statement and moves down to the next instruction. If all matches have failed, it executes the statement after `otherwise99` and moves down to the next instruction.
 
