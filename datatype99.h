@@ -66,9 +66,8 @@
                                                                                                    \
     break;                                                                                         \
     case METALANG99_catPlain(DATATYPE99_PRIV_extractTag(__VA_ARGS__), Tag):                        \
-        METALANG99_ifPlain(                                                                        \
-            DATATYPE99_PRIV_isEmptyVariant(__VA_ARGS__),                                           \
-            METALANG99_consumePlain,                                                               \
+        METALANG99_whenOrConsumePlain(                                                             \
+            DATATYPE99_PRIV_isNonEmptyVariant(__VA_ARGS__),                                        \
             DATATYPE99_PRIV_ofNonEmpty)                                                            \
         (__VA_ARGS__)
 
@@ -109,17 +108,15 @@
         v(__VA_ARGS__)))
 
 #define DATATYPE99_PRIV_genTypedefsMap_IMPL(name, ...)                                             \
-    METALANG99_call(                                                                               \
-        METALANG99_ifPlain(                                                                        \
-            DATATYPE99_PRIV_isEmptyVariant(__VA_ARGS__),                                           \
-            METALANG99_consume,                                                                    \
-            DATATYPE99_PRIV_genTypedefsMapAux),                                                    \
-        v(name, __VA_ARGS__))                                                                      \
+    METALANG99_whenOrConsumePlain(                                                                 \
+        DATATYPE99_PRIV_isNonEmptyVariant(__VA_ARGS__),                                            \
+        DATATYPE99_PRIV_genTypedefsMapAux)                                                         \
+    (name, __VA_ARGS__)                                                                            \
                                                                                                    \
-    /* typedef struct <datatype-name> <variant-name>SumT; */                                       \
-    v(typedef struct name METALANG99_catPlain(DATATYPE99_PRIV_extractTag(__VA_ARGS__), SumT);)
+        /* typedef struct <datatype-name> <variant-name>SumT; */                                   \
+        v(typedef struct name METALANG99_catPlain(DATATYPE99_PRIV_extractTag(__VA_ARGS__), SumT);)
 
-#define DATATYPE99_PRIV_genTypedefsMapAux_IMPL(name, tag, ...)                                     \
+#define DATATYPE99_PRIV_genTypedefsMapAux(name, tag, ...)                                          \
     DATATYPE99_PRIV_genStructOfVariantFields(name, tag, __VA_ARGS__)                               \
     DATATYPE99_PRIV_genTypedefsToFields(tag, __VA_ARGS__)
 
@@ -173,9 +170,8 @@
         v(__VA_ARGS__)))
 
 #define DATATYPE99_PRIV_genUnionFieldsMap_IMPL(name, ...)                                          \
-    v(METALANG99_ifPlain(                                                                          \
-        DATATYPE99_PRIV_isEmptyVariant(__VA_ARGS__),                                               \
-        METALANG99_consumePlain,                                                                   \
+    v(METALANG99_whenOrConsumePlain(                                                               \
+        DATATYPE99_PRIV_isNonEmptyVariant(__VA_ARGS__),                                            \
         DATATYPE99_PRIV_genUnionField)(name, __VA_ARGS__))
 
 #define DATATYPE99_PRIV_genUnionField(name, tag, ...) name##tag tag;
@@ -229,6 +225,9 @@
 // Auxiliary stuff {
 #define DATATYPE99_PRIV_isEmptyVariant(...)                                                        \
     METALANG99_uintEqPlain(METALANG99_variadicsCountPlain(__VA_ARGS__), 1)
+
+#define DATATYPE99_PRIV_isNonEmptyVariant(...)                                                     \
+    METALANG99_notPlain(DATATYPE99_PRIV_isEmptyVariant(__VA_ARGS__))
 
 #define DATATYPE99_PRIV_extractTag METALANG99_variadicsHeadPlain
 
