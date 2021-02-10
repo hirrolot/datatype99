@@ -13,8 +13,17 @@
 #define of        of99
 #define otherwise otherwise99
 
+#define Unit Unit99
+#define unit unit99
+
 #endif // DATATYPE99_NO_ALIASES
 
+// Unit type {
+typedef char Unit99;
+static const Unit99 unit99 = '\0';
+// }
+
+// Sum type generation {
 #define datatype99(name, ...)                                                                      \
     METALANG99_ifPlain(                                                                            \
         DATATYPE99_PRIV_CHECK_VARIANTS(__VA_ARGS__),                                               \
@@ -42,7 +51,9 @@
     DATATYPE99_PRIV_genCtors(name, __VA_ARGS__)                                                    \
                                                                                                    \
     METALANG99_semicolon()
+// }
 
+// Pattern matching {
 #define match99(val)                                                                               \
     DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic push")                                              \
     DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic ignored \"-Wmisleading-indentation\"")              \
@@ -85,6 +96,7 @@
         DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic pop")
 
 #define matches99(val, tag_) ((val).tag == tag_##Tag)
+// } (Pattern matching)
 
 // Desugaring {
 #define DATATYPE99_PRIV_genCtorAux(name, tag_, params, ...)                                        \

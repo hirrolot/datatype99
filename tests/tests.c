@@ -133,4 +133,7 @@ int main(void) {
     }
 
     assert(34 == foo);
+
+    Unit dummy = unit;
+    (void)dummy;
 }

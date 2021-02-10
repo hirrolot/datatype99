@@ -25,6 +25,7 @@
      - [`match99`](#match99)
      - [`of99`](#of99)
      - [`matches99`](#matches99)
+     - [Unit type](#unit-type)
  - [Credits](#credits)
  - [Learning resources](#learning-resources)
  - [FAQ](#faq)
@@ -162,6 +163,15 @@ This macro accepts a variant name as a first argument and the rest of arguments 
 This macro just tests an instance of a sum type for a given variant. If the given instance corresponds to the given variant, it expands to truthfulness, otherwise, it expands to falsehood.
 
 [pattern matching]: https://en.wikipedia.org/wiki/Pattern_matching
+
+### Unit type
+
+The unit type `Unit99` represents a type of a single value, `unit99` (it should not be assigned to anything else). `Unit99` and `unit99` are defined as follows:
+
+```c
+typedef char Unit99;
+static const Unit99 unit99 = '\0';
+```
 
 ## Credits
 
