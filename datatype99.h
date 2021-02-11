@@ -16,11 +16,22 @@
 #define Unit Unit99
 #define unit unit99
 
+#define Result      Result99
+#define isResultOk  isResultOk99
+#define isResultErr isResultErr99
+
 #endif // DATATYPE99_NO_ALIASES
 
 // Unit type {
 typedef char Unit99;
 static const Unit99 unit99 = '\0';
+// }
+
+// Result<T, E> {
+#define Result99(name, T, E) datatype99(name##Result, (name##Ok, T), (name##Ok, E));
+
+#define isResultOk99(result)  ((int)(result).tag == 0)
+#define isResultErr99(result) ((int)(result).tag == 1)
 // }
 
 // Sum type generation {
