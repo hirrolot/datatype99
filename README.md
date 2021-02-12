@@ -185,7 +185,7 @@ Thanks to Rust and ML for their implementations of sum types.
 
 ### Q: How does it work?
 
-A: The `datatype99` macro generates a tagged union accompanied with type hints and value constructors. Pattern matching is implemented merely as a switch statement. To generate all this stuff, [Metalang99] is used, which is a preprocessor metaprogramming library.
+A: The `datatype99` macro generates a tagged union accompanied with type hints and value constructors. Pattern matching desugars merely to a switch statement. To generate all this stuff, [Metalang99] is used, which is a preprocessor metaprogramming library.
 
 ### Q: What about compile-time errors?
 
