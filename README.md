@@ -183,6 +183,10 @@ Thanks to Rust and ML for their implementations of sum types.
 
 ## FAQ
 
+### Q: How does it work?
+
+A: The `datatype99` macro generates a tagged union accompanied with type hints and value constructors. Pattern matching is implemented merely as a switch statement. To generate all this stuff, [Metalang99] is used, which is a preprocessor metaprogramming library.
+
 ### Q: What about compile-time errors?
 
 A: With `-ftrack-macro-expansion=0` (GCC), there are no chances that compile-time errors will be longer than usual (remember templates!). However, they can be still quite obscured -- in this case, try to look at generated code (`-E` GCC flag). Hopefully, the [code generation semantics] is formally defined so normally you will not see something unexpected.
