@@ -243,7 +243,9 @@ static const Unit99 unit99 = '\0';
     (name, __VA_ARGS__)
 
 #define DATATYPE99_PRIV_genEmptyCtor(name, tag_)                                                   \
-    v(inline static name tag_(void) { return ((name){.tag = tag_##Tag, .data.dummy = '\0'}); })
+    v(inline static DATATYPE99_PRIV_WARN_UNUSED_RESULT DATATYPE99_PRIV_CONST name tag_(void) {     \
+        return ((name){.tag = tag_##Tag, .data.dummy = '\0'});                                     \
+    })
 
 #define DATATYPE99_PRIV_genNonEmptyCtor(name, tag, ...)                                            \
     DATATYPE99_PRIV_genCtorAux(                                                                    \
@@ -267,7 +269,7 @@ static const Unit99 unit99 = '\0';
 #define DATATYPE99_PRIV_genCtorParamNamesMap_IMPL(i) v(_##i, )
 
 #define DATATYPE99_PRIV_genCtorAux_IMPL(name, tag_, params, ...)                                   \
-    v(inline static name tag_ params {                                                             \
+    v(inline static DATATYPE99_PRIV_WARN_UNUSED_RESULT DATATYPE99_PRIV_CONST name tag_ params {    \
         return ((name){.tag = tag_##Tag, .data.tag_ = {__VA_ARGS__}});                             \
     })
 // }
@@ -305,6 +307,17 @@ static const Unit99 unit99 = '\0';
 #define DATATYPE99_PRIV_POSSIBLY_UNUSED
 #endif
 
+#ifdef __GNUC__
+#define DATATYPE99_PRIV_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
+#else
+#define DATATYPE99_PRIV_WARN_UNUSED_RESULT
+#endif // __GNU__
+
+#if defined(__GNUC__) && !defined(__clang__)
+#define DATATYPE99_PRIV_CONST __attribute__((const))
+#else
+#define DATATYPE99_PRIV_CONST
+#endif
 // }
 
 // }

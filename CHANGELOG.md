@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
  - Force users to download metalang99 as well, i.e. don't use it as a Git submodule.
+ - Annotate value constructors with `__attribute__((warn_unused_result))` and `__attribute__((const))` if supported.
 
 ### Added
 
