@@ -19,6 +19,7 @@
 #define Result      Result99
 #define isResultOk  isResultOk99
 #define isResultErr isResultErr99
+#define tryResult   tryResult99
 
 #endif // DATATYPE99_NO_ALIASES
 
@@ -28,7 +29,7 @@ static const Unit99 unit99 = '\0';
 // }
 
 // Result<T, E> {
-#define Result99(name, T, E) datatype99(name##Result, (name##Ok, T), (name##Ok, E))
+#define Result99(name, T, E) datatype99(name##Result, (name##Ok, T), (name##Err, E))
 
 #define isResultOk99(result)  ((int)(result).tag == 0)
 #define isResultErr99(result) ((int)(result).tag == 1)
@@ -74,9 +75,9 @@ static const Unit99 unit99 = '\0';
      * below). The reason we use `for` is that we can't do the same with a simple variable         \
      * definition because the next use of `match99` will define this variable again, unlike `for`  \
      * which creates a new scope. */                                                               \
-    for (const void *datatype99_priv_match_expr = (const void *)&(val);                            \
-         datatype99_priv_match_expr != NULL;                                                       \
-         datatype99_priv_match_expr = NULL)                                                        \
+    METALANG99_let(                                                                                \
+        const void *DATATYPE99_PRIV_POSSIBLY_UNUSED datatype99_priv_match_expr =                   \
+            (const void *)&(val))                                                                  \
                                                                                                    \
         switch ((val).tag)
 
@@ -98,8 +99,7 @@ static const Unit99 unit99 = '\0';
         v(__VA_ARGS__)))
 
 #define DATATYPE99_PRIV_genBoundedVar_IMPL(tag_, x, i)                                             \
-    v(for (tag_##_##i *x = &((tag_##SumT *)datatype99_priv_match_expr)->data.tag_._##i; x != NULL; \
-           x = NULL))
+    v(METALANG99_let(tag_##_##i *x = &((tag_##SumT *)datatype99_priv_match_expr)->data.tag_._##i))
 
 #define otherwise99                                                                                \
     break;                                                                                         \
@@ -267,12 +267,23 @@ static const Unit99 unit99 = '\0';
     METALANG99_variadicsMapCommaSep(                                                               \
         METALANG99_callTrivial(METALANG99_compose, f, METALANG99_unparenthesise),                  \
         v(__VA_ARGS__))
+// }
 
+// Compiler-specific stuff {
 #if defined(__GNUC__) && !defined(__clang__)
 #define DATATYPE99_PRIV_GCC_PRAGMA(str) _Pragma(str)
 #else
 #define DATATYPE99_PRIV_GCC_PRAGMA(str)
 #endif
+
+#ifdef __GNUC__
+#define DATATYPE99_PRIV_POSSIBLY_UNUSED __attribute__((unused))
+#else
+#define DATATYPE99_PRIV_POSSIBLY_UNUSED
+#endif
+
+// }
+
 // }
 
 // } (Implementation)
