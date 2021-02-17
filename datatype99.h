@@ -158,9 +158,9 @@ static const Unit99 unit99 = '\0';
         v(typedef struct name METALANG99_catPlain(DATATYPE99_PRIV_extractTag(__VA_ARGS__), SumT);)
 
 #define DATATYPE99_PRIV_genTypedefsMapAux(name, tag, ...)                                          \
-    DATATYPE99_PRIV_genStructOfVariantFields(name, tag, __VA_ARGS__)                               \
-    , DATATYPE99_PRIV_genTypedefsToFields(tag, __VA_ARGS__)                                        \
-    ,
+    METALANG99_terms(                                                                              \
+        DATATYPE99_PRIV_genStructOfVariantFields(name, tag, __VA_ARGS__),                          \
+        DATATYPE99_PRIV_genTypedefsToFields(tag, __VA_ARGS__)),
 
 /*
  * typedef struct <datatype-name><variant-name> {
@@ -170,12 +170,13 @@ static const Unit99 unit99 = '\0';
  * } <datatype-name><variant-name>;
  */
 #define DATATYPE99_PRIV_genStructOfVariantFields(name, tag, ...)                                   \
-    v(typedef struct name##tag)                                                                    \
-    , METALANG99_braced(METALANG99_callTrivial(                                                    \
-          METALANG99_variadicsMapI,                                                                \
-          DATATYPE99_PRIV_genStructOfVariantFieldsMap,                                             \
-          __VA_ARGS__))                                                                            \
-    , v(name##tag;)
+    METALANG99_terms(                                                                              \
+        v(typedef struct name##tag),                                                               \
+        METALANG99_braced(METALANG99_callTrivial(                                                  \
+            METALANG99_variadicsMapI,                                                              \
+            DATATYPE99_PRIV_genStructOfVariantFieldsMap,                                           \
+            __VA_ARGS__)),                                                                         \
+        v(name##tag;))
 #define DATATYPE99_PRIV_genStructOfVariantFieldsMap_IMPL(field_type, i) v(field_type _##i;)
 
 /*
