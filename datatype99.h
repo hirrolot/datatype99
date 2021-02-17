@@ -133,13 +133,10 @@ static const Unit99 unit99 = '\0';
 // } (Pattern matching)
 
 // Desugaring {
-#define DATATYPE99_PRIV_genCtorAux(name, tag_, params, ...)                                        \
-    METALANG99_call(DATATYPE99_PRIV_genCtorAux, name tag_ params __VA_ARGS__)
-
 #define DATATYPE99_PRIV_mapVariants(f, ...)                                                        \
-    METALANG99_call(DATATYPE99_PRIV_mapVariants, f __VA_ARGS__)
+    METALANG99_call(DATATYPE99_PRIV_mapVariants, f, __VA_ARGS__)
 #define DATATYPE99_PRIV_mapVariantsCommaSep(f, ...)                                                \
-    METALANG99_call(DATATYPE99_PRIV_mapVariantsCommaSep, f __VA_ARGS__)
+    METALANG99_call(DATATYPE99_PRIV_mapVariantsCommaSep, f, __VA_ARGS__)
 // }
 
 // Implementation {
@@ -162,7 +159,8 @@ static const Unit99 unit99 = '\0';
 
 #define DATATYPE99_PRIV_genTypedefsMapAux(name, tag, ...)                                          \
     DATATYPE99_PRIV_genStructOfVariantFields(name, tag, __VA_ARGS__)                               \
-    DATATYPE99_PRIV_genTypedefsToFields(tag, __VA_ARGS__)
+    , DATATYPE99_PRIV_genTypedefsToFields(tag, __VA_ARGS__)                                        \
+    ,
 
 /*
  * typedef struct <datatype-name><variant-name> {
@@ -173,11 +171,11 @@ static const Unit99 unit99 = '\0';
  */
 #define DATATYPE99_PRIV_genStructOfVariantFields(name, tag, ...)                                   \
     v(typedef struct name##tag)                                                                    \
-    METALANG99_braced(METALANG99_callTrivial(                                                      \
-        METALANG99_variadicsMapI,                                                                  \
-        DATATYPE99_PRIV_genStructOfVariantFieldsMap,                                               \
-        __VA_ARGS__))                                                                              \
-    v(name##tag;)
+    , METALANG99_braced(METALANG99_callTrivial(                                                    \
+          METALANG99_variadicsMapI,                                                                \
+          DATATYPE99_PRIV_genStructOfVariantFieldsMap,                                             \
+          __VA_ARGS__))                                                                            \
+    , v(name##tag;)
 #define DATATYPE99_PRIV_genStructOfVariantFieldsMap_IMPL(field_type, i) v(field_type _##i;)
 
 /*
@@ -248,9 +246,9 @@ static const Unit99 unit99 = '\0';
     })
 
 #define DATATYPE99_PRIV_genNonEmptyCtor(name, tag, ...)                                            \
-    DATATYPE99_PRIV_genCtorAux(                                                                    \
-        v(name),                                                                                   \
-        v(tag),                                                                                    \
+    METALANG99_call(                                                                               \
+        DATATYPE99_PRIV_genCtorAux,                                                                \
+        v(name, tag),                                                                              \
         METALANG99_parenthesise(DATATYPE99_PRIV_genCtorParams(__VA_ARGS__)),                       \
         DATATYPE99_PRIV_genCtorParamNames(__VA_ARGS__))
 
