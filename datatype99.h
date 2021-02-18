@@ -98,7 +98,7 @@ static const Unit99 unit99 = '\0';
      * below). The reason we use `for` is that we can't do the same with a simple variable         \
      * definition because the next use of `match99` will define this variable again, unlike `for`  \
      * which creates a new scope. */                                                               \
-    METALANG99_let(                                                                                \
+    METALANG99_introduceVarToStmt(                                                                 \
         const void *DATATYPE99_PRIV_POSSIBLY_UNUSED datatype99_priv_match_expr =                   \
             (const void *)&(val))                                                                  \
                                                                                                    \
@@ -122,7 +122,8 @@ static const Unit99 unit99 = '\0';
         v(__VA_ARGS__)))
 
 #define DATATYPE99_PRIV_genBoundedVar_IMPL(tag_, x, i)                                             \
-    v(METALANG99_let(tag_##_##i *x = &((tag_##SumT *)datatype99_priv_match_expr)->data.tag_._##i))
+    v(METALANG99_introduceVarToStmt(                                                               \
+        tag_##_##i *x = &((tag_##SumT *)datatype99_priv_match_expr)->data.tag_._##i))
 
 #define otherwise99                                                                                \
     break;                                                                                         \
