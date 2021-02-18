@@ -156,22 +156,25 @@ static const Unit99 unit99 = '\0';
 
 #define DATATYPE99_PRIV_genTypedefsMap_IMPL(name, ...)                                             \
     METALANG99_terms(                                                                              \
-        METALANG99_whenLazyPlain(                                                                  \
-            DATATYPE99_PRIV_isNonEmptyVariant(__VA_ARGS__),                                        \
-            DATATYPE99_PRIV_genTypedefsMapAux)(name, __VA_ARGS__),                                 \
+        METALANG99_call(                                                                           \
+            METALANG99_callTrivial(                                                                \
+                METALANG99_whenLazy,                                                               \
+                DATATYPE99_PRIV_isNonEmptyVariant(__VA_ARGS__),                                    \
+                DATATYPE99_PRIV_genTypedefsMapNonEmpty),                                           \
+            v(name, __VA_ARGS__)),                                                                 \
                                                                                                    \
         /* typedef struct <datatype-name> <variant-name>SumT; */                                   \
         v(typedef struct name METALANG99_catPlain(                                                 \
               DATATYPE99_PRIV_extractTag(__VA_ARGS__),                                             \
               SumT);))
 
-#define DATATYPE99_PRIV_genTypedefsMapAux(name, tag, ...)                                          \
+#define DATATYPE99_PRIV_genTypedefsMapNonEmpty_IMPL(name, tag, ...)                                \
     METALANG99_call(                                                                               \
-        DATATYPE99_PRIV_genTypedefsMapAuxAux,                                                      \
+        DATATYPE99_PRIV_genTypedefsMapNonEmptyAux,                                                 \
         v(name, tag),                                                                              \
         METALANG99_list(v(__VA_ARGS__)))
 
-#define DATATYPE99_PRIV_genTypedefsMapAuxAux_IMPL(name, tag, types)                                \
+#define DATATYPE99_PRIV_genTypedefsMapNonEmptyAux_IMPL(name, tag, types)                           \
     METALANG99_terms(                                                                              \
         DATATYPE99_PRIV_genStructOfVariantFields(name, tag, types),                                \
         DATATYPE99_PRIV_genTypedefsToFields(tag, types))
