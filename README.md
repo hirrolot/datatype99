@@ -93,8 +93,6 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 
 #### `datatype99`
 
-This macro accepts a sum type name as a first argument and the rest of arguments must be comma-separated variants.
-
  1. Before everything, the following type definition is generated:
 
 ```
@@ -150,19 +148,15 @@ inline static <datatype99-name> <variant-name>(...) { /* ... */ }
 
 ### `match99`
 
-This macro implements [pattern matching] for an instance of a sum type. It accepts an expression of a sum type as a single argument. All the other parameters represent arms.
-
 `match99` has the expected semantics: it sequentially tries to match the given instance of a sum type against the given variants, and, if a match has succeeded, it executes the corresponding statement and moves down to the next instruction (`match(val) { ... } next-instruction;`). If all the matches have failed, it executes the statement after `otherwise99` and moves down to the next instruction.
 
 ### `of99`
 
-This macro accepts a variant name as a first argument and the rest of arguments comprise a list of variable names. Each variable name stands for a pointer to a corresponding data of the variant (e.g., let there be `(Foo, T1, T2)` and `of99(Foo, x, y)`, then `x` has the type `T1 *` and `y` is `T2 *`). To match an empty variant, write `of99(Bar)`.
+`of99` accepts a variant name as a first argument and the rest of arguments comprise a list of variable names (bindings). Each binding stands for a pointer to a corresponding data of the variant (e.g., let there be `(Foo, T1, T2)` and `of99(Foo, x, y)`, then `x` has the type `T1 *` and `y` is `T2 *`). To match an empty variant, write `of99(Bar)`.
 
 ### `matches99`
 
-This macro just tests an instance of a sum type for a given variant. If the given instance corresponds to the given variant, it expands to truthfulness, otherwise, it expands to falsehood.
-
-[pattern matching]: https://en.wikipedia.org/wiki/Pattern_matching
+`matches99` just tests an instance of a sum type for a given variant. If the given instance corresponds to the given variant, it expands to truthfulness, otherwise it expands to falsehood.
 
 ### Unit type
 
