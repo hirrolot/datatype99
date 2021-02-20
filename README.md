@@ -152,11 +152,11 @@ inline static <datatype99-name> <variant-name>(...) { /* ... */ }
 
 This macro implements [pattern matching] for an instance of a sum type. It accepts an expression of a sum type as a single argument. All the other parameters represent arms.
 
-`match99` has the expected semantics: it tries to match the given instance of a sum type with the given variants, and, if a match has succeeded, it executes the corresponding statement and moves down to the next instruction. If all matches have failed, it executes the statement after `otherwise99` and moves down to the next instruction.
+`match99` has the expected semantics: it sequentially tries to match the given instance of a sum type against the given variants, and, if a match has succeeded, it executes the corresponding statement and moves down to the next instruction (`match(val) { ... } next-instruction;`). If all the matches have failed, it executes the statement after `otherwise99` and moves down to the next instruction.
 
 ### `of99`
 
-This macro accepts a variant name as a first argument and the rest of arguments comprise a list of variable names. Each variable name is a pointer to a corresponding data of the variant (e.g., let there be `(Foo, T1, T2)` and `of99(Foo, x, y)`, then `x` has the type `T1 *` and `y` is `T2 *`). To match an empty variant, write `of99(Bar)`.
+This macro accepts a variant name as a first argument and the rest of arguments comprise a list of variable names. Each variable name stands for a pointer to a corresponding data of the variant (e.g., let there be `(Foo, T1, T2)` and `of99(Foo, x, y)`, then `x` has the type `T1 *` and `y` is `T2 *`). To match an empty variant, write `of99(Bar)`.
 
 ### `matches99`
 
@@ -190,6 +190,13 @@ A: The `datatype99` macro generates a tagged union accompanied with type hints a
 ### Q: What about compile-time errors?
 
 A: With `-ftrack-macro-expansion=0` (GCC), there are no chances that compile-time errors will be longer than usual. However, they can be still quite obscured -- in this case, try to look at generated code (`-E` GCC/Clang flag). Hopefully, the [code generation semantics] is formally defined so normally you will not see something unexpected.
+
+Some kinds of syntactic errors are detected by the library itself. For example (`-E` flag):
+
+```c
+// !"Metalang99 error" (datatype99): "Bar(int) is unparenthesised"
+datatype(A, (Foo, int), Bar(int));
+```
 
 [code generation semantics]: #semantics
 
