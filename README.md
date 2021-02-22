@@ -132,7 +132,7 @@ struct <datatype-name> {
     } tag;
 
     union {
-        char dummy;
+        char dummy[1];
         <datatype-name><variant-name>0 <variant-name>0;
         ...
         <datatype-name><variant-name>N <variant-name>N;

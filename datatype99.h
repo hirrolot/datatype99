@@ -100,35 +100,31 @@ static const Unit99 unit99 = '\0';
 // Sum type generation {
 #define datatype99(name, ...)                                                                      \
     METALANG99_eval(METALANG99_call(                                                               \
-        DATATYPE99_PRIV_genDatatypeAux,                                                            \
+        DATATYPE99_PRIV_genDatatype,                                                               \
         v(name),                                                                                   \
         METALANG99_callTrivial(DATATYPE99_PRIV_parse, __VA_ARGS__)))                               \
                                                                                                    \
     METALANG99_semicolon()
 
-#define DATATYPE99_PRIV_genDatatypeAux_IMPL(name, variants)                                        \
-    METALANG99_call(                                                                               \
-        DATATYPE99_PRIV_genDatatypeAuxAux,                                                         \
-        v(name),                                                                                   \
+#define DATATYPE99_PRIV_genDatatype_IMPL(name, variants)                                           \
+    METALANG99_terms(                                                                              \
+        v(typedef struct name name;),                                                              \
         DATATYPE99_PRIV_genTypedefs(name, variants),                                               \
-        METALANG99_parenthesize(DATATYPE99_PRIV_genTags(variants)),                                \
-        DATATYPE99_PRIV_genUnionFields(name, variants),                                            \
+        METALANG99_call(                                                                           \
+            DATATYPE99_PRIV_genTaggedUnion,                                                        \
+            v(name),                                                                               \
+            METALANG99_parenthesize(DATATYPE99_PRIV_genTags(variants)),                            \
+            DATATYPE99_PRIV_genUnionFields(name, variants)),                                       \
         DATATYPE99_PRIV_genCtors(name, variants))
 
-#define DATATYPE99_PRIV_genDatatypeAuxAux_IMPL(name, typedefs, tags, union_fields, ctors)          \
-    v(typedef struct name name;                                                                    \
-                                                                                                   \
-      typedefs                                                                                     \
-                                                                                                   \
-      struct name {                                                                                \
-          enum { METALANG99_unparenthesizePlain(tags) } tag;                                       \
-          union {                                                                                  \
-              char dummy;                                                                          \
-              union_fields                                                                         \
-          } data;                                                                                  \
-      };                                                                                           \
-                                                                                                   \
-      ctors)
+#define DATATYPE99_PRIV_genTaggedUnion_IMPL(name, tags, union_fields)                              \
+    v(struct name {                                                                                \
+        enum { METALANG99_unparenthesizePlain(tags) } tag;                                         \
+        union {                                                                                    \
+            char dummy[1];                                                                         \
+            union_fields                                                                           \
+        } data;                                                                                    \
+    };)
 // } (Sum type generation)
 
 // Pattern matching {
@@ -137,10 +133,6 @@ static const Unit99 unit99 = '\0';
     DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic ignored \"-Wmisleading-indentation\"")              \
     DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic ignored \"-Wreturn-type\"")                         \
                                                                                                    \
-    /* `for` is used to extend the context with a bounded variable (`datatype99_priv_match_expr`   \
-     * below). The reason we use `for` is that we can't do the same with a simple variable         \
-     * definition because the next use of `match99` will define this variable again, unlike `for`  \
-     * which creates a new scope. */                                                               \
     METALANG99_introduceVarToStmt(                                                                 \
         const void *DATATYPE99_PRIV_POSSIBLY_UNUSED datatype99_priv_match_expr =                   \
             (const void *)&(val))                                                                  \
@@ -181,10 +173,10 @@ static const Unit99 unit99 = '\0';
 
 #define DATATYPE99_PRIV_genTypedefs(name, variants)                                                \
     DATATYPE99_PRIV_mapVariants(                                                                   \
-        METALANG99_appl(v(DATATYPE99_PRIV_genTypedefsMap), v(name)),                               \
+        METALANG99_appl(v(DATATYPE99_PRIV_genTypedefsForVariant), v(name)),                        \
         v(variants))
 
-#define DATATYPE99_PRIV_genTypedefsMap_IMPL(name, tag, variant_params)                             \
+#define DATATYPE99_PRIV_genTypedefsForVariant_IMPL(name, tag, variant_params)                      \
     METALANG99_terms(                                                                              \
         v(typedef struct name tag##SumT;),                                                         \
         METALANG99_ifPlain(                                                                        \
@@ -247,27 +239,19 @@ static const Unit99 unit99 = '\0';
  * inline static <datatype99-name> <variant-name>N(...) { ... }
  */
 #define DATATYPE99_PRIV_genCtors(name, variants)                                                   \
-    DATATYPE99_PRIV_mapVariants(                                                                   \
-        METALANG99_appl(v(DATATYPE99_PRIV_genCtorsMap), v(name)),                                  \
-        v(variants))
+    DATATYPE99_PRIV_mapVariants(METALANG99_appl(v(DATATYPE99_PRIV_genCtor), v(name)), v(variants))
 
-#define DATATYPE99_PRIV_genCtorsMap_IMPL(name, tag, variant_params)                                \
+#define DATATYPE99_PRIV_genCtor_IMPL(name, tag, variant_params)                                    \
     METALANG99_call(                                                                               \
-        METALANG99_catPlain(                                                                       \
-            DATATYPE99_PRIV_genCtorIsEmpty_,                                                       \
-            METALANG99_isNilPlain(variant_params)),                                                \
+        DATATYPE99_PRIV_genCtorTemplate,                                                           \
         v(name, tag),                                                                              \
         METALANG99_indexedParams(v(variant_params)),                                               \
+        METALANG99_ifPlain(METALANG99_isConsPlain(variant_params), v(data.tag), v(data.dummy)),    \
         METALANG99_indexedInitializerList(METALANG99_listLen(v(variant_params))))
 
-#define DATATYPE99_PRIV_genCtorIsEmpty_1_IMPL(name, tag_, params, ...)                             \
+#define DATATYPE99_PRIV_genCtorTemplate_IMPL(name, tag_, params, assigned_field, ...)              \
     v(inline static DATATYPE99_PRIV_WARN_UNUSED_RESULT DATATYPE99_PRIV_CONST name tag_ params {    \
-        return ((name){.tag = tag_##Tag});                                                         \
-    })
-
-#define DATATYPE99_PRIV_genCtorIsEmpty_0_IMPL(name, tag_, params, ...)                             \
-    v(inline static DATATYPE99_PRIV_WARN_UNUSED_RESULT DATATYPE99_PRIV_CONST name tag_ params {    \
-        return ((name){.tag = tag_##Tag, .data.tag_ = __VA_ARGS__});                               \
+        return ((name){.tag = tag_##Tag, .assigned_field = __VA_ARGS__});                          \
     })
 
 // Compiler-specific stuff {
@@ -299,12 +283,12 @@ static const Unit99 unit99 = '\0';
 // Arity specifiers {
 #define DATATYPE99_PRIV_parseMap_ARITY               1
 #define DATATYPE99_PRIV_genBinding_ARITY             3
-#define DATATYPE99_PRIV_genTypedefsMap_ARITY         2
+#define DATATYPE99_PRIV_genTypedefsForVariant_ARITY  2
 #define DATATYPE99_PRIV_genVariantStructMap_ARITY    2
 #define DATATYPE99_PRIV_genVariantParamTypedef_ARITY 3
 #define DATATYPE99_PRIV_genTag_ARITY                 1
 #define DATATYPE99_PRIV_genUnionField_ARITY          2
-#define DATATYPE99_PRIV_genCtorsMap_ARITY            2
+#define DATATYPE99_PRIV_genCtor_ARITY                2
 #define DATATYPE99_PRIV_genCtorParamsMap_ARITY       2
 #define DATATYPE99_PRIV_genCtorParamNamesMap_ARITY   1
 // }
