@@ -89,7 +89,7 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 
 ### Semantics
 
-(It might be helpful to look at the [generated code](https://godbolt.org/z/n1drK9) of [`examples/binary_tree.c`](examples/binary_tree.c)'s `BinaryTree`.)
+(It might be helpful to look at the [generated code](https://godbolt.org/z/zhj69Y) of [`examples/binary_tree.c`](examples/binary_tree.c)'s `BinaryTree`.)
 
 #### `datatype99`
 
