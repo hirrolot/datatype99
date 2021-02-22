@@ -185,17 +185,13 @@ static const Unit99 unit99 = '\0';
         v(variants))
 
 #define DATATYPE99_PRIV_genTypedefsMap_IMPL(name, tag, variant_params)                             \
-    METALANG99_call(                                                                               \
-        DATATYPE99_PRIV_genTypedefsTemplate,                                                       \
+    METALANG99_terms(                                                                              \
         v(typedef struct name tag##SumT;),                                                         \
-        DATATYPE99_PRIV_genVariantStructs(name, tag, variant_params),                              \
+        METALANG99_ifPlain(                                                                        \
+            METALANG99_isConsPlain(variant_params),                                                \
+            DATATYPE99_PRIV_genVariantStruct(name, tag, variant_params),                           \
+            METALANG99_empty()),                                                                   \
         DATATYPE99_PRIV_genVariantParamsTypedefs(tag, variant_params))
-
-#define DATATYPE99_PRIV_genTypedefsTemplate_IMPL(                                                  \
-    sum_t_typedef,                                                                                 \
-    variant_structs,                                                                               \
-    variant_params_typedefs)                                                                       \
-    v(sum_t_typedef variant_structs variant_params_typedefs)
 
 /*
  * typedef struct <datatype-name><variant-name> {
@@ -204,13 +200,10 @@ static const Unit99 unit99 = '\0';
  *     <type>N _N;
  * } <datatype-name><variant-name>;
  */
-#define DATATYPE99_PRIV_genVariantStructs(name, tag, variant_params)                               \
-    METALANG99_ifPlain(                                                                            \
-        METALANG99_isConsPlain(variant_params),                                                    \
-        METALANG99_typedef(                                                                        \
-            v(name##tag),                                                                          \
-            METALANG99_struct(v(name##tag), METALANG99_indexedFields(v(variant_params)))),         \
-        METALANG99_empty())
+#define DATATYPE99_PRIV_genVariantStruct(name, tag, variant_params)                                \
+    METALANG99_typedef(                                                                            \
+        v(name##tag),                                                                              \
+        METALANG99_struct(v(name##tag), METALANG99_indexedFields(v(variant_params))))
 
 /*
  * typedef <type>0 <variant-name>_0;
@@ -218,12 +211,9 @@ static const Unit99 unit99 = '\0';
  * typedef <type>N <variant-name>_N;
  */
 #define DATATYPE99_PRIV_genVariantParamsTypedefs(tag, variant_params)                              \
-    METALANG99_ifPlain(                                                                            \
-        METALANG99_isConsPlain(variant_params),                                                    \
-        METALANG99_listUnwrap(METALANG99_listMapI(                                                 \
-            METALANG99_appl(v(DATATYPE99_PRIV_genVariantParamTypedef), v(tag)),                    \
-            v(variant_params))),                                                                   \
-        METALANG99_empty())
+    METALANG99_listUnwrap(METALANG99_listMapI(                                                     \
+        METALANG99_appl(v(DATATYPE99_PRIV_genVariantParamTypedef), v(tag)),                        \
+        v(variant_params)))
 
 #define DATATYPE99_PRIV_genVariantParamTypedef_IMPL(tag, type, i) v(typedef type tag##_##i;)
 
@@ -310,7 +300,7 @@ static const Unit99 unit99 = '\0';
 #define DATATYPE99_PRIV_parseMap_ARITY               1
 #define DATATYPE99_PRIV_genBinding_ARITY             3
 #define DATATYPE99_PRIV_genTypedefsMap_ARITY         2
-#define DATATYPE99_PRIV_genVariantStructsMap_ARITY   2
+#define DATATYPE99_PRIV_genVariantStructMap_ARITY    2
 #define DATATYPE99_PRIV_genVariantParamTypedef_ARITY 3
 #define DATATYPE99_PRIV_genTag_ARITY                 1
 #define DATATYPE99_PRIV_genUnionField_ARITY          2
