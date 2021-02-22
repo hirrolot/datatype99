@@ -65,26 +65,18 @@ static const Unit99 unit99 = '\0';
 #define DATATYPE99_PRIV_parseMap_IMPL(variant)                                                     \
     METALANG99_ifPlain(                                                                            \
         METALANG99_isParenthesizedPlain(variant),                                                  \
-        DATATYPE99_PRIV_parseMapValid,                                                             \
-        DATATYPE99_PRIV_emitUnparenthesizedVariantError)(variant)
+        METALANG99_call(DATATYPE99_PRIV_parseVariant, METALANG99_unparenthesize(v(variant))),      \
+        METALANG99_fatal(datatype99, variant is unparenthesized))
 
-#define DATATYPE99_PRIV_parseMapValid(variant)                                                     \
-    DATATYPE99_PRIV_parseMapValidAux(METALANG99_unparenthesizePlain(variant))
+#define DATATYPE99_PRIV_parseVariant_IMPL(...)                                                     \
+    METALANG99_catPlain(                                                                           \
+        DATATYPE99_PRIV_parseVariantIsEmpty_,                                                      \
+        DATATYPE99_PRIV_isEmptyVariantPlain(__VA_ARGS__))(__VA_ARGS__)
 
-#define DATATYPE99_PRIV_parseMapValidAux(...)                                                      \
-    METALANG99_ifPlain(                                                                            \
-        DATATYPE99_PRIV_isEmptyVariantPlain(__VA_ARGS__),                                          \
-        DATATYPE99_PRIV_parseMapValidAuxEmptyVariant,                                              \
-        DATATYPE99_PRIV_parseMapValidAuxNonEmptyVariant)(__VA_ARGS__)
+#define DATATYPE99_PRIV_parseVariantIsEmpty_1(tag) DATATYPE99_PRIV_variant(v(tag), METALANG99_nil())
 
-#define DATATYPE99_PRIV_parseMapValidAuxEmptyVariant(tag)                                          \
-    DATATYPE99_PRIV_variant(v(tag), METALANG99_nil())
-
-#define DATATYPE99_PRIV_parseMapValidAuxNonEmptyVariant(tag, ...)                                  \
+#define DATATYPE99_PRIV_parseVariantIsEmpty_0(tag, ...)                                            \
     DATATYPE99_PRIV_variant(v(tag), METALANG99_list(v(__VA_ARGS__)))
-
-#define DATATYPE99_PRIV_emitUnparenthesizedVariantError(variant)                                   \
-    METALANG99_fatal(datatype99, variant is unparenthesized)
 // } (Parsing)
 
 // A variant representation {
@@ -93,10 +85,16 @@ static const Unit99 unit99 = '\0';
 #define DATATYPE99_PRIV_variantTag    METALANG99_parenthesizedVariadicsHead
 #define DATATYPE99_PRIV_variantParams METALANG99_parenthesizedVariadicsTail
 
-#define DATATYPE99_PRIV_isEmptyVariant(variant)                                                    \
-    METALANG99_isNil(DATATYPE99_PRIV_variantParams(variant))
-#define DATATYPE99_PRIV_isNonEmptyVariant(variant)                                                 \
-    METALANG99_not(DATATYPE99_PRIV_isEmptyVariant(variant))
+#define DATATYPE99_PRIV_isEmptyVariantPlain(...)                                                   \
+    METALANG99_uintEqPlain(METALANG99_variadicsCountPlain(__VA_ARGS__), 1)
+
+#define DATATYPE99_PRIV_mapVariants(f, variants)                                                   \
+    METALANG99_listUnwrap(                                                                         \
+        METALANG99_listMap(METALANG99_compose(f, v(METALANG99_unparenthesize)), variants))
+
+#define DATATYPE99_PRIV_mapVariantsCommaSep(f, variants)                                           \
+    METALANG99_listUnwrapCommaSep(                                                                 \
+        METALANG99_listMap(METALANG99_compose(f, v(METALANG99_unparenthesize)), variants))
 // } (A variant representation)
 
 // Sum type generation {
@@ -108,14 +106,14 @@ static const Unit99 unit99 = '\0';
                                                                                                    \
     METALANG99_semicolon()
 
-#define DATATYPE99_PRIV_genDatatypeAux_IMPL(name, ast)                                             \
+#define DATATYPE99_PRIV_genDatatypeAux_IMPL(name, variants)                                        \
     METALANG99_call(                                                                               \
         DATATYPE99_PRIV_genDatatypeAuxAux,                                                         \
         v(name),                                                                                   \
-        DATATYPE99_PRIV_genTypedefs(name, ast),                                                    \
-        METALANG99_parenthesize(DATATYPE99_PRIV_genTags(ast)),                                     \
-        DATATYPE99_PRIV_genUnionFields(name, ast),                                                 \
-        DATATYPE99_PRIV_genCtors(name, ast))
+        DATATYPE99_PRIV_genTypedefs(name, variants),                                               \
+        METALANG99_parenthesize(DATATYPE99_PRIV_genTags(variants)),                                \
+        DATATYPE99_PRIV_genUnionFields(name, variants),                                            \
+        DATATYPE99_PRIV_genCtors(name, variants))
 
 #define DATATYPE99_PRIV_genDatatypeAuxAux_IMPL(name, typedefs, tags, union_fields, ctors)          \
     v(typedef struct name name;                                                                    \
@@ -181,35 +179,23 @@ static const Unit99 unit99 = '\0';
 #define matches99(val, tag_) ((val).tag == tag_##Tag)
 // } (Pattern matching)
 
-// Generate type definitions {
-#define DATATYPE99_PRIV_genTypedefs(name, ast)                                                     \
-    METALANG99_listUnwrap(                                                                         \
-        METALANG99_listMap(METALANG99_appl(v(DATATYPE99_PRIV_genTypedefsMap), v(name)), v(ast)))
+#define DATATYPE99_PRIV_genTypedefs(name, variants)                                                \
+    DATATYPE99_PRIV_mapVariants(                                                                   \
+        METALANG99_appl(v(DATATYPE99_PRIV_genTypedefsMap), v(name)),                               \
+        v(variants))
 
-#define DATATYPE99_PRIV_genTypedefsMap_IMPL(name, variant)                                         \
-    METALANG99_call(                                                                               \
-        DATATYPE99_PRIV_genTypedefsMapAux,                                                         \
-        v(name),                                                                                   \
-        DATATYPE99_PRIV_variantTag(v(variant)),                                                    \
-        DATATYPE99_PRIV_variantParams(v(variant)))
-
-#define DATATYPE99_PRIV_genTypedefsMapAux_IMPL(name, tag, variant_params)                          \
+#define DATATYPE99_PRIV_genTypedefsMap_IMPL(name, tag, variant_params)                             \
     METALANG99_call(                                                                               \
         DATATYPE99_PRIV_genTypedefsTemplate,                                                       \
-        v(name, tag),                                                                              \
-        METALANG99_callTrivial(                                                                    \
-            DATATYPE99_PRIV_genStructOfVariantFields,                                              \
-            name,                                                                                  \
-            tag,                                                                                   \
-            variant_params),                                                                       \
-        METALANG99_callTrivial(DATATYPE99_PRIV_genTypedefsToFields, tag, variant_params))
+        v(typedef struct name tag##SumT;),                                                         \
+        DATATYPE99_PRIV_genVariantStructs(name, tag, variant_params),                              \
+        DATATYPE99_PRIV_genVariantParamsTypedefs(tag, variant_params))
 
 #define DATATYPE99_PRIV_genTypedefsTemplate_IMPL(                                                  \
-    name,                                                                                          \
-    tag,                                                                                           \
-    struct_of_variant_fields,                                                                      \
-    typedefs_to_fields)                                                                            \
-    v(typedef struct name tag##SumT; struct_of_variant_fields typedefs_to_fields)
+    sum_t_typedef,                                                                                 \
+    variant_structs,                                                                               \
+    variant_params_typedefs)                                                                       \
+    v(sum_t_typedef variant_structs variant_params_typedefs)
 
 /*
  * typedef struct <datatype-name><variant-name> {
@@ -218,116 +204,81 @@ static const Unit99 unit99 = '\0';
  *     <type>N _N;
  * } <datatype-name><variant-name>;
  */
-#define DATATYPE99_PRIV_genStructOfVariantFields_IMPL(name, tag, variant_params)                   \
-    METALANG99_call(                                                                               \
-        METALANG99_whenLazy(                                                                       \
-            METALANG99_isCons(v(variant_params)),                                                  \
-            v(DATATYPE99_PRIV_genStructOfVariantFieldsNonEmpty)),                                  \
-        v(name, tag, variant_params))
-
-#define DATATYPE99_PRIV_genStructOfVariantFieldsNonEmpty_IMPL(name, tag, variant_params)           \
-    METALANG99_call(                                                                               \
-        DATATYPE99_PRIV_genStructOfVariantFieldsTemplate,                                          \
-        v(name, tag),                                                                              \
-        METALANG99_indexedFields(v(variant_params)))
-
-#define DATATYPE99_PRIV_genStructOfVariantFieldsTemplate_IMPL(name, tag, fields)                   \
-    v(typedef struct name##tag{fields} name##tag;)
+#define DATATYPE99_PRIV_genVariantStructs(name, tag, variant_params)                               \
+    METALANG99_ifPlain(                                                                            \
+        METALANG99_isConsPlain(variant_params),                                                    \
+        METALANG99_typedef(                                                                        \
+            v(name##tag),                                                                          \
+            METALANG99_struct(v(name##tag), METALANG99_indexedFields(v(variant_params)))),         \
+        METALANG99_empty())
 
 /*
  * typedef <type>0 <variant-name>_0;
  * ...
  * typedef <type>N <variant-name>_N;
  */
-#define DATATYPE99_PRIV_genTypedefsToFields_IMPL(tag, variant_params)                              \
-    METALANG99_call(                                                                               \
-        METALANG99_whenLazy(                                                                       \
-            METALANG99_isCons(v(variant_params)),                                                  \
-            v(DATATYPE99_PRIV_genTypedefsToFieldsNonEmpty)),                                       \
-        v(tag, variant_params))
+#define DATATYPE99_PRIV_genVariantParamsTypedefs(tag, variant_params)                              \
+    METALANG99_ifPlain(                                                                            \
+        METALANG99_isConsPlain(variant_params),                                                    \
+        METALANG99_listUnwrap(METALANG99_listMapI(                                                 \
+            METALANG99_appl(v(DATATYPE99_PRIV_genVariantParamTypedef), v(tag)),                    \
+            v(variant_params))),                                                                   \
+        METALANG99_empty())
 
-#define DATATYPE99_PRIV_genTypedefsToFieldsNonEmpty_IMPL(tag, variant_params)                      \
-    METALANG99_listUnwrap(METALANG99_listMapI(                                                     \
-        METALANG99_appl(v(DATATYPE99_PRIV_genTypedefToField), v(tag)),                             \
-        v(variant_params)))
-#define DATATYPE99_PRIV_genTypedefToField_IMPL(tag, type, i) v(typedef type tag##_##i;)
-// } (Generate type definitions)
+#define DATATYPE99_PRIV_genVariantParamTypedef_IMPL(tag, type, i) v(typedef type tag##_##i;)
 
-// Generate tags of variants {
+/*
+ * <variant-name>0Tag, ..., <variant-name>NTag
+ */
+#define DATATYPE99_PRIV_genTags(variants)                                                          \
+    DATATYPE99_PRIV_mapVariantsCommaSep(v(DATATYPE99_PRIV_genTag), v(variants))
 
-// <variant-name>0Tag, ..., <variant-name>NTag
-#define DATATYPE99_PRIV_genTags(ast)                                                               \
-    METALANG99_listUnwrapCommaSep(METALANG99_listMap(v(DATATYPE99_PRIV_genTagsMap), v(ast)))
-
-#define DATATYPE99_PRIV_genTagsMap_IMPL(variant)                                                   \
-    METALANG99_cat(DATATYPE99_PRIV_variantTag(v(variant)), v(Tag))
-// } (Generate tags of variants)
-
-// Generate a union of possible alternatives {
+#define DATATYPE99_PRIV_genTag_IMPL(tag, _variant_params) v(tag##Tag)
 
 /*
  * <datatype-name><variant-name>0 <variant-name>0;
  * ...
  * <datatype-name><variant-name>N <variant-name>N;
  */
-#define DATATYPE99_PRIV_genUnionFields(name, ast)                                                  \
-    METALANG99_listUnwrap(METALANG99_listMap(                                                      \
-        METALANG99_appl(v(DATATYPE99_PRIV_genUnionFieldsMap), v(name)),                            \
-        v(ast)))
+#define DATATYPE99_PRIV_genUnionFields(name, variants)                                             \
+    DATATYPE99_PRIV_mapVariants(                                                                   \
+        METALANG99_appl(v(DATATYPE99_PRIV_genUnionField), v(name)),                                \
+        v(variants))
 
-#define DATATYPE99_PRIV_genUnionFieldsMap_IMPL(name, variant)                                      \
-    METALANG99_call(                                                                               \
-        METALANG99_whenLazy(                                                                       \
-            DATATYPE99_PRIV_isNonEmptyVariant(v(variant)),                                         \
-            v(DATATYPE99_PRIV_genUnionField)),                                                     \
-        v(name),                                                                                   \
-        DATATYPE99_PRIV_variantTag(v(variant)))
-
-#define DATATYPE99_PRIV_genUnionField_IMPL(name, tag) v(name##tag tag;)
-// } (Generate a union of possible alternatives)
-
-// Generate value constructors {
+#define DATATYPE99_PRIV_genUnionField_IMPL(name, tag, variant_params)                              \
+    METALANG99_ifPlain(                                                                            \
+        METALANG99_isConsPlain(variant_params),                                                    \
+        v(name##tag tag;),                                                                         \
+        METALANG99_empty())
 
 /*
  * inline static <datatype99-name> <variant-name>0(...) { ... }
  * ...
  * inline static <datatype99-name> <variant-name>N(...) { ... }
  */
-#define DATATYPE99_PRIV_genCtors(name, ast)                                                        \
-    METALANG99_listUnwrap(                                                                         \
-        METALANG99_listMap(METALANG99_appl(v(DATATYPE99_PRIV_genCtorsMap), v(name)), v(ast)))
+#define DATATYPE99_PRIV_genCtors(name, variants)                                                   \
+    DATATYPE99_PRIV_mapVariants(                                                                   \
+        METALANG99_appl(v(DATATYPE99_PRIV_genCtorsMap), v(name)),                                  \
+        v(variants))
 
-#define DATATYPE99_PRIV_genCtorsMap_IMPL(name, variant)                                            \
+#define DATATYPE99_PRIV_genCtorsMap_IMPL(name, tag, variant_params)                                \
     METALANG99_call(                                                                               \
-        METALANG99_if(                                                                             \
-            DATATYPE99_PRIV_isEmptyVariant(v(variant)),                                            \
-            v(DATATYPE99_PRIV_genCtorEmpty),                                                       \
-            v(DATATYPE99_PRIV_genCtorNonEmpty)),                                                   \
-        METALANG99_unparenthesize(v(variant)),                                                     \
-        v(name))
-
-#define DATATYPE99_PRIV_genCtorEmpty_IMPL(tag_, _variant_params, name)                             \
-    v(inline static DATATYPE99_PRIV_WARN_UNUSED_RESULT DATATYPE99_PRIV_CONST name tag_(void) {     \
-        return ((name){.tag = tag_##Tag, .data.dummy = '\0'});                                     \
-    })
-
-#define DATATYPE99_PRIV_genCtorNonEmpty_IMPL(tag, variant_params, name)                            \
-    METALANG99_call(                                                                               \
-        DATATYPE99_PRIV_genCtorTemplate,                                                           \
+        METALANG99_catPlain(                                                                       \
+            DATATYPE99_PRIV_genCtorIsEmpty_,                                                       \
+            METALANG99_isNilPlain(variant_params)),                                                \
         v(name, tag),                                                                              \
         METALANG99_indexedParams(v(variant_params)),                                               \
         METALANG99_indexedInitializerList(METALANG99_listLen(v(variant_params))))
 
-#define DATATYPE99_PRIV_genCtorTemplate_IMPL(name, tag_, params, ...)                              \
+#define DATATYPE99_PRIV_genCtorIsEmpty_1_IMPL(name, tag_, params, ...)                             \
+    v(inline static DATATYPE99_PRIV_WARN_UNUSED_RESULT DATATYPE99_PRIV_CONST name tag_ params {    \
+        return ((name){.tag = tag_##Tag});                                                         \
+    })
+
+#define DATATYPE99_PRIV_genCtorIsEmpty_0_IMPL(name, tag_, params, ...)                             \
     v(inline static DATATYPE99_PRIV_WARN_UNUSED_RESULT DATATYPE99_PRIV_CONST name tag_ params {    \
         return ((name){.tag = tag_##Tag, .data.tag_ = __VA_ARGS__});                               \
     })
-// } (Generate value constructors)
-
-// Auxiliary stuff {
-#define DATATYPE99_PRIV_isEmptyVariantPlain(...)                                                   \
-    METALANG99_uintEqPlain(METALANG99_variadicsCountPlain(__VA_ARGS__), 1)
-// }
 
 // Compiler-specific stuff {
 #if defined(__GNUC__) && !defined(__clang__)
@@ -356,16 +307,16 @@ static const Unit99 unit99 = '\0';
 // } (Compiler-specific stuff)
 
 // Arity specifiers {
-#define DATATYPE99_PRIV_parseMap_ARITY                    1
-#define DATATYPE99_PRIV_genBinding_ARITY                  3
-#define DATATYPE99_PRIV_genTypedefsMap_ARITY              2
-#define DATATYPE99_PRIV_genStructOfVariantFieldsMap_ARITY 2
-#define DATATYPE99_PRIV_genTypedefToField_ARITY           3
-#define DATATYPE99_PRIV_genTagsMap_ARITY                  1
-#define DATATYPE99_PRIV_genUnionFieldsMap_ARITY           2
-#define DATATYPE99_PRIV_genCtorsMap_ARITY                 2
-#define DATATYPE99_PRIV_genCtorParamsMap_ARITY            2
-#define DATATYPE99_PRIV_genCtorParamNamesMap_ARITY        1
+#define DATATYPE99_PRIV_parseMap_ARITY               1
+#define DATATYPE99_PRIV_genBinding_ARITY             3
+#define DATATYPE99_PRIV_genTypedefsMap_ARITY         2
+#define DATATYPE99_PRIV_genVariantStructsMap_ARITY   2
+#define DATATYPE99_PRIV_genVariantParamTypedef_ARITY 3
+#define DATATYPE99_PRIV_genTag_ARITY                 1
+#define DATATYPE99_PRIV_genUnionField_ARITY          2
+#define DATATYPE99_PRIV_genCtorsMap_ARITY            2
+#define DATATYPE99_PRIV_genCtorParamsMap_ARITY       2
+#define DATATYPE99_PRIV_genCtorParamNamesMap_ARITY   1
 // }
 
 #endif // DATATYPE99_H
