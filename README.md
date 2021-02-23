@@ -45,7 +45,7 @@
 
 ## Installation
 
- 1. Download Datatype99 and [metalang99].
+ 1. Download Datatype99 and [Metalang99].
  2. Add `datatype99` and `metalang99/include` to your include paths.
  3. `#include <datatype99.h>` beforehand.
 
@@ -53,7 +53,7 @@ To speed up compilation, consider using [precompiled headers] and `-ftrack-macro
 
 If you do **not** want the shortened versions to appear (e.g., `datatype` and `match` instead of `datatype99` and `match99`), define `DATATYPE99_NO_ALIASES` before `#include <datatype99.h>`.
 
-[metalang99]: https://github.com/Hirrolot/metalang99
+[Metalang99]: https://github.com/Hirrolot/metalang99
 [precompiled headers]: https://en.wikipedia.org/wiki/Precompiled_header
 
 ## Usage
@@ -189,14 +189,14 @@ A: The `datatype99` macro generates a tagged union accompanied with type hints a
 
 ### Q: What about compile-time errors?
 
-A: With `-ftrack-macro-expansion=0` (GCC), there are no chances that compile-time errors will be longer than usual. However, they can be still quite obscured -- in this case, try to look at generated code (`-E` GCC/Clang flag). Hopefully, the [code generation semantics] is formally defined so normally you will not see something unexpected.
-
-Some kinds of syntactic errors are detected by the library itself. For example (`-E` flag):
+A: With `-ftrack-macro-expansion=0` (GCC), there are no chances that compile-time errors will be longer than usual. Some kinds of syntactic errors are detected by the library itself, for example (`-E` flag):
 
 ```c
 // !"Metalang99 error" (datatype99): "Bar(int) is unparenthesised"
 datatype(A, (Foo, int), Bar(int));
 ```
+
+If an error is not comprehensible at all, try to look at generated code (`-E`). Hopefully, the [code generation semantics] is formally defined so normally you will not see something unexpected.
 
 [code generation semantics]: #semantics
 
