@@ -153,10 +153,12 @@ inline static <datatype99-name> <variant-name>(...) { /* ... */ }
 
 ### `of99`
 
-`of99` accepts a matched variant name as a first argument and the rest of arguments comprise a comma-separated list of variable names (bindings).
+`of99` accepts a matched variant name as a first argument and the rest of arguments comprise a comma-separated list of bindings.
 
  - A binding equal to `_` is ignored.
  - A binding **not** equal to `_` stands for a pointer to a corresponding data of the variant (e.g., let there be `(Foo, T1, T2)` and `of99(Foo, x, y)`, then `x` has the type `T1 *` and `y` is `T2 *`).
+
+There can be more than one `_` binding, however, non-`_` bindings must be distinct.
 
 To match an empty variant, write `of99(Bar)`.
 
