@@ -120,6 +120,7 @@ int main(void) {
     assert(191991 == d.data.D._2);
     assert(&n == d.data.D._3);
 
+    // Test a nested `match`.
     match(a) {
         of(A) {
             match(b) {
@@ -133,6 +134,28 @@ int main(void) {
     }
 
     assert(34 == foo);
+
+    // Test the reserved identifier `_`.
+    {
+        Complex expr = C("abc", 124.1404);
+
+        match(expr) {
+            of(A) {
+                assert(false);
+            }
+            of(B, _) {
+                assert(false);
+            }
+            of(C, _, x) {
+                assert(124.1404 == *x);
+            }
+            of(D, c, _, _, ptr) {
+                (void)c;
+                (void)ptr;
+                assert(false);
+            }
+        }
+    }
 
     Unit dummy = unit;
     (void)dummy;

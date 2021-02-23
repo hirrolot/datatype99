@@ -62,10 +62,11 @@ If you do **not** want the shortened versions to appear (e.g., `datatype` and `m
 
 A sum type is created using the `datatype` macro. I guess you have already caught the syntax but actually there exist one more kind of a variant: an empty variant which is expressed simply as `(Foo)`. It holds no data.
 
-Pattern matching is likewise intuitive. Just two brief notes:
+Pattern matching is likewise intuitive. Just three brief notes:
 
  - To match an empty variant, write `of(Foo) { ... }`.
  - To match the default case, i.e. when all other cases failed, write `otherwise { ... }`.
+ - To ignore one or more variables inside `of`, write `of(Foo, a, b, _, d)`.
 
 Happy hacking!
 
@@ -152,7 +153,12 @@ inline static <datatype99-name> <variant-name>(...) { /* ... */ }
 
 ### `of99`
 
-`of99` accepts a matched variant name as a first argument and the rest of arguments comprise a comma-separated list of variable names (bindings). Each binding stands for a pointer to a corresponding data of the variant (e.g., let there be `(Foo, T1, T2)` and `of99(Foo, x, y)`, then `x` has the type `T1 *` and `y` is `T2 *`). To match an empty variant, write `of99(Bar)`.
+`of99` accepts a matched variant name as a first argument and the rest of arguments comprise a comma-separated list of variable names (bindings).
+
+ - A binding equal to `_` is ignored.
+ - A binding **not** equal to `_` stands for a pointer to a corresponding data of the variant (e.g., let there be `(Foo, T1, T2)` and `of99(Foo, x, y)`, then `x` has the type `T1 *` and `y` is `T2 *`).
+
+To match an empty variant, write `of99(Bar)`.
 
 ### `matches99`
 

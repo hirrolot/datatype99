@@ -160,8 +160,16 @@ static const Unit99 unit99 = '\0';
             METALANG99_list(v(__VA_ARGS__))))
 
 #define DATATYPE99_PRIV_genBinding_IMPL(tag_, x, i)                                                \
-    v(METALANG99_introduceVarToStmt(                                                               \
-        tag_##_##i *x = &((tag_##SumT *)datatype99_priv_match_expr)->data.tag_._##i))
+    METALANG99_ifPlain(                                                                            \
+        DATATYPE99_PRIV_isUnusedVar(x),                                                            \
+        METALANG99_empty(),                                                                        \
+        v(METALANG99_introduceVarToStmt(                                                           \
+            tag_##_##i *x = &((tag_##SumT *)datatype99_priv_match_expr)->data.tag_._##i)))
+
+#define DATATYPE99_PRIV_isUnusedVar(x)                                                             \
+    METALANG99_variadicsHeadPlain(                                                                 \
+        METALANG99_variadicsTailPlain(DATATYPE99_PRIV_isUnusedVar##x(), 0))
+#define DATATYPE99_PRIV_isUnusedVar_() ~, 1
 
 #define otherwise99                                                                                \
     break;                                                                                         \
