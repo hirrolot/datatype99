@@ -45,7 +45,7 @@
 
 ## Installation
 
- 1. Download Datatype99 and [metalang99].
+ 1. Download Datatype99 and [Metalang99].
  2. Add `datatype99` and `metalang99/include` to your include paths.
  3. `#include <datatype99.h>` beforehand.
 
@@ -53,7 +53,7 @@ To speed up compilation, consider using [precompiled headers] and `-ftrack-macro
 
 If you do **not** want the shortened versions to appear (e.g., `datatype` and `match` instead of `datatype99` and `match99`), define `DATATYPE99_NO_ALIASES` before `#include <datatype99.h>`.
 
-[metalang99]: https://github.com/Hirrolot/metalang99
+[Metalang99]: https://github.com/Hirrolot/metalang99
 [precompiled headers]: https://en.wikipedia.org/wiki/Precompiled_header
 
 ## Usage
