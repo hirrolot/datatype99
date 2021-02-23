@@ -189,14 +189,14 @@ A: The `datatype99` macro generates a tagged union accompanied with type hints a
 
 ### Q: What about compile-time errors?
 
-A: With `-ftrack-macro-expansion=0` (GCC), there are no chances that compile-time errors will be longer than usual. However, they can be still quite obscured -- in this case, try to look at generated code (`-E` GCC/Clang flag). Hopefully, the [code generation semantics] is formally defined so normally you will not see something unexpected.
-
-Some kinds of syntactic errors are detected by the library itself. For example (`-E` flag):
+A: With `-ftrack-macro-expansion=0` (GCC), there are no chances that compile-time errors will be longer than usual. Some kinds of syntactic errors are detected by the library itself, for example (`-E` flag):
 
 ```c
 // !"Metalang99 error" (datatype99): "Bar(int) is unparenthesised"
 datatype(A, (Foo, int), Bar(int));
 ```
+
+If an error is not comprehensible at all, try to look at generated code (`-E`). Hopefully, the [code generation semantics] is formally defined so normally you will not see something unexpected.
 
 [code generation semantics]: #semantics
 
