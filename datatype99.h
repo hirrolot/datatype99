@@ -62,7 +62,6 @@ static const Unit99 unit99 = '\0';
         DATATYPE99_PRIV_isEmptyVariantPlain(__VA_ARGS__))(__VA_ARGS__)
 
 #define DATATYPE99_PRIV_parseVariantIsEmpty_1(tag) DATATYPE99_PRIV_variant(v(tag), METALANG99_nil())
-
 #define DATATYPE99_PRIV_parseVariantIsEmpty_0(tag, ...)                                            \
     DATATYPE99_PRIV_variant(v(tag), METALANG99_list(v(__VA_ARGS__)))
 // } (Parsing)
@@ -78,10 +77,6 @@ static const Unit99 unit99 = '\0';
 
 #define DATATYPE99_PRIV_mapVariants(f, variants)                                                   \
     METALANG99_listUnwrap(                                                                         \
-        METALANG99_listMap(METALANG99_compose(f, v(METALANG99_unparenthesize)), variants))
-
-#define DATATYPE99_PRIV_mapVariantsCommaSep(f, variants)                                           \
-    METALANG99_listUnwrapCommaSep(                                                                 \
         METALANG99_listMap(METALANG99_compose(f, v(METALANG99_unparenthesize)), variants))
 // } (A variant representation)
 
@@ -209,9 +204,13 @@ static const Unit99 unit99 = '\0';
  * <variant-name>0Tag, ..., <variant-name>NTag
  */
 #define DATATYPE99_PRIV_genTags(variants)                                                          \
-    DATATYPE99_PRIV_mapVariantsCommaSep(v(DATATYPE99_PRIV_genTag), v(variants))
+    METALANG99_callTrivial(METALANG99_match, variants, DATATYPE99_PRIV_genTags_)
 
-#define DATATYPE99_PRIV_genTag_IMPL(tag, _variant_params) v(tag##Tag)
+#define DATATYPE99_PRIV_genTags_nil_IMPL() METALANG99_empty()
+#define DATATYPE99_PRIV_genTags_cons_IMPL(x, xs)                                                   \
+    METALANG99_terms(                                                                              \
+        v(METALANG99_catPlain(METALANG99_parenthesizedVariadicsHeadPlain(x), Tag), ),              \
+        DATATYPE99_PRIV_genTags(xs))
 
 /*
  * <datatype-name><variant-name>0 <variant-name>0;
