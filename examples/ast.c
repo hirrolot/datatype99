@@ -26,21 +26,11 @@ datatype(
 
 double eval(const Expr *expr) {
     match(*expr) {
-        of(Const, number) {
-            return *number;
-        }
-        of(Add, lhs, rhs) {
-            return eval(*lhs) + eval(*rhs);
-        }
-        of(Sub, lhs, rhs) {
-            return eval(*lhs) - eval(*rhs);
-        }
-        of(Mul, lhs, rhs) {
-            return eval(*lhs) * eval(*rhs);
-        }
-        of(Div, lhs, rhs) {
-            return eval(*lhs) / eval(*rhs);
-        }
+        of(Const, number) return *number;
+        of(Add, lhs, rhs) return eval(*lhs) + eval(*rhs);
+        of(Sub, lhs, rhs) return eval(*lhs) - eval(*rhs);
+        of(Mul, lhs, rhs) return eval(*lhs) * eval(*rhs);
+        of(Div, lhs, rhs) return eval(*lhs) / eval(*rhs);
     }
 }
 

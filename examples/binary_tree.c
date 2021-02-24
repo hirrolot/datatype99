@@ -14,12 +14,8 @@ datatype(
 
 int sum(const BinaryTree *tree) {
     match(*tree) {
-        of(Leaf, x) {
-            return *x;
-        }
-        of(Node, lhs, x, rhs) {
-            return sum(*lhs) + *x + sum(*rhs);
-        }
+        of(Leaf, x) return *x;
+        of(Node, lhs, x, rhs) return sum(*lhs) + *x + sum(*rhs);
     }
 }
 

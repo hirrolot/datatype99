@@ -15,21 +15,11 @@ datatype(
 
 void print_token(Token token) {
     match(token) {
-        of(Ident, ident) {
-            printf("%s", *ident);
-        }
-        of(Int, x) {
-            printf("%d", *x);
-        }
-        of(LParen) {
-            printf("(");
-        }
-        of(RParen) {
-            printf(")");
-        }
-        of(Plus) {
-            printf(" + ");
-        }
+        of(Ident, ident) printf("%s", *ident);
+        of(Int, x) printf("%d", *x);
+        of(LParen) printf("(");
+        of(RParen) printf(")");
+        of(Plus) printf(" + ");
     }
 }
 
