@@ -135,12 +135,11 @@ static const Unit99 unit99 = '\0';
         DATATYPE99_PRIV_ofNonEmpty)(__VA_ARGS__)
 
 #define DATATYPE99_PRIV_ofEmpty(tag) case tag##Tag:
-
 #define DATATYPE99_PRIV_ofNonEmpty(tag, ...)                                                       \
     case tag##Tag:                                                                                 \
-        METALANG99_listEval(METALANG99_listMapI(                                                   \
+        METALANG99_eval(METALANG99_variadicsForEachI(                                              \
             METALANG99_appl(v(DATATYPE99_PRIV_genBinding), v(tag)),                                \
-            METALANG99_list(v(__VA_ARGS__))))
+            v(__VA_ARGS__)))
 
 #define DATATYPE99_PRIV_genBinding_IMPL(tag_, x, i)                                                \
     METALANG99_ifPlain(                                                                            \
@@ -245,7 +244,7 @@ static const Unit99 unit99 = '\0';
         METALANG99_indexedInitializerList(METALANG99_listLen(v(variant_params))))
 
 #define DATATYPE99_PRIV_genCtorTemplate_IMPL(name, tag_, params, assigned_field, ...)              \
-    v(inline static DATATYPE99_PRIV_WARN_UNUSED_RESULT DATATYPE99_PRIV_CONST name tag_ params {    \
+    v(inline static DATATYPE99_PRIV_CTOR_ATTRS name tag_ params {                                  \
         return ((name){.tag = tag_##Tag, .assigned_field = __VA_ARGS__});                          \
     })
 
@@ -273,19 +272,17 @@ static const Unit99 unit99 = '\0';
 #else
 #define DATATYPE99_PRIV_CONST
 #endif
+
+#define DATATYPE99_PRIV_CTOR_ATTRS DATATYPE99_PRIV_WARN_UNUSED_RESULT DATATYPE99_PRIV_CONST
 // } (Compiler-specific stuff)
 
 // Arity specifiers {
 #define DATATYPE99_PRIV_parseMap_ARITY               1
 #define DATATYPE99_PRIV_genBinding_ARITY             3
 #define DATATYPE99_PRIV_genTypedefsForVariant_ARITY  2
-#define DATATYPE99_PRIV_genVariantStructMap_ARITY    2
 #define DATATYPE99_PRIV_genVariantParamTypedef_ARITY 3
-#define DATATYPE99_PRIV_genTag_ARITY                 1
 #define DATATYPE99_PRIV_genUnionField_ARITY          2
 #define DATATYPE99_PRIV_genCtor_ARITY                2
-#define DATATYPE99_PRIV_genCtorParamsMap_ARITY       2
-#define DATATYPE99_PRIV_genCtorParamNamesMap_ARITY   1
 // }
 
 #endif // DATATYPE99_H
