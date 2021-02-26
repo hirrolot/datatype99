@@ -54,7 +54,7 @@ static const Unit99 unit99 = '\0';
     METALANG99_ifPlain(                                                                            \
         METALANG99_isParenthesizedPlain(variant),                                                  \
         METALANG99_call(DATATYPE99_PRIV_parseVariant, METALANG99_unparenthesize(v(variant))),      \
-        METALANG99_fatal(datatype99, variant is unparenthesized))
+        METALANG99_fatal(datatype99, variant is unparenthesised))
 
 #define DATATYPE99_PRIV_parseVariant_IMPL(...)                                                     \
     METALANG99_catPlain(                                                                           \
