@@ -49,12 +49,13 @@
  2. Add `datatype99` and `metalang99/include` to your include paths.
  3. `#include <datatype99.h>` beforehand.
 
-To speed up compilation, consider using [precompiled headers] and `-ftrack-macro-expansion=0` (GCC-only). The last option is especially useful because it tells GCC not to print big bullshit macro errors.
+**PLEASE**, use Datatype99 only with [precompiled headers] and [`-ftrack-macro-expansion=0`] (or something similar), otherwise it will throw your compiler to the moon.
 
 If you do **not** want the shortened versions to appear (e.g., `datatype` and `match` instead of `datatype99` and `match99`), define `DATATYPE99_NO_ALIASES` before `#include <datatype99.h>`.
 
 [Metalang99]: https://github.com/Hirrolot/metalang99
 [precompiled headers]: https://en.wikipedia.org/wiki/Precompiled_header
+[`-ftrack-macro-expansion=0`]: https://gcc.gnu.org/onlinedocs/gcc/Preprocessor-Options.html
 
 ## Usage
 
