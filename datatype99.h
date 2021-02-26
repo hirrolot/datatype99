@@ -257,6 +257,8 @@ static const Unit99 unit99 = '\0';
 #if __GNUC__ >= 6
 #define DATATYPE99_PRIV_GCC_IGNORE_MISLEADING_INDENTATION                                          \
     DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic ignored \"-Wmisleading-indentation\"")
+#else
+#define DATATYPE99_PRIV_GCC_IGNORE_MISLEADING_INDENTATION
 #endif
 
 #ifdef __GNUC__
