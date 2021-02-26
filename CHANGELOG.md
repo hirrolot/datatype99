@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
  - Turn off `-Wmisleading-indentation` only when `__GNUC__ >= 6`.
 
-## [0.3.0] - 2020-02-26
+## [0.3.0] - 2021-02-26
 
 ### Changed
 
@@ -24,13 +24,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Error reporting about an unparenthesised variant like `Bar(int)`.
  - `Unit99` and `unit99`.
 
-## [0.2.0] - 2020-02-05
+## [0.2.0] - 2021-02-05
 
 ### Changed
 
  - Replace `Epilepsy` with `Metalang99` (more neutral).
 
-## [0.1.0] - 2020-02-04
+## [0.1.0] - 2021-02-04
 
 ### Added
 
