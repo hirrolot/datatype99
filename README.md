@@ -199,6 +199,20 @@ A: With `-ftrack-macro-expansion=0` (GCC), there are no chances that compile-tim
 datatype(A, (Foo, int), Bar(int));
 ```
 
+The others are understandable as well:
+
+```c
+datatype(Foo, (FooA, NonExistingType));
+```
+
+```
+playground.c:3:1: error: unknown type name ‘NonExistingType’
+    3 | datatype(
+      | ^~~~~~~~
+playground.c:3:1: error: unknown type name ‘NonExistingType’
+playground.c:3:1: error: unknown type name ‘NonExistingType’
+```
+
 If an error is not comprehensible at all, try to look at generated code (`-E`). Hopefully, the [code generation semantics] is formally defined so normally you will not see something unexpected.
 
 [code generation semantics]: #semantics
