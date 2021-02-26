@@ -52,8 +52,8 @@ static const Unit99 unit99 = '\0';
 
 #define DATATYPE99_PRIV_parseMap_IMPL(variant)                                                     \
     METALANG99_ifPlain(                                                                            \
-        METALANG99_isParenthesizedPlain(variant),                                                  \
-        METALANG99_call(DATATYPE99_PRIV_parseVariant, METALANG99_unparenthesize(v(variant))),      \
+        METALANG99_isTuplePlain(variant),                                                          \
+        METALANG99_call(DATATYPE99_PRIV_parseVariant, METALANG99_untuple(v(variant))),             \
         METALANG99_fatal(datatype99, variant is unparenthesised))
 
 #define DATATYPE99_PRIV_parseVariant_IMPL(...)                                                     \
@@ -67,17 +67,16 @@ static const Unit99 unit99 = '\0';
 // } (Parsing)
 
 // A variant representation {
-#define DATATYPE99_PRIV_variant(tag, variant_params) METALANG99_parenthesize(tag, variant_params)
-
-#define DATATYPE99_PRIV_variantTag    METALANG99_parenthesizedVariadicsHead
-#define DATATYPE99_PRIV_variantParams METALANG99_parenthesizedVariadicsTail
+#define DATATYPE99_PRIV_variant(tag, variant_params) METALANG99_tuple(tag, variant_params)
+#define DATATYPE99_PRIV_variantTag                   METALANG99_tupleHead
+#define DATATYPE99_PRIV_variantParams                METALANG99_tupleTail
 
 #define DATATYPE99_PRIV_isEmptyVariantPlain(...)                                                   \
     METALANG99_uintEqPlain(METALANG99_variadicsCountPlain(__VA_ARGS__), 1)
 
 #define DATATYPE99_PRIV_mapVariants(f, variants)                                                   \
     METALANG99_listUnwrap(                                                                         \
-        METALANG99_listMap(METALANG99_compose(f, v(METALANG99_unparenthesize)), variants))
+        METALANG99_listMap(METALANG99_compose(f, v(METALANG99_untuple)), variants))
 // } (A variant representation)
 
 // Sum type generation {
@@ -96,13 +95,13 @@ static const Unit99 unit99 = '\0';
         METALANG99_call(                                                                           \
             DATATYPE99_PRIV_genTaggedUnion,                                                        \
             v(name),                                                                               \
-            METALANG99_parenthesize(DATATYPE99_PRIV_genTags(variants)),                            \
+            METALANG99_tuple(DATATYPE99_PRIV_genTags(variants)),                                   \
             DATATYPE99_PRIV_genUnionFields(name, variants)),                                       \
         DATATYPE99_PRIV_genCtors(name, variants))
 
 #define DATATYPE99_PRIV_genTaggedUnion_IMPL(name, tags, union_fields)                              \
     v(struct name {                                                                                \
-        enum { METALANG99_unparenthesizePlain(tags) } tag;                                         \
+        enum { METALANG99_untuplePlain(tags) } tag;                                                \
         union {                                                                                    \
             char dummy[1];                                                                         \
             union_fields                                                                           \
@@ -208,7 +207,7 @@ static const Unit99 unit99 = '\0';
 #define DATATYPE99_PRIV_genTags_nil_IMPL() METALANG99_empty()
 #define DATATYPE99_PRIV_genTags_cons_IMPL(x, xs)                                                   \
     METALANG99_terms(                                                                              \
-        v(METALANG99_catPlain(METALANG99_parenthesizedVariadicsHeadPlain(x), Tag), ),              \
+        v(METALANG99_catPlain(METALANG99_tupleHeadPlain(x), Tag), ),                               \
         DATATYPE99_PRIV_genTags(xs))
 
 /*
