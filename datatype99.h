@@ -112,7 +112,7 @@ static const Unit99 unit99 = '\0';
 // Pattern matching {
 #define match99(val)                                                                               \
     DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic push")                                              \
-    DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic ignored \"-Wmisleading-indentation\"")              \
+    DATATYPE99_PRIV_GCC_IGNORE_MISLEADING_INDENTATION                                              \
     DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic ignored \"-Wreturn-type\"")                         \
                                                                                                    \
     METALANG99_introduceVarToStmt(                                                                 \
@@ -124,7 +124,7 @@ static const Unit99 unit99 = '\0';
 #define of99(...)                                                                                  \
     DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic pop")                                               \
     DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic push")                                              \
-    DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic ignored \"-Wmisleading-indentation\"")              \
+    DATATYPE99_PRIV_GCC_IGNORE_MISLEADING_INDENTATION                                              \
     DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic ignored \"-Wreturn-type\"")                         \
                                                                                                    \
     break;                                                                                         \
@@ -252,6 +252,11 @@ static const Unit99 unit99 = '\0';
 #define DATATYPE99_PRIV_GCC_PRAGMA(str) _Pragma(str)
 #else
 #define DATATYPE99_PRIV_GCC_PRAGMA(str)
+#endif
+
+#if __GNUC__ >= 6
+#define DATATYPE99_PRIV_GCC_IGNORE_MISLEADING_INDENTATION                                          \
+    DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic ignored \"-Wmisleading-indentation\"")
 #endif
 
 #ifdef __GNUC__
