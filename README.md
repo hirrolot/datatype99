@@ -4,10 +4,7 @@
   <a href="https://github.com/Hirrolot/datatype99/actions">
     <img src="https://github.com/Hirrolot/datatype99/workflows/C/C++%20CI/badge.svg">
   </a>
-  <a href="https://patreon.com/hirrolot">
-    <img src="https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fshieldsio-patreon.vercel.app%2Fapi%3Fusername%3Dhirrolot%26type%3Dpatrons&style=flat">
-  </a>
-    
+
   A header-only library featuring safe, intuitive [sum types] with exhaustive pattern matching.
 </div>
 
