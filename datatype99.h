@@ -28,8 +28,8 @@
 
 #include <metalang99.h>
 
-#if (METALANG99_MINOR < 4 || (METALANG99_MINOR == 4 && METALANG99_PATCH < 2)) ||                   \
-    METALANG99_MINOR < 4
+#if (METALANG99_MINOR < 4) || (METALANG99_MINOR == 4 && METALANG99_PATCH < 2) ||                   \
+    METALANG99_MINOR > 4
 #error "Please, update Metalang99 to v0.4.2 or later"
 #endif
 
@@ -111,21 +111,20 @@ static const Unit99 unit99 = '\0';
 
 // Pattern matching {
 #define match99(val)                                                                               \
-    METALANG99_gccPragma("GCC diagnostic push")                                                    \
-    DATATYPE99_PRIV_GCC_SUPPRESS_MISLEADING_INDENTATION                                            \
-    METALANG99_gccPragma("GCC diagnostic ignored \"-Wreturn-type\"")                               \
+    DATATYPE99_PRIV_DIAGNOSTIC_PUSH                                                                \
+    DATATYPE99_PRIV_SUPPRESS_W_MISLEADING_INDENTATION                                              \
+    DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE                                                         \
                                                                                                    \
     METALANG99_introduceVarToStmt(                                                                 \
-        const void *DATATYPE99_PRIV_POSSIBLY_UNUSED datatype99_priv_match_expr =                   \
-            (const void *)&(val))                                                                  \
+        void *DATATYPE99_PRIV_POSSIBLY_UNUSED datatype99_priv_match_expr = (void *)&(val))         \
                                                                                                    \
         switch ((val).tag)
 
 #define of99(...)                                                                                  \
-    METALANG99_gccPragma("GCC diagnostic pop")                                                     \
-    METALANG99_gccPragma("GCC diagnostic push")                                                    \
-    DATATYPE99_PRIV_GCC_SUPPRESS_MISLEADING_INDENTATION                                            \
-    METALANG99_gccPragma("GCC diagnostic ignored \"-Wreturn-type\"")                               \
+    DATATYPE99_PRIV_DIAGNOSTIC_POP                                                                 \
+    DATATYPE99_PRIV_DIAGNOSTIC_PUSH                                                                \
+    DATATYPE99_PRIV_SUPPRESS_W_MISLEADING_INDENTATION                                              \
+    DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE                                                         \
                                                                                                    \
     break;                                                                                         \
     METALANG99_ifPlain(                                                                            \
@@ -255,25 +254,64 @@ static const Unit99 unit99 = '\0';
     })
 
 // Compiler-specific stuff {
-#if __GNUC__ >= 6
-#define DATATYPE99_PRIV_GCC_SUPPRESS_MISLEADING_INDENTATION                                        \
-    METALANG99_gccPragma("GCC diagnostic ignored \"-Wmisleading-indentation\"")
-#else
-#define DATATYPE99_PRIV_GCC_SUPPRESS_MISLEADING_INDENTATION
-#endif
 
+// GCC 6.x.y-only {
+#if __GNUC__ >= 6
+#define DATATYPE99_PRIV_SUPPRESS_W_MISLEADING_INDENTATION                                          \
+    _Pragma("GCC diagnostic ignored \"-Wmisleading-indentation\"")
+#endif
+// }
+
+// GCC-only {
+#if defined(__GNUC__) && !defined(__clang__)
+#define DATATYPE99_PRIV_DIAGNOSTIC_PUSH        _Pragma("GCC diagnostic push")
+#define DATATYPE99_PRIV_DIAGNOSTIC_POP         _Pragma("GCC diagnostic pop")
+#define DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE _Pragma("GCC diagnostic ignored \"-Wreturn-type\"")
+#define DATATYPE99_PRIV_CONST                  __attribute__((const))
+#endif
+// }
+
+// Clang-only {
+#if defined(__clang__)
+#define DATATYPE99_PRIV_DIAGNOSTIC_PUSH        _Pragma("clang diagnostic push")
+#define DATATYPE99_PRIV_DIAGNOSTIC_POP         _Pragma("clang diagnostic pop")
+#define DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE _Pragma("clang diagnostic ignored \"-Wreturn-type\"")
+#endif
+// }
+
+// Either GCC or Clang {
 #ifdef __GNUC__
 #define DATATYPE99_PRIV_POSSIBLY_UNUSED    __attribute__((unused))
 #define DATATYPE99_PRIV_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
-#else
-#define DATATYPE99_PRIV_POSSIBLY_UNUSED
-#define DATATYPE99_PRIV_WARN_UNUSED_RESULT
+#endif
+// }
+
+#ifndef DATATYPE99_PRIV_SUPPRESS_W_MISLEADING_INDENTATION
+#define DATATYPE99_PRIV_SUPPRESS_W_MISLEADING_INDENTATION
 #endif
 
-#if defined(__GNUC__) && !defined(__clang__)
-#define DATATYPE99_PRIV_CONST __attribute__((const))
-#else
+#ifndef DATATYPE99_PRIV_DIAGNOSTIC_PUSH
+#define DATATYPE99_PRIV_DIAGNOSTIC_PUSH
+#endif
+
+#ifndef DATATYPE99_PRIV_DIAGNOSTIC_POP
+#define DATATYPE99_PRIV_DIAGNOSTIC_POP
+#endif
+
+#ifndef DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE
+#define DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE
+#endif
+
+#ifndef DATATYPE99_PRIV_CONST
 #define DATATYPE99_PRIV_CONST
+#endif
+
+#ifndef DATATYPE99_PRIV_POSSIBLY_UNUSED
+#define DATATYPE99_PRIV_POSSIBLY_UNUSED
+#endif
+
+#ifndef DATATYPE99_PRIV_WARN_UNUSED_RESULT
+#define DATATYPE99_PRIV_WARN_UNUSED_RESULT
 #endif
 
 #define DATATYPE99_PRIV_CTOR_ATTRS DATATYPE99_PRIV_WARN_UNUSED_RESULT DATATYPE99_PRIV_CONST
