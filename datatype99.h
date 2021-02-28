@@ -200,7 +200,7 @@ static const Unit99 unit99 = '\0';
 #define DATATYPE99_PRIV_genTags(variants)                                                          \
     METALANG99_callTrivial(METALANG99_match, variants, DATATYPE99_PRIV_genTags_)
 
-#define DATATYPE99_PRIV_genTags_nil_IMPL() METALANG99_empty()
+#define DATATYPE99_PRIV_genTags_nil_IMPL(_) METALANG99_empty()
 #define DATATYPE99_PRIV_genTags_cons_IMPL(x, xs)                                                   \
     METALANG99_terms(                                                                              \
         v(METALANG99_catPlain(METALANG99_tupleHeadPlain(x), Tag), ),                               \
