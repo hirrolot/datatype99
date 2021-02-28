@@ -88,7 +88,7 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 
 ### Semantics
 
-(It might be helpful to look at the [generated code](https://godbolt.org/z/ha56vv) of [`examples/binary_tree.c`](examples/binary_tree.c)'s `BinaryTree`.)
+(It might be helpful to look at the [generated code](https://godbolt.org/z/dx57rb) of [`examples/binary_tree.c`](examples/binary_tree.c)'s `BinaryTree`.)
 
 #### `datatype99`
 
@@ -125,11 +125,11 @@ typedef struct <datatype-name> <variant-name>SumT;
  5. For each sum type, the following tagged union is generated (inside the union, only fields to structures of non-empty variants are generated):
 
 ```
-typedef enum {
+typedef enum <datatype-name>Tag {
     <variant-name>0Tag, ..., <variant-name>NTag
 } <datatype-name>Tag;
 
-typedef union {
+typedef union <datatype-name>Data {
     char dummy;
 
     <datatype-name><variant-name>0 <variant-name>0;

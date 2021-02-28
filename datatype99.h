@@ -94,10 +94,14 @@ static const Unit99 unit99 = '\0';
     METALANG99_terms(                                                                              \
         v(typedef struct name name;),                                                              \
         DATATYPE99_PRIV_genTypedefs(name, variants),                                               \
-        METALANG99_typedef(v(name##Tag), METALANG99_anonEnum(DATATYPE99_PRIV_genTags(variants))),  \
+        METALANG99_typedef(                                                                        \
+            v(name##Tag),                                                                          \
+            METALANG99_enum(v(name##Tag), DATATYPE99_PRIV_genTags(variants))),                     \
         METALANG99_typedef(                                                                        \
             v(name##Data),                                                                         \
-            METALANG99_anonUnion(DATATYPE99_PRIV_genUnionFields(v(name), v(variants)))),           \
+            METALANG99_union(                                                                      \
+                v(name##Data),                                                                     \
+                DATATYPE99_PRIV_genUnionFields(v(name), v(variants)))),                            \
         v(struct name {                                                                            \
             name##Tag tag;                                                                         \
             name##Data data;                                                                       \
@@ -108,7 +112,7 @@ static const Unit99 unit99 = '\0';
 // Pattern matching {
 #define match99(val)                                                                               \
     METALANG99_gccPragma("GCC diagnostic push")                                                    \
-    DATATYPE99_PRIV_gccSuppressMisleadingIndentation                                               \
+    DATATYPE99_PRIV_GCC_SUPPRESS_MISLEADING_INDENTATION                                            \
     METALANG99_gccPragma("GCC diagnostic ignored \"-Wreturn-type\"")                               \
                                                                                                    \
     METALANG99_introduceVarToStmt(                                                                 \
@@ -120,7 +124,7 @@ static const Unit99 unit99 = '\0';
 #define of99(...)                                                                                  \
     METALANG99_gccPragma("GCC diagnostic pop")                                                     \
     METALANG99_gccPragma("GCC diagnostic push")                                                    \
-    DATATYPE99_PRIV_gccSuppressMisleadingIndentation                                               \
+    DATATYPE99_PRIV_GCC_SUPPRESS_MISLEADING_INDENTATION                                            \
     METALANG99_gccPragma("GCC diagnostic ignored \"-Wreturn-type\"")                               \
                                                                                                    \
     break;                                                                                         \
@@ -252,10 +256,10 @@ static const Unit99 unit99 = '\0';
 
 // Compiler-specific stuff {
 #if __GNUC__ >= 6
-#define DATATYPE99_PRIV_gccSuppressMisleadingIndentation                                           \
+#define DATATYPE99_PRIV_GCC_SUPPRESS_MISLEADING_INDENTATION                                        \
     METALANG99_gccPragma("GCC diagnostic ignored \"-Wmisleading-indentation\"")
 #else
-#define DATATYPE99_PRIV_gccSuppressMisleadingIndentation
+#define DATATYPE99_PRIV_GCC_SUPPRESS_MISLEADING_INDENTATION
 #endif
 
 #ifdef __GNUC__
