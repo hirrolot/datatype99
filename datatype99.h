@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// The official repository: https://github.com/Hirrolot/datatype99.
+// The official repository: <https://github.com/Hirrolot/datatype99>.
 
 #ifndef DATATYPE99_H
 #define DATATYPE99_H
@@ -27,6 +27,11 @@
 #include <stddef.h>
 
 #include <metalang99.h>
+
+#if (METALANG99_MINOR < 4 || (METALANG99_MINOR == 4 && METALANG99_PATCH < 2)) ||                   \
+    METALANG99_MINOR < 4
+#error "Please, update Metalang99 to v0.4.2 or later"
+#endif
 
 #ifndef DATATYPE99_NO_ALIASES
 
@@ -103,7 +108,7 @@ static const Unit99 unit99 = '\0';
 // Pattern matching {
 #define match99(val)                                                                               \
     METALANG99_gccPragma("GCC diagnostic push")                                                    \
-    DATATYPE99_PRIV_GCC_SUPPRESS_MISLEADING_INDENTATION                                            \
+    DATATYPE99_PRIV_gccSuppressMisleadingIndentation                                               \
     METALANG99_gccPragma("GCC diagnostic ignored \"-Wreturn-type\"")                               \
                                                                                                    \
     METALANG99_introduceVarToStmt(                                                                 \
@@ -115,7 +120,7 @@ static const Unit99 unit99 = '\0';
 #define of99(...)                                                                                  \
     METALANG99_gccPragma("GCC diagnostic pop")                                                     \
     METALANG99_gccPragma("GCC diagnostic push")                                                    \
-    DATATYPE99_PRIV_GCC_SUPPRESS_MISLEADING_INDENTATION                                            \
+    DATATYPE99_PRIV_gccSuppressMisleadingIndentation                                               \
     METALANG99_gccPragma("GCC diagnostic ignored \"-Wreturn-type\"")                               \
                                                                                                    \
     break;                                                                                         \
@@ -247,10 +252,10 @@ static const Unit99 unit99 = '\0';
 
 // Compiler-specific stuff {
 #if __GNUC__ >= 6
-#define DATATYPE99_PRIV_GCC_SUPPRESS_MISLEADING_INDENTATION                                        \
+#define DATATYPE99_PRIV_gccSuppressMisleadingIndentation                                           \
     METALANG99_gccPragma("GCC diagnostic ignored \"-Wmisleading-indentation\"")
 #else
-#define DATATYPE99_PRIV_GCC_SUPPRESS_MISLEADING_INDENTATION
+#define DATATYPE99_PRIV_gccSuppressMisleadingIndentation
 #endif
 
 #ifdef __GNUC__

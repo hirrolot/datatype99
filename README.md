@@ -42,7 +42,7 @@
 
 ## Installation
 
- 1. Download Datatype99 and [Metalang99] (minimum supported version -- [0.4.1](https://github.com/Hirrolot/metalang99/releases/tag/v0.4.1)).
+ 1. Download Datatype99 and [Metalang99] (minimum supported version -- [0.4.2](https://github.com/Hirrolot/metalang99/releases/tag/v0.4.2)).
  2. Add `datatype99` and `metalang99/include` to your include paths.
  3. `#include <datatype99.h>` beforehand.
 
