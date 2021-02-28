@@ -151,7 +151,7 @@ static const Unit99 unit99 = '\0';
 #define otherwise99                                                                                \
     break;                                                                                         \
     default:                                                                                       \
-        METALANG99_gccPragma("GCC diagnostic pop")
+        DATATYPE99_PRIV_DIAGNOSTIC_POP
 
 #define matches99(val, tag_) ((val).tag == tag_##Tag)
 // } (Pattern matching)
