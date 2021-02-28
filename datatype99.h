@@ -102,9 +102,9 @@ static const Unit99 unit99 = '\0';
 
 // Pattern matching {
 #define match99(val)                                                                               \
-    DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic push")                                              \
-    DATATYPE99_PRIV_GCC_IGNORE_MISLEADING_INDENTATION                                              \
-    DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic ignored \"-Wreturn-type\"")                         \
+    METALANG99_gccPragma("GCC diagnostic push")                                                    \
+    DATATYPE99_PRIV_GCC_SUPPRESS_MISLEADING_INDENTATION                                            \
+    METALANG99_gccPragma("GCC diagnostic ignored \"-Wreturn-type\"")                               \
                                                                                                    \
     METALANG99_introduceVarToStmt(                                                                 \
         const void *DATATYPE99_PRIV_POSSIBLY_UNUSED datatype99_priv_match_expr =                   \
@@ -113,10 +113,10 @@ static const Unit99 unit99 = '\0';
         switch ((val).tag)
 
 #define of99(...)                                                                                  \
-    DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic pop")                                               \
-    DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic push")                                              \
-    DATATYPE99_PRIV_GCC_IGNORE_MISLEADING_INDENTATION                                              \
-    DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic ignored \"-Wreturn-type\"")                         \
+    METALANG99_gccPragma("GCC diagnostic pop")                                                     \
+    METALANG99_gccPragma("GCC diagnostic push")                                                    \
+    DATATYPE99_PRIV_GCC_SUPPRESS_MISLEADING_INDENTATION                                            \
+    METALANG99_gccPragma("GCC diagnostic ignored \"-Wreturn-type\"")                               \
                                                                                                    \
     break;                                                                                         \
     METALANG99_ifPlain(                                                                            \
@@ -143,7 +143,7 @@ static const Unit99 unit99 = '\0';
 #define otherwise99                                                                                \
     break;                                                                                         \
     default:                                                                                       \
-        DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic pop")
+        METALANG99_gccPragma("GCC diagnostic pop")
 
 #define matches99(val, tag_) ((val).tag == tag_##Tag)
 // } (Pattern matching)
@@ -246,30 +246,20 @@ static const Unit99 unit99 = '\0';
     })
 
 // Compiler-specific stuff {
-#if defined(__GNUC__) && !defined(__clang__)
-#define DATATYPE99_PRIV_GCC_PRAGMA(str) _Pragma(str)
-#else
-#define DATATYPE99_PRIV_GCC_PRAGMA(str)
-#endif
-
 #if __GNUC__ >= 6
-#define DATATYPE99_PRIV_GCC_IGNORE_MISLEADING_INDENTATION                                          \
-    DATATYPE99_PRIV_GCC_PRAGMA("GCC diagnostic ignored \"-Wmisleading-indentation\"")
+#define DATATYPE99_PRIV_GCC_SUPPRESS_MISLEADING_INDENTATION                                        \
+    METALANG99_gccPragma("GCC diagnostic ignored \"-Wmisleading-indentation\"")
 #else
-#define DATATYPE99_PRIV_GCC_IGNORE_MISLEADING_INDENTATION
+#define DATATYPE99_PRIV_GCC_SUPPRESS_MISLEADING_INDENTATION
 #endif
 
 #ifdef __GNUC__
-#define DATATYPE99_PRIV_POSSIBLY_UNUSED __attribute__((unused))
-#else
-#define DATATYPE99_PRIV_POSSIBLY_UNUSED
-#endif
-
-#ifdef __GNUC__
+#define DATATYPE99_PRIV_POSSIBLY_UNUSED    __attribute__((unused))
 #define DATATYPE99_PRIV_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
 #else
+#define DATATYPE99_PRIV_POSSIBLY_UNUSED
 #define DATATYPE99_PRIV_WARN_UNUSED_RESULT
-#endif // __GNU__
+#endif
 
 #if defined(__GNUC__) && !defined(__clang__)
 #define DATATYPE99_PRIV_CONST __attribute__((const))
