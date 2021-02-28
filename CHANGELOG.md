@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+### Added
+
+ - Generate `<datatype-name>Tag` and `<datatype-name>Data`.
+
 ### Fixed
 
  - Turn off `-Wmisleading-indentation` only when `__GNUC__ >= 6`.
