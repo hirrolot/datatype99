@@ -47,7 +47,7 @@ static const Unit99 unit99 = '\0';
 // }
 
 // Parsing {
-#define DATATYPE99_PRIV_parse_IMPL(...)                                                            \
+#define DATATYPE99_PRIV_parse(...)                                                                 \
     METALANG99_listMap(v(DATATYPE99_PRIV_parseMap), METALANG99_list(v(__VA_ARGS__)))
 
 #define DATATYPE99_PRIV_parseMap_IMPL(variant)                                                     \
@@ -80,10 +80,8 @@ static const Unit99 unit99 = '\0';
 
 // Sum type generation {
 #define datatype99(name, ...)                                                                      \
-    METALANG99_eval(METALANG99_call(                                                               \
-        DATATYPE99_PRIV_genDatatype,                                                               \
-        v(name),                                                                                   \
-        METALANG99_callTrivial(DATATYPE99_PRIV_parse, __VA_ARGS__)))                               \
+    METALANG99_eval(                                                                               \
+        METALANG99_call(DATATYPE99_PRIV_genDatatype, v(name), DATATYPE99_PRIV_parse(__VA_ARGS__))) \
                                                                                                    \
     METALANG99_semicolon()
 
@@ -91,21 +89,15 @@ static const Unit99 unit99 = '\0';
     METALANG99_terms(                                                                              \
         v(typedef struct name name;),                                                              \
         DATATYPE99_PRIV_genTypedefs(name, variants),                                               \
-        METALANG99_call(                                                                           \
-            DATATYPE99_PRIV_genTaggedUnion,                                                        \
-            v(name),                                                                               \
-            METALANG99_tuple(DATATYPE99_PRIV_genTags(variants)),                                   \
-            DATATYPE99_PRIV_genUnionFields(name, variants)),                                       \
+        METALANG99_typedef(v(name##Tag), METALANG99_anonEnum(DATATYPE99_PRIV_genTags(variants))),  \
+        METALANG99_typedef(                                                                        \
+            v(name##Data),                                                                         \
+            METALANG99_anonUnion(DATATYPE99_PRIV_genUnionFields(v(name), v(variants)))),           \
+        v(struct name {                                                                            \
+            name##Tag tag;                                                                         \
+            name##Data data;                                                                       \
+        };),                                                                                       \
         DATATYPE99_PRIV_genCtors(name, variants))
-
-#define DATATYPE99_PRIV_genTaggedUnion_IMPL(name, tags, union_fields)                              \
-    v(struct name {                                                                                \
-        enum { METALANG99_untuplePlain(tags) } tag;                                                \
-        union {                                                                                    \
-            char dummy[1];                                                                         \
-            union_fields                                                                           \
-        } data;                                                                                    \
-    };)
 // } (Sum type generation)
 
 // Pattern matching {
@@ -212,9 +204,14 @@ static const Unit99 unit99 = '\0';
  * <datatype-name><variant-name>N <variant-name>N;
  */
 #define DATATYPE99_PRIV_genUnionFields(name, variants)                                             \
-    DATATYPE99_PRIV_mapVariants(                                                                   \
-        METALANG99_appl(v(DATATYPE99_PRIV_genUnionField), v(name)),                                \
-        v(variants))
+    METALANG99_call(DATATYPE99_PRIV_genUnionFields, name, variants)
+
+#define DATATYPE99_PRIV_genUnionFields_IMPL(name, variants)                                        \
+    METALANG99_terms(                                                                              \
+        v(char dummy;),                                                                            \
+        DATATYPE99_PRIV_mapVariants(                                                               \
+            METALANG99_appl(v(DATATYPE99_PRIV_genUnionField), v(name)),                            \
+            v(variants)))
 
 #define DATATYPE99_PRIV_genUnionField_IMPL(name, tag, variant_params)                              \
     METALANG99_ifPlain(                                                                            \
@@ -235,12 +232,17 @@ static const Unit99 unit99 = '\0';
         DATATYPE99_PRIV_genCtorTemplate,                                                           \
         v(name, tag),                                                                              \
         METALANG99_indexedParams(v(variant_params)),                                               \
-        METALANG99_ifPlain(METALANG99_isConsPlain(variant_params), v(data.tag), v(data.dummy)),    \
-        METALANG99_indexedInitializerList(METALANG99_listLen(v(variant_params))))
+        METALANG99_repeat(                                                                         \
+            METALANG99_appl(v(DATATYPE99_PRIV_assignResult), v(tag)),                              \
+            METALANG99_listLen(v(variant_params))))
 
-#define DATATYPE99_PRIV_genCtorTemplate_IMPL(name, tag_, params, assigned_field, ...)              \
+#define DATATYPE99_PRIV_assignResult_IMPL(tag, i) v(result.data.tag._##i = _##i;)
+
+#define DATATYPE99_PRIV_genCtorTemplate_IMPL(name, tag_, params, assigned_fields)                  \
     v(inline static DATATYPE99_PRIV_CTOR_ATTRS name tag_ params {                                  \
-        return ((name){.tag = tag_##Tag, .assigned_field = __VA_ARGS__});                          \
+        name result;                                                                               \
+        result.tag = tag_##Tag;                                                                    \
+        assigned_fields return result;                                                             \
     })
 
 // Compiler-specific stuff {
@@ -285,6 +287,7 @@ static const Unit99 unit99 = '\0';
 #define DATATYPE99_PRIV_genVariantParamTypedef_ARITY 3
 #define DATATYPE99_PRIV_genUnionField_ARITY          2
 #define DATATYPE99_PRIV_genCtor_ARITY                2
+#define DATATYPE99_PRIV_assignResult_ARITY           2
 // }
 
 #endif // DATATYPE99_H

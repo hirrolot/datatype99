@@ -32,9 +32,9 @@
 
  - **Type-safe.** Unlike manually written tagged unions, Datatype99 is type-safe: normally you cannot access invalid data or construct an invalid variant. Pattern matching is exhaustive too.
 
- - **Pure C99.** No external tools are required -- Datatype99 is implemented using only preprocessor macros.
+ - **Pure C99/C++11.** No external tools are required -- Datatype99 is implemented using only preprocessor macros.
 
- - **Can be used everywhere.** Literally everywhere provided that you have a standard-confirming C99 preprocessor. Even on freestanding environments.
+ - **Can be used everywhere.** Literally everywhere provided that you have a standard-confirming C99/C++11 preprocessor. Even on freestanding environments.
 
  - **Transparent.** Datatype99 comes with formal [code generation semantics], meaning if you try to look at `datatype`'s output, normally you will not see something unexpected.
 
@@ -88,7 +88,7 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 
 ### Semantics
 
-(It might be helpful to look at the [generated code](https://godbolt.org/z/zhj69Y) of [`examples/binary_tree.c`](examples/binary_tree.c)'s `BinaryTree`.)
+(It might be helpful to look at the [generated code](https://godbolt.org/z/ha56vv) of [`examples/binary_tree.c`](examples/binary_tree.c)'s `BinaryTree`.)
 
 #### `datatype99`
 
@@ -125,17 +125,21 @@ typedef struct <datatype-name> <variant-name>SumT;
  5. For each sum type, the following tagged union is generated (inside the union, only fields to structures of non-empty variants are generated):
 
 ```
-struct <datatype-name> {
-    enum {
-        <variant-name>0Tag, ..., <variant-name>NTag
-    } tag;
+typedef enum {
+    <variant-name>0Tag, ..., <variant-name>NTag
+} <datatype-name>Tag;
 
-    union {
-        char dummy[1];
-        <datatype-name><variant-name>0 <variant-name>0;
-        ...
-        <datatype-name><variant-name>N <variant-name>N;
-    } data;
+typedef union {
+    char dummy;
+
+    <datatype-name><variant-name>0 <variant-name>0;
+    ...
+    <datatype-name><variant-name>N <variant-name>N;
+} <datatype-name>Data;
+
+struct <datatype-name> {
+    <datatype-name>Tag tag;
+    <datatype-name>Data data;
 };
 ```
 

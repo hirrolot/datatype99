@@ -21,6 +21,23 @@ int main(void) {
     const char *hello = "hello", *world = "world";
     Complex a = A(), b = B(42), c = C(hello, 12.13414), d = D('~', 0, 121434551, NULL);
 
+    ComplexTag tag;
+    tag = ATag;
+    tag = BTag;
+    tag = CTag;
+    tag = DTag;
+    (void)tag;
+
+    ComplexData data = {.dummy = 0};
+    data.B._0 = 123;
+    data.C._0 = "abc";
+    data.C._1 = 124.45476;
+    data.D._0 = 'A';
+    data.D._1 = 2924;
+    data.D._2 = -198474;
+    data.D._3 = (int *)(int[]){123};
+    (void)data;
+
     const ASumT a_indirect = a;
     const BSumT b_indirect = b;
     const CSumT c_indirect = c;

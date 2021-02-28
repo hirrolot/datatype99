@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
  - Turn off `-Wmisleading-indentation` only when `__GNUC__ >= 6`.
+ - Make it work on C++11.
 
 ## [0.3.0] - 2021-02-26
 
