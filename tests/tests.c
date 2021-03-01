@@ -118,8 +118,8 @@ int main(void) {
             *ptr = &n;                                                                             \
         }                                                                                          \
     }                                                                                              \
-                                                                                                   \
-    M_semicolon()
+    do {                                                                                           \
+    } while (0)
 
     TEST_MATCH(a);
     assert(0 == foo);
