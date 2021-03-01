@@ -88,7 +88,7 @@ static const Unit99 unit99 = '\0';
     METALANG99_eval(                                                                               \
         METALANG99_call(DATATYPE99_PRIV_genDatatype, v(name), DATATYPE99_PRIV_parse(__VA_ARGS__))) \
                                                                                                    \
-    METALANG99_semicolon()
+    static const char name##_semicolon DATATYPE99_PRIV_POSSIBLY_UNUSED = '\0'
 
 #define DATATYPE99_PRIV_genDatatype_IMPL(name, variants)                                           \
     METALANG99_terms(                                                                              \
