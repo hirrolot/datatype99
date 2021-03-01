@@ -248,9 +248,12 @@ static const Unit99 unit99 = '\0';
 
 #define DATATYPE99_PRIV_genCtorTemplate_IMPL(name, tag_, params, assigned_fields)                  \
     v(inline static DATATYPE99_PRIV_CTOR_ATTRS name tag_ params {                                  \
+        /* clang-format off */                                                                     \
         name result;                                                                               \
         result.tag = tag_##Tag;                                                                    \
-        assigned_fields return result;                                                             \
+        assigned_fields                                                                            \
+        return result;                                                                             \
+        /* clang-format on*/                                                                       \
     })
 
 // Compiler-specific stuff {
