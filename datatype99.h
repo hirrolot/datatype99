@@ -88,7 +88,7 @@ static const Unit99 unit99 = '\0';
     METALANG99_eval(                                                                               \
         METALANG99_call(DATATYPE99_PRIV_genDatatype, v(name), DATATYPE99_PRIV_parse(__VA_ARGS__))) \
                                                                                                    \
-    static const char name##_semicolon DATATYPE99_PRIV_POSSIBLY_UNUSED = '\0'
+    static const char name##_semicolon DATATYPE99_PRIV_UNUSED = '\0'
 
 #define DATATYPE99_PRIV_genDatatype_IMPL(name, variants)                                           \
     METALANG99_terms(                                                                              \
@@ -115,10 +115,10 @@ static const Unit99 unit99 = '\0';
     DATATYPE99_PRIV_SUPPRESS_W_MISLEADING_INDENTATION                                              \
     DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE                                                         \
                                                                                                    \
-    METALANG99_introduceVarToStmt(                                                                 \
-        void *DATATYPE99_PRIV_POSSIBLY_UNUSED datatype99_priv_match_expr = (void *)&(val))         \
+    METALANG99_introduceVarToStmt(void *datatype99_priv_match_expr = (void *)&(val))               \
+        METALANG99_suppressUnusedBeforeStmt(datatype99_priv_match_expr)                            \
                                                                                                    \
-        switch ((val).tag)
+            switch ((val).tag)
 
 #define of99(...)                                                                                  \
     DATATYPE99_PRIV_DIAGNOSTIC_POP                                                                 \
@@ -284,7 +284,7 @@ static const Unit99 unit99 = '\0';
 
 // Either GCC or Clang {
 #ifdef __GNUC__
-#define DATATYPE99_PRIV_POSSIBLY_UNUSED    __attribute__((unused))
+#define DATATYPE99_PRIV_UNUSED    __attribute__((unused))
 #define DATATYPE99_PRIV_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
 #endif
 // }
@@ -309,8 +309,8 @@ static const Unit99 unit99 = '\0';
 #define DATATYPE99_PRIV_CONST
 #endif
 
-#ifndef DATATYPE99_PRIV_POSSIBLY_UNUSED
-#define DATATYPE99_PRIV_POSSIBLY_UNUSED
+#ifndef DATATYPE99_PRIV_UNUSED
+#define DATATYPE99_PRIV_UNUSED
 #endif
 
 #ifndef DATATYPE99_PRIV_WARN_UNUSED_RESULT
