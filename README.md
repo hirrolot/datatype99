@@ -196,7 +196,7 @@ A:
 
 ### Q: Why don't you use third-party code generators?
 
-A: See [Metalang99's README](https://github.com/Hirrolot/metalang99#q-why-not-just-use-third-party-code-generators).
+A: See [Metalang99's README >>](https://github.com/Hirrolot/metalang99#q-why-dont-you-use-third-party-code-generators).
 
 ### Q: How does it work?
 
