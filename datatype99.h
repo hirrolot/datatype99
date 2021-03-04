@@ -72,9 +72,9 @@ static const Unit99 unit99 = '\0';
 // } (Parsing)
 
 // A variant representation {
-#define DATATYPE99_PRIV_variant(tag, variant_params) METALANG99_tuple(tag, variant_params)
-#define DATATYPE99_PRIV_variantTag                   METALANG99_tupleHead
-#define DATATYPE99_PRIV_variantParams                METALANG99_tupleTail
+#define DATATYPE99_PRIV_variant(tag, sig) METALANG99_tuple(tag, sig)
+#define DATATYPE99_PRIV_variantTag        METALANG99_tupleGet0
+#define DATATYPE99_PRIV_variantParams     METALANG99_tupleGet1
 
 #define DATATYPE99_PRIV_isEmptyVariantPlain(...)                                                   \
     METALANG99_uintEqPlain(METALANG99_variadicsCountPlain(__VA_ARGS__), 1)
@@ -161,14 +161,14 @@ static const Unit99 unit99 = '\0';
         METALANG99_appl(v(DATATYPE99_PRIV_genTypedefsForVariant), v(name)),                        \
         v(variants))
 
-#define DATATYPE99_PRIV_genTypedefsForVariant_IMPL(name, tag, variant_params)                      \
+#define DATATYPE99_PRIV_genTypedefsForVariant_IMPL(name, tag, sig)                                 \
     METALANG99_terms(                                                                              \
         v(typedef struct name tag##SumT;),                                                         \
         METALANG99_ifPlain(                                                                        \
-            METALANG99_isConsPlain(variant_params),                                                \
-            DATATYPE99_PRIV_genVariantStruct(name, tag, variant_params),                           \
+            METALANG99_isConsPlain(sig),                                                           \
+            DATATYPE99_PRIV_genVariantStruct(name, tag, sig),                                      \
             METALANG99_empty()),                                                                   \
-        DATATYPE99_PRIV_genVariantParamsTypedefs(tag, variant_params))
+        DATATYPE99_PRIV_genVariantParamsTypedefs(tag, sig))
 
 /*
  * typedef struct <datatype-name><variant-name> {
@@ -177,20 +177,20 @@ static const Unit99 unit99 = '\0';
  *     <type>N _N;
  * } <datatype-name><variant-name>;
  */
-#define DATATYPE99_PRIV_genVariantStruct(name, tag, variant_params)                                \
+#define DATATYPE99_PRIV_genVariantStruct(name, tag, sig)                                           \
     METALANG99_typedef(                                                                            \
         v(name##tag),                                                                              \
-        METALANG99_struct(v(name##tag), METALANG99_indexedFields(v(variant_params))))
+        METALANG99_struct(v(name##tag), METALANG99_indexedFields(v(sig))))
 
 /*
  * typedef <type>0 <variant-name>_0;
  * ...
  * typedef <type>N <variant-name>_N;
  */
-#define DATATYPE99_PRIV_genVariantParamsTypedefs(tag, variant_params)                              \
+#define DATATYPE99_PRIV_genVariantParamsTypedefs(tag, sig)                                         \
     METALANG99_listUnwrap(METALANG99_listMapI(                                                     \
         METALANG99_appl(v(DATATYPE99_PRIV_genVariantParamTypedef), v(tag)),                        \
-        v(variant_params)))
+        v(sig)))
 
 #define DATATYPE99_PRIV_genVariantParamTypedef_IMPL(tag, type, i) v(typedef type tag##_##i;)
 
@@ -203,7 +203,7 @@ static const Unit99 unit99 = '\0';
 #define DATATYPE99_PRIV_genTags_nil_IMPL(_) METALANG99_empty()
 #define DATATYPE99_PRIV_genTags_cons_IMPL(x, xs)                                                   \
     METALANG99_terms(                                                                              \
-        v(METALANG99_catPlain(METALANG99_tupleHeadPlain(x), Tag), ),                               \
+        v(METALANG99_catPlain(METALANG99_tupleGet0Plain(x), Tag), ),                               \
         DATATYPE99_PRIV_genTags(xs))
 
 /*
@@ -221,11 +221,8 @@ static const Unit99 unit99 = '\0';
             METALANG99_appl(v(DATATYPE99_PRIV_genUnionField), v(name)),                            \
             v(variants)))
 
-#define DATATYPE99_PRIV_genUnionField_IMPL(name, tag, variant_params)                              \
-    METALANG99_ifPlain(                                                                            \
-        METALANG99_isConsPlain(variant_params),                                                    \
-        v(name##tag tag;),                                                                         \
-        METALANG99_empty())
+#define DATATYPE99_PRIV_genUnionField_IMPL(name, tag, sig)                                         \
+    METALANG99_ifPlain(METALANG99_isConsPlain(sig), v(name##tag tag;), METALANG99_empty())
 
 /*
  * inline static <datatype99-name> <variant-name>0(...) { ... }
@@ -235,86 +232,64 @@ static const Unit99 unit99 = '\0';
 #define DATATYPE99_PRIV_genCtors(name, variants)                                                   \
     DATATYPE99_PRIV_mapVariants(METALANG99_appl(v(DATATYPE99_PRIV_genCtor), v(name)), v(variants))
 
-#define DATATYPE99_PRIV_genCtor_IMPL(name, tag, variant_params)                                    \
+#define DATATYPE99_PRIV_genCtor_IMPL(name, tag, sig)                                               \
     METALANG99_call(                                                                               \
         DATATYPE99_PRIV_genCtorTemplate,                                                           \
         v(name, tag),                                                                              \
-        METALANG99_indexedParams(v(variant_params)),                                               \
+        METALANG99_indexedParams(v(sig)),                                                          \
         METALANG99_repeat(                                                                         \
             METALANG99_appl(v(DATATYPE99_PRIV_assignResult), v(tag)),                              \
-            METALANG99_listLen(v(variant_params))))
+            METALANG99_listLen(v(sig))))
 
 #define DATATYPE99_PRIV_assignResult_IMPL(tag, i) v(result.data.tag._##i = _##i;)
 
+// clang-format off
 #define DATATYPE99_PRIV_genCtorTemplate_IMPL(name, tag_, params, assigned_fields)                  \
     v(inline static DATATYPE99_PRIV_CTOR_ATTRS name tag_ params {                                  \
-        /* clang-format off */                                                                     \
         name result;                                                                               \
         result.tag = tag_##Tag;                                                                    \
         assigned_fields                                                                            \
         return result;                                                                             \
-        /* clang-format on*/                                                                       \
     })
+// clang-format on
 
 // Compiler-specific stuff {
+#if defined(__clang__)
 
-// GCC 6.x.y-only {
-#if __GNUC__ >= 6
-#define DATATYPE99_PRIV_SUPPRESS_W_MISLEADING_INDENTATION                                          \
-    _Pragma("GCC diagnostic ignored \"-Wmisleading-indentation\"")
-#endif
-// }
+#define DATATYPE99_PRIV_DIAGNOSTIC_PUSH        _Pragma("clang diagnostic push")
+#define DATATYPE99_PRIV_DIAGNOSTIC_POP         _Pragma("clang diagnostic pop")
+#define DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE _Pragma("clang diagnostic ignored \"-Wreturn-type\"")
+#define DATATYPE99_PRIV_CONST
 
-// GCC-only {
-#if defined(__GNUC__) && !defined(__clang__)
+#elif defined(__GNUC__)
+
 #define DATATYPE99_PRIV_DIAGNOSTIC_PUSH        _Pragma("GCC diagnostic push")
 #define DATATYPE99_PRIV_DIAGNOSTIC_POP         _Pragma("GCC diagnostic pop")
 #define DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE _Pragma("GCC diagnostic ignored \"-Wreturn-type\"")
 #define DATATYPE99_PRIV_CONST                  __attribute__((const))
-#endif
-// }
 
-// Clang-only {
-#if defined(__clang__)
-#define DATATYPE99_PRIV_DIAGNOSTIC_PUSH        _Pragma("clang diagnostic push")
-#define DATATYPE99_PRIV_DIAGNOSTIC_POP         _Pragma("clang diagnostic pop")
-#define DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE _Pragma("clang diagnostic ignored \"-Wreturn-type\"")
-#endif
-// }
+#else
 
-// Either GCC or Clang {
-#ifdef __GNUC__
-#define DATATYPE99_PRIV_UNUSED    __attribute__((unused))
-#define DATATYPE99_PRIV_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
-#endif
-// }
-
-#ifndef DATATYPE99_PRIV_SUPPRESS_W_MISLEADING_INDENTATION
-#define DATATYPE99_PRIV_SUPPRESS_W_MISLEADING_INDENTATION
-#endif
-
-#ifndef DATATYPE99_PRIV_DIAGNOSTIC_PUSH
 #define DATATYPE99_PRIV_DIAGNOSTIC_PUSH
-#endif
-
-#ifndef DATATYPE99_PRIV_DIAGNOSTIC_POP
 #define DATATYPE99_PRIV_DIAGNOSTIC_POP
-#endif
-
-#ifndef DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE
 #define DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE
-#endif
-
-#ifndef DATATYPE99_PRIV_CONST
 #define DATATYPE99_PRIV_CONST
+
 #endif
 
-#ifndef DATATYPE99_PRIV_UNUSED
+#ifdef __GNUC__
+#define DATATYPE99_PRIV_UNUSED             __attribute__((unused))
+#define DATATYPE99_PRIV_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
+#else
 #define DATATYPE99_PRIV_UNUSED
+#define DATATYPE99_PRIV_WARN_UNUSED_RESULT
 #endif
 
-#ifndef DATATYPE99_PRIV_WARN_UNUSED_RESULT
-#define DATATYPE99_PRIV_WARN_UNUSED_RESULT
+#if !defined(__clang__) && __GNUC__ >= 6
+#define DATATYPE99_PRIV_SUPPRESS_W_MISLEADING_INDENTATION                                          \
+    _Pragma("GCC diagnostic ignored \"-Wmisleading-indentation\"")
+#else
+#define DATATYPE99_PRIV_SUPPRESS_W_MISLEADING_INDENTATION
 #endif
 
 #define DATATYPE99_PRIV_CTOR_ATTRS DATATYPE99_PRIV_WARN_UNUSED_RESULT DATATYPE99_PRIV_CONST
