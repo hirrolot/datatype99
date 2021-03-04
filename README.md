@@ -187,6 +187,17 @@ Thanks to Rust and ML for their implementations of sum types.
 
 ## FAQ
 
+### Q: Why use C instead of Rust/Zig/whatever else?
+
+A:
+
+ - Datatype99 can be integrated into existing code bases written in pure C.
+ - Sometimes C is the only choice.
+
+### Q: Why don't you use third-party code generators?
+
+A: See [Metalang99's README](https://github.com/Hirrolot/metalang99#q-why-not-just-use-third-party-code-generators).
+
 ### Q: How does it work?
 
 A: The `datatype99` macro generates a tagged union accompanied with type hints and value constructors. Pattern matching desugars merely to a switch statement. To generate all this stuff, [Metalang99] is used, which is a preprocessor metaprogramming library.
@@ -217,14 +228,6 @@ playground.c:3:1: error: unknown type name ‘NonExistingType’
 If an error is not comprehensible at all, try to look at generated code (`-E`). Hopefully, the [code generation semantics] is formally defined so normally you will not see something unexpected.
 
 [code generation semantics]: #semantics
-
-### Q: How to use an array inside a variant?
-
-A: See [`examples/array_in_variant.c`](examples/array_in_variant.c).
-
-### Q: Why not just use third-party code generators?
-
-A: See [Metalang99's README](https://github.com/Hirrolot/metalang99#q-why-not-just-use-third-party-code-generators).
 
 ## Troubleshooting
 
