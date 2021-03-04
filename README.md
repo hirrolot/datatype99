@@ -187,6 +187,13 @@ Thanks to Rust and ML for their implementations of sum types.
 
 ## FAQ
 
+### Q: Why use C instead of Rust/Zig/whatever else?
+
+A:
+
+ - Datatype99 can be integrated into existing code bases written in pure C.
+ - Sometimes C is the only choice.
+
 ### Q: How does it work?
 
 A: The `datatype99` macro generates a tagged union accompanied with type hints and value constructors. Pattern matching desugars merely to a switch statement. To generate all this stuff, [Metalang99] is used, which is a preprocessor metaprogramming library.
