@@ -38,6 +38,7 @@
 #define datatype  datatype99
 #define match     match99
 #define matches   matches99
+#define ifLet     ifLet99
 #define of        of99
 #define otherwise otherwise99
 
@@ -135,9 +136,23 @@ static const Unit99 unit99 = '\0';
 #define DATATYPE99_PRIV_ofEmpty(tag) case tag##Tag:
 #define DATATYPE99_PRIV_ofNonEmpty(tag, ...)                                                       \
     case tag##Tag:                                                                                 \
-        METALANG99_eval(METALANG99_variadicsForEachI(                                              \
-            METALANG99_appl(v(DATATYPE99_PRIV_genBinding), v(tag)),                                \
-            v(__VA_ARGS__)))
+        METALANG99_eval(DATATYPE99_PRIV_genBindings(v(tag), v(__VA_ARGS__)))
+
+#define otherwise99                                                                                \
+    break;                                                                                         \
+    default:                                                                                       \
+        DATATYPE99_PRIV_DIAGNOSTIC_POP
+
+#define ifLet99(val, tag_, ...)                                                                    \
+    if (tag_##Tag == (val).tag)                                                                    \
+        METALANG99_introduceVarToStmt(void *datatype99_priv_match_expr = (void *)&(val))           \
+            METALANG99_suppressUnusedBeforeStmt(datatype99_priv_match_expr)                        \
+                METALANG99_eval(DATATYPE99_PRIV_genBindings(v(tag_), v(__VA_ARGS__)))
+
+#define matches99(val, tag_) ((val).tag == tag_##Tag)
+
+#define DATATYPE99_PRIV_genBindings(tag, ...)                                                      \
+    METALANG99_variadicsForEachI(METALANG99_appl(v(DATATYPE99_PRIV_genBinding), tag), __VA_ARGS__)
 
 #define DATATYPE99_PRIV_genBinding_IMPL(tag_, x, i)                                                \
     METALANG99_ifPlain(                                                                            \
@@ -147,13 +162,6 @@ static const Unit99 unit99 = '\0';
             tag_##_##i *x = &((tag_##SumT *)datatype99_priv_match_expr)->data.tag_._##i)))
 
 #define DATATYPE99_PRIV_isUnderscore__ ()
-
-#define otherwise99                                                                                \
-    break;                                                                                         \
-    default:                                                                                       \
-        DATATYPE99_PRIV_DIAGNOSTIC_POP
-
-#define matches99(val, tag_) ((val).tag == tag_##Tag)
 // } (Pattern matching)
 
 #define DATATYPE99_PRIV_genTypedefs(name, variants)                                                \
