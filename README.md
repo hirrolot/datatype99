@@ -81,9 +81,9 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 <datatype-name> ::= <ident> ;
 <variant-name>  ::= <ident> ;
 
-<match>         ::= "match99(" <expr> ")" { <arm> }+ ;
+<match>         ::= "match99(" <lvalue> ")" { <arm> }+ ;
 <matches>       ::= "matches99(" <expr> "," <ident> ")" ;
-<if-let>        ::= "ifLet99(" <expr> "," <variant-name> "," <ident> [ { "," <ident> }+ ] ")" <stmt>;
+<if-let>        ::= "ifLet99(" <lvalue> "," <variant-name> "," <ident> [ { "," <ident> }+ ] ")" <stmt>;
 <of>            ::= "of99(" <variant-name> [ { "," <ident> }+ ] ")" <stmt> ;
 <otherwise>     ::= "otherwise99" <stmt> ;
 ```

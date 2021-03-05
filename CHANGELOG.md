@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
  - Avoid using `METALANG99_semicolon` because it turned out to be [dangerous](https://github.com/Hirrolot/metalang99/commit/f17f06adf1a747a8897bbc90c598b2be21c945c8).
  - Clang's `-Wused-but-marked-unused` in `of99`.
+ - The specification now requires an lvalue for `match99`.
 
 ## [0.3.1] - 2021-02-28
 
