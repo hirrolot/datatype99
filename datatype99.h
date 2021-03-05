@@ -74,11 +74,11 @@ static const Unit99 unit99 = '\0';
 
 // A variant representation {
 #define DATATYPE99_PRIV_variant(tag, sig) METALANG99_tuple(tag, sig)
-#define DATATYPE99_PRIV_variantTag        METALANG99_tupleGet0
-#define DATATYPE99_PRIV_variantParams     METALANG99_tupleGet1
+#define DATATYPE99_PRIV_variantTag        METALANG99_tupleGet(0)
+#define DATATYPE99_PRIV_variantParams     METALANG99_tupleGet(1)
 
 #define DATATYPE99_PRIV_isEmptyVariantPlain(...)                                                   \
-    METALANG99_uintEqPlain(METALANG99_variadicsCountPlain(__VA_ARGS__), 1)
+    METALANG99_natEqPlain(METALANG99_variadicsCountPlain(__VA_ARGS__), 1)
 
 #define DATATYPE99_PRIV_mapVariants(f, variants)                                                   \
     METALANG99_listMapInPlace(METALANG99_compose(f, v(METALANG99_untuple)), variants)
@@ -211,7 +211,7 @@ static const Unit99 unit99 = '\0';
 #define DATATYPE99_PRIV_genTags_nil_IMPL(_) METALANG99_empty()
 #define DATATYPE99_PRIV_genTags_cons_IMPL(x, xs)                                                   \
     METALANG99_terms(                                                                              \
-        v(METALANG99_catPlain(METALANG99_tupleGet0Plain(x), Tag), ),                               \
+        v(METALANG99_catPlain(METALANG99_tupleGetPlain(0)(x), Tag), ),                             \
         DATATYPE99_PRIV_genTags(xs))
 
 /*
