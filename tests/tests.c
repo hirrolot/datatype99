@@ -74,6 +74,9 @@ int main(void) {
     assert(!matches(c, B));
     assert(!matches(d, A));
 
+    // Pass an lvalue to `matches`.
+    assert(matches(A(), A));
+
     assert(a.tag == ATag);
     assert(b.tag == BTag);
     assert(c.tag == CTag);
@@ -171,6 +174,22 @@ int main(void) {
                 (void)ptr;
                 assert(false);
             }
+        }
+    }
+
+    // ifLet
+    {
+        Complex expr = B(42);
+        ifLet(expr, B, x) {
+            *x = 8601;
+        }
+
+        assert(8601 == expr.data.B._0);
+
+        ifLet(expr, C, str, x) {
+            (void)str;
+            (void)x;
+            assert(false);
         }
     }
 
