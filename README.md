@@ -23,7 +23,7 @@
      - [`of99`](#of99)
      - [`matches99`](#matches99)
      - [`ifLet99`](#ifLet99)
-     - [Unit type](#unit-type)
+   - [Unit type](#unit-type)
  - [Credits](#credits)
  - [Learning resources](#learning-resources)
  - [FAQ](#faq)
@@ -151,11 +151,11 @@ struct <datatype-name> {
 inline static <datatype99-name> <variant-name>(...) { /* ... */ }
 ```
 
-### `match99`
+#### `match99`
 
 `match99` has the expected semantics: it sequentially tries to match the given instance of a sum type against the given variants, and, if a match has succeeded, it executes the corresponding statement and moves down to the next instruction (`match(val) { ... } next-instruction;`). If all the matches have failed, it executes the statement after `otherwise99` and moves down to the next instruction.
 
-### `of99`
+#### `of99`
 
 `of99` accepts a matched variant name as a first argument and the rest of arguments comprise a comma-separated list of bindings.
 
@@ -166,11 +166,11 @@ There can be more than one `_` binding, however, non-`_` bindings must be distin
 
 To match an empty variant, write `of99(Bar)`.
 
-### `matches99`
+#### `matches99`
 
 `matches99` just tests an instance of a sum type for a given variant. If the given instance corresponds to the given variant, it expands to truthfulness, otherwise it expands to falsehood.
 
-### `ifLet99`
+#### `ifLet99`
 
 `ifLet99` tests for only one variant. It works conceptually the same as
 
