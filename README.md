@@ -22,6 +22,7 @@
      - [`match99`](#match99)
      - [`of99`](#of99)
      - [`matches99`](#matches99)
+     - [`ifLet99`](#ifLet99)
      - [Unit type](#unit-type)
  - [Credits](#credits)
  - [Learning resources](#learning-resources)
@@ -82,8 +83,9 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 
 <match>         ::= "match99(" <expr> ")" { <arm> }+ ;
 <matches>       ::= "matches99(" <expr> "," <ident> ")" ;
-<of>            ::= "of99(" <variant-name> [ { "," <ident> }+ ] ")" <statement> ;
-<otherwise>     ::= "otherwise99" <statement> ;
+<if-let>        ::= "ifLet99(" <expr> "," <variant-name> "," <ident> [ { "," <ident> }+ ] ")" <stmt>;
+<of>            ::= "of99(" <variant-name> [ { "," <ident> }+ ] ")" <stmt> ;
+<otherwise>     ::= "otherwise99" <stmt> ;
 ```
 
 ### Semantics
@@ -167,6 +169,23 @@ To match an empty variant, write `of99(Bar)`.
 ### `matches99`
 
 `matches99` just tests an instance of a sum type for a given variant. If the given instance corresponds to the given variant, it expands to truthfulness, otherwise it expands to falsehood.
+
+### `ifLet99`
+
+`ifLet99` tests for only one variant. It works conceptually the same as
+
+```
+match99(<expr>) {
+    of(<variant-name>, vars...) { /* ... */ }
+    otherwise {}
+}
+```
+
+, but has a shorter syntax:
+
+```
+ifLet99(<expr>, <variant-name>, vars...) { /* ... */ }
+```
 
 ### Unit type
 
