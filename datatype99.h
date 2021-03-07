@@ -74,8 +74,9 @@ static const Unit99 unit99 = '\0';
 
 // A variant representation {
 #define DATATYPE99_PRIV_variant(tag, sig) METALANG99_tuple(tag, sig)
-#define DATATYPE99_PRIV_variantTag        METALANG99_tupleGet(0)
-#define DATATYPE99_PRIV_variantParams     METALANG99_tupleGet(1)
+
+#define DATATYPE99_PRIV_variantTag    METALANG99_tupleGetPlain(0)
+#define DATATYPE99_PRIV_variantParams METALANG99_tupleGetPlain(1)
 
 #define DATATYPE99_PRIV_isEmptyVariantPlain(...)                                                   \
     METALANG99_natEqPlain(METALANG99_variadicsCountPlain(__VA_ARGS__), 1)
@@ -206,13 +207,9 @@ static const Unit99 unit99 = '\0';
  * <variant-name>0Tag, ..., <variant-name>NTag
  */
 #define DATATYPE99_PRIV_genTags(variants)                                                          \
-    METALANG99_callTrivial(METALANG99_match, variants, DATATYPE99_PRIV_genTags_)
+    DATATYPE99_PRIV_mapVariants(v(DATATYPE99_PRIV_genTag), v(variants))
 
-#define DATATYPE99_PRIV_genTags_nil_IMPL(_) METALANG99_empty()
-#define DATATYPE99_PRIV_genTags_cons_IMPL(x, xs)                                                   \
-    METALANG99_terms(                                                                              \
-        v(METALANG99_catPlain(METALANG99_tupleGetPlain(0)(x), Tag), ),                             \
-        DATATYPE99_PRIV_genTags(xs))
+#define DATATYPE99_PRIV_genTag_IMPL(tag, _sig) v(tag##Tag, )
 
 /*
  * <datatype-name><variant-name>0 <variant-name>0;
@@ -308,6 +305,7 @@ static const Unit99 unit99 = '\0';
 #define DATATYPE99_PRIV_genBinding_ARITY             3
 #define DATATYPE99_PRIV_genTypedefsForVariant_ARITY  2
 #define DATATYPE99_PRIV_genVariantParamTypedef_ARITY 3
+#define DATATYPE99_PRIV_genTag_ARITY                 1
 #define DATATYPE99_PRIV_genUnionField_ARITY          2
 #define DATATYPE99_PRIV_genCtor_ARITY                2
 #define DATATYPE99_PRIV_assignResult_ARITY           2
