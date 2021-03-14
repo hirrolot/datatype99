@@ -28,8 +28,7 @@
 
 #include <metalang99.h>
 
-#if (METALANG99_MINOR < 4) || (METALANG99_MINOR == 4 && METALANG99_PATCH < 2) ||                   \
-    METALANG99_MINOR > 4
+#if (ML99_MINOR < 4) || (ML99_MINOR == 4 && ML99_PATCH < 2) || ML99_MINOR > 4
 #error "Please, update Metalang99 to v0.4.2 or later"
 #endif
 
@@ -54,57 +53,49 @@ static const Unit99 unit99 = '\0';
 
 // Parsing {
 #define DATATYPE99_PRIV_parse(...)                                                                 \
-    METALANG99_listMap(v(DATATYPE99_PRIV_parseMap), METALANG99_list(v(__VA_ARGS__)))
+    ML99_listMap(v(DATATYPE99_PRIV_parseMap), ML99_list(v(__VA_ARGS__)))
 
 #define DATATYPE99_PRIV_parseMap_IMPL(variant)                                                     \
-    METALANG99_IF(                                                                                 \
-        METALANG99_IS_TUPLE(variant),                                                              \
-        METALANG99_call(DATATYPE99_PRIV_parseVariant, METALANG99_untuple(v(variant))),             \
-        METALANG99_fatal(datatype99, variant is unparenthesised))
+    ML99_IF(                                                                                       \
+        ML99_IS_TUPLE(variant),                                                                    \
+        ML99_call(DATATYPE99_PRIV_parseVariant, ML99_untuple(v(variant))),                         \
+        ML99_fatal(datatype99, variant is unparenthesised))
 
 #define DATATYPE99_PRIV_parseVariant_IMPL(...)                                                     \
-    METALANG99_CAT(                                                                                \
-        DATATYPE99_PRIV_parseVariantIsEmpty_,                                                      \
-        DATATYPE99_PRIV_IS_EMPTY_VARIANT(__VA_ARGS__))                                             \
+    ML99_CAT(DATATYPE99_PRIV_parseVariantIsEmpty_, DATATYPE99_PRIV_IS_EMPTY_VARIANT(__VA_ARGS__))  \
     (__VA_ARGS__)
 
-#define DATATYPE99_PRIV_parseVariantIsEmpty_1(tag) DATATYPE99_PRIV_variant(v(tag), METALANG99_nil())
+#define DATATYPE99_PRIV_parseVariantIsEmpty_1(tag) DATATYPE99_PRIV_variant(v(tag), ML99_nil())
 #define DATATYPE99_PRIV_parseVariantIsEmpty_0(tag, ...)                                            \
-    DATATYPE99_PRIV_variant(v(tag), METALANG99_list(v(__VA_ARGS__)))
+    DATATYPE99_PRIV_variant(v(tag), ML99_list(v(__VA_ARGS__)))
 // } (Parsing)
 
 // A variant representation {
-#define DATATYPE99_PRIV_variant(tag, sig) METALANG99_tuple(tag, sig)
+#define DATATYPE99_PRIV_variant(tag, sig) ML99_tuple(tag, sig)
 
-#define DATATYPE99_PRIV_variantTag    METALANG99_TUPLE_GET(0)
-#define DATATYPE99_PRIV_variantParams METALANG99_TUPLE_GET(1)
+#define DATATYPE99_PRIV_variantTag    ML99_TUPLE_GET(0)
+#define DATATYPE99_PRIV_variantParams ML99_TUPLE_GET(1)
 
-#define DATATYPE99_PRIV_IS_EMPTY_VARIANT(...)                                                      \
-    METALANG99_NAT_EQ(METALANG99_VARIADICS_COUNT(__VA_ARGS__), 1)
+#define DATATYPE99_PRIV_IS_EMPTY_VARIANT(...) ML99_NAT_EQ(ML99_VARIADICS_COUNT(__VA_ARGS__), 1)
 
 #define DATATYPE99_PRIV_mapVariants(f, variants)                                                   \
-    METALANG99_listMapInPlace(METALANG99_compose(f, v(METALANG99_untuple)), variants)
+    ML99_listMapInPlace(ML99_compose(f, v(ML99_untuple)), variants)
 // } (A variant representation)
 
 // Sum type generation {
 #define datatype99(name, ...)                                                                      \
-    METALANG99_eval(                                                                               \
-        METALANG99_call(DATATYPE99_PRIV_genDatatype, v(name), DATATYPE99_PRIV_parse(__VA_ARGS__))) \
+    ML99_eval(ML99_call(DATATYPE99_PRIV_genDatatype, v(name), DATATYPE99_PRIV_parse(__VA_ARGS__))) \
                                                                                                    \
-    static const char name##_semicolon DATATYPE99_PRIV_UNUSED = '\0'
+        static const char name##_semicolon DATATYPE99_PRIV_UNUSED = '\0'
 
 #define DATATYPE99_PRIV_genDatatype_IMPL(name, variants)                                           \
-    METALANG99_terms(                                                                              \
+    ML99_terms(                                                                                    \
         v(typedef struct name name;),                                                              \
         DATATYPE99_PRIV_genTypedefs(name, variants),                                               \
-        METALANG99_typedef(                                                                        \
-            v(name##Tag),                                                                          \
-            METALANG99_enum(v(name##Tag), DATATYPE99_PRIV_genTags(variants))),                     \
-        METALANG99_typedef(                                                                        \
+        ML99_typedef(v(name##Tag), ML99_enum(v(name##Tag), DATATYPE99_PRIV_genTags(variants))),    \
+        ML99_typedef(                                                                              \
             v(name##Data),                                                                         \
-            METALANG99_union(                                                                      \
-                v(name##Data),                                                                     \
-                DATATYPE99_PRIV_genUnionFields(v(name), v(variants)))),                            \
+            ML99_union(v(name##Data), DATATYPE99_PRIV_genUnionFields(v(name), v(variants)))),      \
         v(struct name {                                                                            \
             name##Tag tag;                                                                         \
             name##Data data;                                                                       \
@@ -118,8 +109,8 @@ static const Unit99 unit99 = '\0';
     DATATYPE99_PRIV_SUPPRESS_W_MISLEADING_INDENTATION                                              \
     DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE                                                         \
                                                                                                    \
-    METALANG99_introduceVarToStmt(void *datatype99_priv_match_expr = (void *)&(val))               \
-        METALANG99_suppressUnusedBeforeStmt(datatype99_priv_match_expr)                            \
+    ML99_introduceVarToStmt(void *datatype99_priv_match_expr = (void *)&(val))                     \
+        ML99_suppressUnusedBeforeStmt(datatype99_priv_match_expr)                                  \
                                                                                                    \
             switch ((val).tag)
 
@@ -130,7 +121,7 @@ static const Unit99 unit99 = '\0';
     DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE                                                         \
                                                                                                    \
     break;                                                                                         \
-    METALANG99_IF(                                                                                 \
+    ML99_IF(                                                                                       \
         DATATYPE99_PRIV_IS_EMPTY_VARIANT(__VA_ARGS__),                                             \
         DATATYPE99_PRIV_ofEmpty,                                                                   \
         DATATYPE99_PRIV_ofNonEmpty)                                                                \
@@ -139,7 +130,7 @@ static const Unit99 unit99 = '\0';
 #define DATATYPE99_PRIV_ofEmpty(tag) case tag##Tag:
 #define DATATYPE99_PRIV_ofNonEmpty(tag, ...)                                                       \
     case tag##Tag:                                                                                 \
-        METALANG99_eval(DATATYPE99_PRIV_genBindings(v(tag), v(__VA_ARGS__)))
+        ML99_eval(DATATYPE99_PRIV_genBindings(v(tag), v(__VA_ARGS__)))
 
 #define otherwise99                                                                                \
     break;                                                                                         \
@@ -148,20 +139,20 @@ static const Unit99 unit99 = '\0';
 
 #define ifLet99(val, tag_, ...)                                                                    \
     if (tag_##Tag == (val).tag)                                                                    \
-        METALANG99_introduceVarToStmt(void *datatype99_priv_match_expr = (void *)&(val))           \
-            METALANG99_suppressUnusedBeforeStmt(datatype99_priv_match_expr)                        \
-                METALANG99_eval(DATATYPE99_PRIV_genBindings(v(tag_), v(__VA_ARGS__)))
+    ML99_introduceVarToStmt(void *datatype99_priv_match_expr = (void *)&(val))                     \
+        ML99_suppressUnusedBeforeStmt(datatype99_priv_match_expr)                                  \
+            ML99_eval(DATATYPE99_PRIV_genBindings(v(tag_), v(__VA_ARGS__)))
 
 #define matches99(val, tag_) ((val).tag == tag_##Tag)
 
 #define DATATYPE99_PRIV_genBindings(tag, ...)                                                      \
-    METALANG99_variadicsForEachI(METALANG99_appl(v(DATATYPE99_PRIV_genBinding), tag), __VA_ARGS__)
+    ML99_variadicsForEachI(ML99_appl(v(DATATYPE99_PRIV_genBinding), tag), __VA_ARGS__)
 
 #define DATATYPE99_PRIV_genBinding_IMPL(tag_, x, i)                                                \
-    METALANG99_IF(                                                                                 \
-        METALANG99_detectIdent(DATATYPE99_PRIV_isUnderscore_, x),                                  \
-        METALANG99_empty(),                                                                        \
-        v(METALANG99_introduceVarToStmt(                                                           \
+    ML99_IF(                                                                                       \
+        ML99_detectIdent(DATATYPE99_PRIV_isUnderscore_, x),                                        \
+        ML99_empty(),                                                                              \
+        v(ML99_introduceVarToStmt(                                                                 \
             tag_##_##i *x = &((tag_##SumT *)datatype99_priv_match_expr)->data.tag_._##i)))
 
 #define DATATYPE99_PRIV_isUnderscore__ ()
@@ -169,16 +160,16 @@ static const Unit99 unit99 = '\0';
 
 #define DATATYPE99_PRIV_genTypedefs(name, variants)                                                \
     DATATYPE99_PRIV_mapVariants(                                                                   \
-        METALANG99_appl(v(DATATYPE99_PRIV_genTypedefsForVariant), v(name)),                        \
+        ML99_appl(v(DATATYPE99_PRIV_genTypedefsForVariant), v(name)),                              \
         v(variants))
 
 #define DATATYPE99_PRIV_genTypedefsForVariant_IMPL(name, tag, sig)                                 \
-    METALANG99_terms(                                                                              \
+    ML99_terms(                                                                                    \
         v(typedef struct name tag##SumT;),                                                         \
-        METALANG99_IF(                                                                             \
-            METALANG99_IS_CONS(sig),                                                               \
+        ML99_IF(                                                                                   \
+            ML99_IS_CONS(sig),                                                                     \
             DATATYPE99_PRIV_genVariantStruct(name, tag, sig),                                      \
-            METALANG99_empty()),                                                                   \
+            ML99_empty()),                                                                         \
         DATATYPE99_PRIV_genVariantParamsTypedefs(tag, sig))
 
 /*
@@ -189,9 +180,7 @@ static const Unit99 unit99 = '\0';
  * } <datatype-name><variant-name>;
  */
 #define DATATYPE99_PRIV_genVariantStruct(name, tag, sig)                                           \
-    METALANG99_typedef(                                                                            \
-        v(name##tag),                                                                              \
-        METALANG99_struct(v(name##tag), METALANG99_indexedFields(v(sig))))
+    ML99_typedef(v(name##tag), ML99_struct(v(name##tag), ML99_indexedFields(v(sig))))
 
 /*
  * typedef <type>0 <variant-name>_0;
@@ -199,9 +188,8 @@ static const Unit99 unit99 = '\0';
  * typedef <type>N <variant-name>_N;
  */
 #define DATATYPE99_PRIV_genVariantParamsTypedefs(tag, sig)                                         \
-    METALANG99_listUnwrap(METALANG99_listMapI(                                                     \
-        METALANG99_appl(v(DATATYPE99_PRIV_genVariantParamTypedef), v(tag)),                        \
-        v(sig)))
+    ML99_listUnwrap(                                                                               \
+        ML99_listMapI(ML99_appl(v(DATATYPE99_PRIV_genVariantParamTypedef), v(tag)), v(sig)))
 
 #define DATATYPE99_PRIV_genVariantParamTypedef_IMPL(tag, type, i) v(typedef type tag##_##i;)
 
@@ -219,17 +207,17 @@ static const Unit99 unit99 = '\0';
  * <datatype-name><variant-name>N <variant-name>N;
  */
 #define DATATYPE99_PRIV_genUnionFields(name, variants)                                             \
-    METALANG99_call(DATATYPE99_PRIV_genUnionFields, name, variants)
+    ML99_call(DATATYPE99_PRIV_genUnionFields, name, variants)
 
 #define DATATYPE99_PRIV_genUnionFields_IMPL(name, variants)                                        \
-    METALANG99_terms(                                                                              \
+    ML99_terms(                                                                                    \
         v(char dummy;),                                                                            \
         DATATYPE99_PRIV_mapVariants(                                                               \
-            METALANG99_appl(v(DATATYPE99_PRIV_genUnionField), v(name)),                            \
+            ML99_appl(v(DATATYPE99_PRIV_genUnionField), v(name)),                                  \
             v(variants)))
 
 #define DATATYPE99_PRIV_genUnionField_IMPL(name, tag, sig)                                         \
-    METALANG99_IF(METALANG99_IS_CONS(sig), v(name##tag tag;), METALANG99_empty())
+    ML99_IF(ML99_IS_CONS(sig), v(name##tag tag;), ML99_empty())
 
 /*
  * inline static <datatype99-name> <variant-name>0(...) { ... }
@@ -237,16 +225,14 @@ static const Unit99 unit99 = '\0';
  * inline static <datatype99-name> <variant-name>N(...) { ... }
  */
 #define DATATYPE99_PRIV_genCtors(name, variants)                                                   \
-    DATATYPE99_PRIV_mapVariants(METALANG99_appl(v(DATATYPE99_PRIV_genCtor), v(name)), v(variants))
+    DATATYPE99_PRIV_mapVariants(ML99_appl(v(DATATYPE99_PRIV_genCtor), v(name)), v(variants))
 
 #define DATATYPE99_PRIV_genCtor_IMPL(name, tag, sig)                                               \
-    METALANG99_call(                                                                               \
+    ML99_call(                                                                                     \
         DATATYPE99_PRIV_genCtorTemplate,                                                           \
         v(name, tag),                                                                              \
-        METALANG99_indexedParams(v(sig)),                                                          \
-        METALANG99_repeat(                                                                         \
-            METALANG99_appl(v(DATATYPE99_PRIV_assignResult), v(tag)),                              \
-            METALANG99_listLen(v(sig))))
+        ML99_indexedParams(v(sig)),                                                                \
+        ML99_repeat(ML99_appl(v(DATATYPE99_PRIV_assignResult), v(tag)), ML99_listLen(v(sig))))
 
 #define DATATYPE99_PRIV_assignResult_IMPL(tag, i) v(result.data.tag._##i = _##i;)
 
