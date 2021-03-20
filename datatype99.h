@@ -83,13 +83,14 @@ static const Unit99 unit99 = '\0';
 // } (A variant representation)
 
 // Sum type generation {
+
 #define datatype99(name, ...)                                                                      \
-    ML99_eval(ML99_call(DATATYPE99_PRIV_genDatatype, v(name), DATATYPE99_PRIV_parse(__VA_ARGS__))) \
+    ML99_EVAL(ML99_call(DATATYPE99_PRIV_genDatatype, v(name), DATATYPE99_PRIV_parse(__VA_ARGS__))) \
                                                                                                    \
-        static const char name##_semicolon DATATYPE99_PRIV_UNUSED = '\0'
+    static const char name##_semicolon DATATYPE99_PRIV_UNUSED = '\0'
 
 #define DATATYPE99_PRIV_genDatatype_IMPL(name, variants)                                           \
-    ML99_terms(                                                                                    \
+    ML99_TERMS(                                                                                    \
         v(typedef struct name name;),                                                              \
         DATATYPE99_PRIV_genTypedefs(name, variants),                                               \
         ML99_typedef(v(name##Tag), ML99_enum(v(name##Tag), DATATYPE99_PRIV_genTags(variants))),    \
@@ -104,15 +105,18 @@ static const Unit99 unit99 = '\0';
 // } (Sum type generation)
 
 // Pattern matching {
+
+// clang-format off
+
 #define match99(val)                                                                               \
     DATATYPE99_PRIV_DIAGNOSTIC_PUSH                                                                \
     DATATYPE99_PRIV_SUPPRESS_W_MISLEADING_INDENTATION                                              \
     DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE                                                         \
                                                                                                    \
-    ML99_introduceVarToStmt(void *datatype99_priv_match_expr = (void *)&(val))                     \
-        ML99_suppressUnusedBeforeStmt(datatype99_priv_match_expr)                                  \
-                                                                                                   \
+    ML99_INTRODUCE_VAR_TO_STMT(void *datatype99_priv_match_expr = (void *)&(val))                  \
+        ML99_SUPPRESS_UNUSED_BEFORE_STMT(datatype99_priv_match_expr)                               \
             switch ((val).tag)
+// clang-format on
 
 #define of99(...)                                                                                  \
     DATATYPE99_PRIV_DIAGNOSTIC_POP                                                                 \
@@ -130,18 +134,21 @@ static const Unit99 unit99 = '\0';
 #define DATATYPE99_PRIV_ofEmpty(tag) case tag##Tag:
 #define DATATYPE99_PRIV_ofNonEmpty(tag, ...)                                                       \
     case tag##Tag:                                                                                 \
-        ML99_eval(DATATYPE99_PRIV_genBindings(v(tag), v(__VA_ARGS__)))
+        ML99_EVAL(DATATYPE99_PRIV_genBindings(v(tag), v(__VA_ARGS__)))
 
 #define otherwise99                                                                                \
     break;                                                                                         \
     default:                                                                                       \
         DATATYPE99_PRIV_DIAGNOSTIC_POP
 
+// clang-format off
+
 #define ifLet99(val, tag_, ...)                                                                    \
     if (tag_##Tag == (val).tag)                                                                    \
-    ML99_introduceVarToStmt(void *datatype99_priv_match_expr = (void *)&(val))                     \
-        ML99_suppressUnusedBeforeStmt(datatype99_priv_match_expr)                                  \
-            ML99_eval(DATATYPE99_PRIV_genBindings(v(tag_), v(__VA_ARGS__)))
+        ML99_INTRODUCE_VAR_TO_STMT(void *datatype99_priv_match_expr = (void *)&(val))              \
+            ML99_SUPPRESS_UNUSED_BEFORE_STMT(datatype99_priv_match_expr)                           \
+                ML99_EVAL(DATATYPE99_PRIV_genBindings(v(tag_), v(__VA_ARGS__)))
+// clang-format on
 
 #define matches99(val, tag_) ((val).tag == tag_##Tag)
 
@@ -150,9 +157,9 @@ static const Unit99 unit99 = '\0';
 
 #define DATATYPE99_PRIV_genBinding_IMPL(tag_, x, i)                                                \
     ML99_IF(                                                                                       \
-        ML99_detectIdent(DATATYPE99_PRIV_isUnderscore_, x),                                        \
+        ML99_DETECT_IDENT(DATATYPE99_PRIV_isUnderscore_, x),                                       \
         ML99_empty(),                                                                              \
-        v(ML99_introduceVarToStmt(                                                                 \
+        v(ML99_INTRODUCE_VAR_TO_STMT(                                                              \
             tag_##_##i *x = &((tag_##SumT *)datatype99_priv_match_expr)->data.tag_._##i)))
 
 #define DATATYPE99_PRIV_isUnderscore__ ()
@@ -164,7 +171,7 @@ static const Unit99 unit99 = '\0';
         v(variants))
 
 #define DATATYPE99_PRIV_genTypedefsForVariant_IMPL(name, tag, sig)                                 \
-    ML99_terms(                                                                                    \
+    ML99_TERMS(                                                                                    \
         v(typedef struct name tag##SumT;),                                                         \
         ML99_IF(                                                                                   \
             ML99_IS_CONS(sig),                                                                     \
@@ -210,7 +217,7 @@ static const Unit99 unit99 = '\0';
     ML99_call(DATATYPE99_PRIV_genUnionFields, name, variants)
 
 #define DATATYPE99_PRIV_genUnionFields_IMPL(name, variants)                                        \
-    ML99_terms(                                                                                    \
+    ML99_TERMS(                                                                                    \
         v(char dummy;),                                                                            \
         DATATYPE99_PRIV_mapVariants(                                                               \
             ML99_appl(v(DATATYPE99_PRIV_genUnionField), v(name)),                                  \
