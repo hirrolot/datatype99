@@ -27,7 +27,6 @@
  - [Credits](#credits)
  - [Learning resources](#learning-resources)
  - [FAQ](#faq)
- - [Troubleshooting](#troubleshooting)
 
 ## Highlights
 
@@ -247,9 +246,3 @@ playground.c:3:1: error: unknown type name ‘NonExistingType’
 If an error is not comprehensible at all, try to look at generated code (`-E`). Hopefully, the [code generation semantics] is formally defined so normally you will not see something unexpected.
 
 [code generation semantics]: #semantics
-
-## Troubleshooting
-
-### Problem: I can't make it work on MSVC
-
-Solution: See [Metalang99's README >>](https://github.com/Hirrolot/metalang99#problem-i-cant-make-it-work-on-msvc).
