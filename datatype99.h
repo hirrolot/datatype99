@@ -28,8 +28,8 @@
 
 #include <metalang99.h>
 
-#if (ML99_MINOR < 4) || (ML99_MINOR == 4 && ML99_PATCH < 2) || ML99_MINOR > 4
-#error "Please, update Metalang99 to v0.4.2 or later"
+#if ML99_MAJOR != 0 || ML99_MINOR != 5
+#error "Please, update Metalang99 to v0.5.0 or later"
 #endif
 
 #ifndef DATATYPE99_NO_ALIASES
@@ -239,7 +239,7 @@ static const Unit99 unit99 = '\0';
         DATATYPE99_PRIV_genCtorTemplate,                                                           \
         v(name, tag),                                                                              \
         ML99_indexedParams(v(sig)),                                                                \
-        ML99_repeat(ML99_appl(v(DATATYPE99_PRIV_assignResult), v(tag)), ML99_listLen(v(sig))))
+        ML99_repeat(ML99_listLen(v(sig)), ML99_appl(v(DATATYPE99_PRIV_assignResult), v(tag))))
 
 #define DATATYPE99_PRIV_assignResult_IMPL(tag, i) v(result.data.tag._##i = _##i;)
 
