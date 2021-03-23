@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
  - `ifLet99`
 
+### Changed
+
+ - `<datatype-name>Data` -> `<datatype-name>Variants` (less likely to conflict with user-defined types)
+
 ### Fixed
 
  - Avoid using `METALANG99_semicolon` because it turned out to be [dangerous](https://github.com/Hirrolot/metalang99/commit/f17f06adf1a747a8897bbc90c598b2be21c945c8).

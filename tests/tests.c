@@ -28,7 +28,7 @@ int main(void) {
     tag = DTag;
     (void)tag;
 
-    ComplexData data = {.dummy = 0};
+    ComplexVariants data = {.dummy = 0};
     data.B._0 = 123;
     data.C._0 = "abc";
     data.C._1 = 124.45476;

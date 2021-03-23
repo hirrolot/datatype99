@@ -94,11 +94,11 @@ static const Unit99 unit99 = '\0';
         DATATYPE99_PRIV_genTypedefs(name, variants),                                               \
         ML99_typedef(v(name##Tag), ML99_enum(v(name##Tag), DATATYPE99_PRIV_genTags(variants))),    \
         ML99_typedef(                                                                              \
-            v(name##Data),                                                                         \
-            ML99_union(v(name##Data), DATATYPE99_PRIV_genUnionFields(v(name), v(variants)))),      \
+            v(name##Variants),                                                                     \
+            ML99_union(v(name##Variants), DATATYPE99_PRIV_genUnionFields(v(name), v(variants)))),  \
         v(struct name {                                                                            \
             name##Tag tag;                                                                         \
-            name##Data data;                                                                       \
+            name##Variants data;                                                                   \
         };),                                                                                       \
         DATATYPE99_PRIV_genCtors(name, variants))
 // } (Sum type generation)

@@ -89,7 +89,7 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 
 ### Semantics
 
-(It might be helpful to look at the [generated code](https://godbolt.org/z/dx57rb) of [`examples/binary_tree.c`](examples/binary_tree.c)'s `BinaryTree`.)
+(It might be helpful to look at the [generated code](https://godbolt.org/z/63hxxnGTf) of [`examples/binary_tree.c`](examples/binary_tree.c)'s `BinaryTree`.)
 
 #### `datatype99`
 
@@ -130,17 +130,17 @@ typedef enum <datatype-name>Tag {
     <variant-name>0Tag, ..., <variant-name>NTag
 } <datatype-name>Tag;
 
-typedef union <datatype-name>Data {
+typedef union <datatype-name>Variants {
     char dummy;
 
     <datatype-name><variant-name>0 <variant-name>0;
     ...
     <datatype-name><variant-name>N <variant-name>N;
-} <datatype-name>Data;
+} <datatype-name>Variants;
 
 struct <datatype-name> {
     <datatype-name>Tag tag;
-    <datatype-name>Data data;
+    <datatype-name>Variants data;
 };
 ```
 
