@@ -86,8 +86,7 @@ static const Unit99 unit99 = '\0';
 
 #define datatype99(name, ...)                                                                      \
     ML99_EVAL(ML99_call(DATATYPE99_PRIV_genDatatype, v(name), DATATYPE99_PRIV_parse(__VA_ARGS__))) \
-                                                                                                   \
-    static const char name##_semicolon DATATYPE99_PRIV_UNUSED = '\0'
+    struct name
 
 #define DATATYPE99_PRIV_genDatatype_IMPL(name, variants)                                           \
     ML99_TERMS(                                                                                    \
