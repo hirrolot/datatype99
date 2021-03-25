@@ -194,8 +194,7 @@ static const Unit99 unit99 = '\0';
  * typedef <type>N <variant-name>_N;
  */
 #define DATATYPE99_PRIV_genVariantParamsTypedefs(tag, sig)                                         \
-    ML99_listUnwrap(                                                                               \
-        ML99_listMapI(ML99_appl(v(DATATYPE99_PRIV_genVariantParamTypedef), v(tag)), v(sig)))
+    ML99_listMapInPlaceI(ML99_appl(v(DATATYPE99_PRIV_genVariantParamTypedef), v(tag)), v(sig))
 
 #define DATATYPE99_PRIV_genVariantParamTypedef_IMPL(tag, type, i) v(typedef type tag##_##i;)
 
