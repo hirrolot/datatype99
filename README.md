@@ -10,24 +10,6 @@
 
 [sum types]: https://en.wikipedia.org/wiki/Tagged_union
 
-## Table of contents
-
- - [Highlights](#highlights)
- - [Installation](#installation)
- - [Usage](#usage)
- - [Syntax and semantics](#syntax-and-semantics)
-   - [EBNF syntax](#ebnf-syntax)
-   - [Semantics](#semantics)
-     - [`datatype99`](#datatype99-1)
-     - [`match99`](#match99)
-     - [`of99`](#of99)
-     - [`matches99`](#matches99)
-     - [`ifLet99`](#ifLet99)
-   - [Unit type](#unit-type)
- - [Credits](#credits)
- - [Learning resources](#learning-resources)
- - [FAQ](#faq)
-
 ## Highlights
 
  - **Type-safe.** Unlike manually written tagged unions, Datatype99 is type-safe: normally you cannot access invalid data or construct an invalid variant. Pattern matching is exhaustive too.
