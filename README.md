@@ -126,6 +126,8 @@ struct <datatype-name> {
 };
 ```
 
+(`char dummy;` is needed to make the union contain at least one item, according to the standard, even if all variants are empty. Such a `datatype` would enforce strict type checking unlike plain C `enum`s.)
+
  6. For each variant, the following function called a _value constructor_ is generated:
 
 ```
