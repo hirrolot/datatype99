@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <stdbool.h>
+#include <stddef.h>
 
 datatype(Trivial1, (Trivial1A));
 datatype(Trivial2, (Trivial2A));
