@@ -200,9 +200,9 @@ A:
  - Datatype99 can be integrated into existing code bases written in pure C.
  - Sometimes C is the only choice.
 
-### Q: Why don't you use third-party code generators?
+### Q: Why not third-party code generators?
 
-A: See [Metalang99's README >>](https://github.com/Hirrolot/metalang99#q-why-dont-you-use-third-party-code-generators).
+A: See [Metalang99's README >>](https://github.com/Hirrolot/metalang99#q-why-not-third-party-code-generators).
 
 ### Q: How does it work?
 
