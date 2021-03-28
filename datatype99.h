@@ -116,12 +116,14 @@ static const UnitT99 unit_v99 = '\0';
 
 #define match99(val)                                                                               \
     DATATYPE99_PRIV_DIAGNOSTIC_PUSH                                                                \
-    DATATYPE99_PRIV_SUPPRESS_W_MISLEADING_INDENTATION                                              \
-    DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE                                                         \
-                                                                                                   \
+    DATATYPE99_PRIV_SUPPRESS_W_CAST_QUAL                                                           \
     ML99_INTRODUCE_VAR_TO_STMT(void *datatype99_priv_match_expr = (void *)&(val))                  \
+    DATATYPE99_PRIV_DIAGNOSTIC_POP                                                                 \
         ML99_SUPPRESS_UNUSED_BEFORE_STMT(datatype99_priv_match_expr)                               \
-            switch ((val).tag)
+            switch ((val).tag)                                                                     \
+                DATATYPE99_PRIV_DIAGNOSTIC_PUSH                                                    \
+                DATATYPE99_PRIV_SUPPRESS_W_MISLEADING_INDENTATION                                  \
+                DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE
 // clang-format on
 
 #define of99(...)                                                                                  \
@@ -289,6 +291,9 @@ static const UnitT99 unit_v99 = '\0';
 #define DATATYPE99_PRIV_UNUSED
 #define DATATYPE99_PRIV_WARN_UNUSED_RESULT
 #endif
+
+#define DATATYPE99_PRIV_SUPPRESS_W_CAST_QUAL                                                       \
+    ML99_CLANG_PRAGMA("clang diagnostic ignored \"-Wcast-qual\"")
 
 #if !defined(__clang__) && __GNUC__ >= 6
 #define DATATYPE99_PRIV_SUPPRESS_W_MISLEADING_INDENTATION                                          \

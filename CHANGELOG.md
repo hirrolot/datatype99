@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
  - `Unit99` -> `UnitT99`, `unit99` -> `unit_v99` (less likely to conflict with user-defined identifiers)
 
+### Fixed
+
+ - Suppress Clang's `-Wcast-qual` in `match99`.
+
 ## [0.4.0] - 2021-03-27
 
 ### Added

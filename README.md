@@ -183,6 +183,10 @@ The macros `DATATYPE99_MAJOR`, `DATATYPE99_MINOR`, and `DATATYPE99_PATCH` stand 
 
 If you do **not** want the shortened versions to appear (e.g. `datatype` and `match` instead of `datatype99` and `match99`), define `DATATYPE99_NO_ALIASES` before `#include <datatype99.h>`.
 
+## Pitfalls
+
+ - For the sake of simplicity, pattern matching works as if you were always supplying modifiable memory to `match99`, so make sure you do **not** mutate read-only memory inside `of99` branches.
+
 ## Credits
 
 Thanks to Rust and ML for their implementations of sum types.
