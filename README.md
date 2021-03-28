@@ -185,7 +185,7 @@ If you do **not** want the shortened versions to appear (e.g. `datatype` and `ma
 
 ## Pitfalls
 
- - For the sake of simplicity, pattern matching works as if you were always supplying modifiable memory to `match99`, so make sure you do **not** mutate read-only memory inside `of99` branches.
+ - For the sake of simplicity, pattern matching works as if you were always supplying a modifiable value to `match99`, so make sure you do **not** mutate it through bindings introduced by `of99`.
 
 ## Credits
 
