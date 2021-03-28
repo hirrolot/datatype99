@@ -47,7 +47,12 @@ SOFTWARE.
 
 #endif // DATATYPE99_NO_ALIASES
 
+#define DATATYPE99_MAJOR 0
+#define DATATYPE99_MINOR 4
+#define DATATYPE99_PATCH 0
+
 // Unit type {
+
 typedef char Unit99;
 static const Unit99 unit99 = '\0';
 // }

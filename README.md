@@ -30,8 +30,6 @@
 
 **PLEASE**, use Datatype99 only with [`-ftrack-macro-expansion=0`] (GCC) or something similar, otherwise it will throw your compiler to the moon. [Precompiled headers] are also very helpful.
 
-If you do **not** want the shortened versions to appear (e.g., `datatype` and `match` instead of `datatype99` and `match99`), define `DATATYPE99_NO_ALIASES` before `#include <datatype99.h>`.
-
 [Metalang99]: https://github.com/Hirrolot/metalang99
 [precompiled headers]: https://en.wikipedia.org/wiki/Precompiled_header
 [`-ftrack-macro-expansion=0`]: https://gcc.gnu.org/onlinedocs/gcc/Preprocessor-Options.html
@@ -64,7 +62,7 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 
 <match>         ::= "match99(" <lvalue> ")" { <arm> }+ ;
 <matches>       ::= "matches99(" <expr> "," <ident> ")" ;
-<if-let>        ::= "ifLet99(" <lvalue> "," <variant-name> "," <ident> [ { "," <ident> }+ ] ")" <stmt>;
+<if-let>        ::= "ifLet99(" <lvalue> "," <variant-name> "," <ident> [ { "," <ident> }+ ] ")" <stmt> ;
 <of>            ::= "of99(" <variant-name> [ { "," <ident> }+ ] ")" <stmt> ;
 <otherwise>     ::= "otherwise99" <stmt> ;
 ```
@@ -178,6 +176,12 @@ The unit type `Unit99` represents a type of a single value, `unit99` (it should 
 typedef char Unit99;
 static const Unit99 unit99 = '\0';
 ```
+
+### Miscellaneous
+
+The macros `DATATYPE99_MAJOR`, `DATATYPE99_MINOR`, and `DATATYPE99_PATCH` stand for the corresponding components of a version of Datatype99.
+
+If you do **not** want the shortened versions to appear (e.g. `datatype` and `match` instead of `datatype99` and `match99`), define `DATATYPE99_NO_ALIASES` before `#include <datatype99.h>`.
 
 ## Credits
 
