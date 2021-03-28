@@ -194,6 +194,6 @@ int main(void) {
         }
     }
 
-    Unit dummy = unit;
+    UnitT dummy = unit_v;
     (void)dummy;
 }

@@ -170,11 +170,11 @@ ifLet99(<expr>, <variant-name>, vars...) { /* ... */ }
 
 ### Unit type
 
-The unit type `Unit99` represents a type of a single value, `unit99` (it should not be assigned to anything else). `Unit99` and `unit99` are defined as follows:
+The unit type `UnitT99` represents a type of a single value, `unit_v99` (it should not be assigned to anything else). `UnitT99` and `unit_v99` are defined as follows:
 
 ```c
-typedef char Unit99;
-static const Unit99 unit99 = '\0';
+typedef char UnitT99;
+static const UnitT99 unit_v99 = '\0';
 ```
 
 ### Miscellaneous

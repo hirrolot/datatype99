@@ -42,8 +42,8 @@ SOFTWARE.
 #define of        of99
 #define otherwise otherwise99
 
-#define Unit Unit99
-#define unit unit99
+#define UnitT  UnitT99
+#define unit_v unit_v99
 
 #endif // DATATYPE99_NO_ALIASES
 
@@ -53,8 +53,8 @@ SOFTWARE.
 
 // Unit type {
 
-typedef char Unit99;
-static const Unit99 unit99 = '\0';
+typedef char UnitT99;
+static const UnitT99 unit_v99 = '\0';
 // }
 
 // Parsing {
@@ -92,6 +92,7 @@ static const Unit99 unit99 = '\0';
 
 #define datatype99(name, ...)                                                                      \
     ML99_EVAL(ML99_call(DATATYPE99_PRIV_genDatatype, v(name), DATATYPE99_PRIV_parse(__VA_ARGS__))) \
+    /* Used for a trailing semicolon. */                                                           \
     struct name
 
 #define DATATYPE99_PRIV_genDatatype_IMPL(name, variants)                                           \
