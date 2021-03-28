@@ -179,9 +179,9 @@ static const UnitT99 unit_v99 = '\0';
 
 ### Miscellaneous
 
-The macros `DATATYPE99_MAJOR`, `DATATYPE99_MINOR`, and `DATATYPE99_PATCH` stand for the corresponding components of a version of Datatype99.
+ - The macros `DATATYPE99_MAJOR`, `DATATYPE99_MINOR`, and `DATATYPE99_PATCH` stand for the corresponding components of a version of Datatype99.
 
-If you do **not** want the shortened versions to appear (e.g. `datatype` and `match` instead of `datatype99` and `match99`), define `DATATYPE99_NO_ALIASES` before `#include <datatype99.h>`.
+ - If you do **not** want the shortened versions to appear (e.g. `datatype` and `match` instead of `datatype99` and `match99`), define `DATATYPE99_NO_ALIASES` before `#include <datatype99.h>`.
 
 ## Pitfalls
 
