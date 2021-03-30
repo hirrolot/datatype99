@@ -7,35 +7,42 @@
 
 #define DATATYPE99_DERIVE_metadata_IMPL(name, variants, ...)                                       \
     ML99_TERMS(                                                                                    \
-        ML99_call(GEN_VARIANTS_METADATA, v(name, variants)),                                       \
-        ML99_call(GEN_METADATA, v(name), ML99_listLen(v(variants))))
+        ML99_call(VARIANTS_METADATA, v(name, variants)),                                           \
+        ML99_call(METADATA_TEMPLATE, v(name), ML99_listLen(v(variants))))
 
-#define GEN_VARIANTS_METADATA_IMPL(name, variants)                                                 \
+#define VARIANTS_METADATA_IMPL(name, variants)                                                     \
     ML99_call(                                                                                     \
-        GEN_VARIANTS_METADATA_TEMPLATE,                                                            \
+        VARIANTS_METADATA_TEMPLATE,                                                                \
         v(name),                                                                                   \
         ML99_listMapInPlace(                                                                       \
-            ML99_compose(ML99_appl(v(HANDLE_VARIANT), v(name)), v(ML99_untuple)),                  \
+            ML99_compose(ML99_appl(v(GEN_VARIANT), v(name)), v(ML99_untuple)),                     \
             v(variants)))
 
-#define HANDLE_VARIANT_IMPL(name_, tag, _sig) v({.name = #tag, .size = sizeof(name_##tag)}, )
-#define HANDLE_VARIANT_ARITY                  2
+#define GEN_VARIANT_IMPL(name_, tag, sig)                                                          \
+    ML99_call(VARIANT_TEMPLATE, v(name_), v(tag), ML99_listLen(v(sig)))
+#define GEN_VARIANT_ARITY 2
 
-#define GEN_VARIANTS_METADATA_TEMPLATE_IMPL(name, ...)                                             \
+#define VARIANT_TEMPLATE_IMPL(name_, tag, arity_)                                                  \
+    v({.name = #tag, .arity = arity_, .size = sizeof(name_##tag)}, )
+
+#define VARIANTS_METADATA_TEMPLATE_IMPL(name, ...)                                                 \
     v(static const VariantMetadata name##_variants_metadata[] = {__VA_ARGS__};)
 
-#define GEN_METADATA_IMPL(name, variants_count_)                                                   \
-    v(static const DatatypeMetadata name##_metadata = {                                            \
-          .variants = (const VariantMetadata *)&name##_variants_metadata,                          \
+#define METADATA_TEMPLATE_IMPL(name_, variants_count_)                                             \
+    v(static const DatatypeMetadata name_##_metadata = {                                           \
+          .name = #name_,                                                                          \
+          .variants = (const VariantMetadata *)&name_##_variants_metadata,                         \
           .variants_count = variants_count_,                                                       \
       };)
 
 typedef struct {
     const char *name;
+    size_t arity;
     size_t size;
 } VariantMetadata;
 
 typedef struct {
+    const char *name;
     const VariantMetadata *variants;
     size_t variants_count;
 } DatatypeMetadata;
@@ -54,12 +61,13 @@ datatype(
 The generated metadata:
 
 static const VariantMetadata Num_variants_metadata[] = {
-    {.name = "Char", .size = sizeof(NumChar)},
-    {.name = "Int", .size = sizeof(NumInt)},
-    {.name = "Double", .size = sizeof(NumDouble)},
+    {.name = "Char", .arity = 1, .size = sizeof(NumChar)},
+    {.name = "Int", .arity = 1, .size = sizeof(NumInt)},
+    {.name = "Double", .arity = 1, .size = sizeof(NumDouble)},
 };
 
 static const DatatypeMetadata Num_metadata = {
+    .name = "Num",
     .variants = (const VariantMetadata *)&Num_variants_metadata,
     .variants_count = 3,
 };
@@ -67,15 +75,17 @@ static const DatatypeMetadata Num_metadata = {
 
 int main(void) {
 
-#define CHECK(idx, name_, size_)                                                                   \
+#define CHECK(idx, name_, arity_, size_)                                                           \
     assert(strcmp(Num_metadata.variants[idx].name, name_) == 0);                                   \
+    assert(Num_metadata.variants[idx].arity == arity_);                                            \
     assert(Num_metadata.variants[idx].size == size_)
 
-    CHECK(0, "Char", sizeof(char));
-    CHECK(1, "Int", sizeof(int));
-    CHECK(2, "Double", sizeof(double));
-
-    assert(3 == Num_metadata.variants_count);
+    CHECK(0, "Char", 1, sizeof(char));
+    CHECK(1, "Int", 1, sizeof(int));
+    CHECK(2, "Double", 1, sizeof(double));
 
 #undef CHECK
+
+    assert(strcmp(Num_metadata.name, "Num") == 0);
+    assert(3 == Num_metadata.variants_count);
 }
