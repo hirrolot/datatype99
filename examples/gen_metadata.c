@@ -11,15 +11,17 @@
         ML99_call(GEN_METADATA, v(name), ML99_listLen(v(variants))))
 
 #define GEN_VARIANTS_METADATA_IMPL(name, variants)                                                 \
-    ML99_TERMS(                                                                                    \
-        v(static const VariantMetadata name##_variants_metadata[] =),                              \
-        ML99_braced(ML99_listMapInPlace(                                                           \
+    ML99_call(                                                                                     \
+        GEN_VARIANTS_METADATA_AUX,                                                                 \
+        ML99_listMapInPlace(                                                                       \
             ML99_compose(ML99_appl(v(HANDLE_VARIANT), v(name)), v(ML99_untuple)),                  \
-            v(variants))),                                                                         \
-        v(;))
+            v(variants)))
 
 #define HANDLE_VARIANT_IMPL(name_, tag, _sig) v({.name = #tag, .size = sizeof(name_##tag)}, )
 #define HANDLE_VARIANT_ARITY                  2
+
+#define GEN_VARIANTS_METADATA_AUX_IMPL(name, ...)                                                  \
+    v(static const VariantMetadata name##_variants_metadata[] = {__VA_ARGS__};)
 
 #define GEN_METADATA_IMPL(name, variants_count_)                                                   \
     v(static const DatatypeMetadata name##_metadata = {                                            \
