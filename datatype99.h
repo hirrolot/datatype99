@@ -76,26 +76,37 @@ static const UnitT99 unit_v99 = '\0';
     DATATYPE99_PRIV_variant(v(tag), ML99_list(v(__VA_ARGS__)))
 // } (Parsing)
 
-// A variant representation {
+// Variant {
 #define DATATYPE99_PRIV_variant(tag, sig) ML99_tuple(tag, sig)
-
-#define DATATYPE99_PRIV_variantTag    ML99_TUPLE_GET(0)
-#define DATATYPE99_PRIV_variantParams ML99_TUPLE_GET(1)
 
 #define DATATYPE99_PRIV_IS_EMPTY_VARIANT(...) ML99_NAT_EQ(ML99_VARIADICS_COUNT(__VA_ARGS__), 1)
 
 #define DATATYPE99_PRIV_mapVariants(f, variants)                                                   \
     ML99_listMapInPlace(ML99_compose(f, v(ML99_untuple)), variants)
-// } (A variant representation)
+// } (Variant)
 
 // Sum type generation {
 
-#define datatype99(name, ...)                                                                      \
-    ML99_EVAL(ML99_call(DATATYPE99_PRIV_genDatatype, v(name), DATATYPE99_PRIV_parse(__VA_ARGS__))) \
+#define datatype99(x, ...)                                                                         \
+    ML99_CAT(DATATYPE99_PRIV_WITH_DERIVE_, DATATYPE99_PRIV_IS_DERIVE(x))(x, __VA_ARGS__)
+
+#define DATATYPE99_PRIV_IS_DERIVE(x)          ML99_IS_TUPLE(DATATYPE99_PRIV_IS_DERIVE_##x)
+#define DATATYPE99_PRIV_IS_DERIVE_derive(...) ()
+
+#define DATATYPE99_PRIV_WITH_DERIVE_0(name, ...)                                                   \
+    DATATYPE99_PRIV_WITH_DERIVE_1(derive((dummy, ())), name, __VA_ARGS__)
+
+#define DATATYPE99_PRIV_WITH_DERIVE_1(derivers, name, ...)                                         \
+    ML99_EVAL(ML99_call(                                                                           \
+        DATATYPE99_PRIV_genDatatype,                                                               \
+        v(DATATYPE99_PRIV_ELIM_##derivers, name),                                                  \
+        DATATYPE99_PRIV_parse(__VA_ARGS__)))                                                       \
     /* Used for a trailing semicolon. */                                                           \
     struct name
 
-#define DATATYPE99_PRIV_genDatatype_IMPL(name, variants)                                           \
+#define DATATYPE99_PRIV_ELIM_derive(...) (__VA_ARGS__)
+
+#define DATATYPE99_PRIV_genDatatype_IMPL(derivers, name, variants)                                 \
     ML99_TERMS(                                                                                    \
         v(typedef struct name name;),                                                              \
         DATATYPE99_PRIV_genTypedefs(name, variants),                                               \
@@ -107,8 +118,23 @@ static const UnitT99 unit_v99 = '\0';
             name##Tag tag;                                                                         \
             name##Variants data;                                                                   \
         };),                                                                                       \
-        DATATYPE99_PRIV_genCtors(name, variants))
+        DATATYPE99_PRIV_genCtors(name, variants),                                                  \
+        DATATYPE99_PRIV_invokeDerivers(derivers, name, variants))
 // } (Sum type generation)
+
+// Derivation {
+#define DATATYPE99_PRIV_invokeDerivers(derivers, name, variants)                                   \
+    ML99_variadicsForEach(                                                                         \
+        ML99_compose(                                                                              \
+            ML99_appl(v(DATATYPE99_PRIV_invokeDeriver), v(name, variants)),                        \
+            v(ML99_untuple)),                                                                      \
+        ML99_untuple(v(derivers)))
+
+#define DATATYPE99_PRIV_invokeDeriver_IMPL(name, variants, deriver, args)                          \
+    ML99_callUneval(DATATYPE99_DERIVE_##deriver, name, variants, ML99_UNTUPLE(args))
+
+#define DATATYPE99_DERIVE_dummy_IMPL(...) ML99_empty()
+// } (Derivation)
 
 // Pattern matching {
 
@@ -308,6 +334,7 @@ static const UnitT99 unit_v99 = '\0';
 
 // Arity specifiers {
 #define DATATYPE99_PRIV_parseMap_ARITY               1
+#define DATATYPE99_PRIV_invokeDeriver_ARITY          2
 #define DATATYPE99_PRIV_genBinding_ARITY             3
 #define DATATYPE99_PRIV_genTypedefsForVariant_ARITY  2
 #define DATATYPE99_PRIV_genVariantParamTypedef_ARITY 3

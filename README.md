@@ -5,7 +5,7 @@
     <img src="https://github.com/Hirrolot/datatype99/workflows/C/C++%20CI/badge.svg">
   </a>
 
-  A header-only library featuring safe, intuitive [sum types] with exhaustive pattern matching.
+  A header-only library featuring safe, intuitive [sum types] with exhaustive pattern matching & compile-time introspection facilities.
 </div>
 
 [sum types]: https://en.wikipedia.org/wiki/Tagged_union
@@ -55,15 +55,21 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 ### EBNF syntax
 
 ```ebnf
-<datatype>      ::= "datatype99(" <datatype-name> { "," <variant> }+ ")" ;
-<variant>       ::= "(" <variant-name> [ { "," <type> }+ ] ")" ;
+<datatype>      ::= "datatype99(" [ <derive-clause> "," ] <datatype-name> { "," <variant> }+ ")" ;
+
+<variant>       ::= "(" <variant-name> { "," <type> }* ")" ;
 <datatype-name> ::= <ident> ;
 <variant-name>  ::= <ident> ;
 
+<derive-clause> ::= "derive(" <deriver> { "," <deriver> }* ")" ;
+<deriver>       ::= "(" <deriver-name> "," <deriver-args> ")" ;
+<deriver-name>  ::= <ident> ;
+<deriver-args>  ::= "(" <pp-token-list> ")" ;
+
 <match>         ::= "match99(" <lvalue> ")" { <arm> }+ ;
 <matches>       ::= "matches99(" <expr> "," <ident> ")" ;
-<if-let>        ::= "ifLet99(" <lvalue> "," <variant-name> "," <ident> [ { "," <ident> }+ ] ")" <stmt> ;
-<of>            ::= "of99(" <variant-name> [ { "," <ident> }+ ] ")" <stmt> ;
+<if-let>        ::= "ifLet99(" <lvalue> "," <variant-name> "," <ident> { "," <ident> }* ")" <stmt> ;
+<of>            ::= "of99(" <variant-name> { "," <ident> }* ")" <stmt> ;
 <otherwise>     ::= "otherwise99" <stmt> ;
 ```
 
@@ -131,6 +137,14 @@ struct <datatype-name> {
 ```
 inline static <datatype99-name> <variant-name>(...) { /* ... */ }
 ```
+
+ 7. Now, when a sum type is generated, derivation takes place. Each deriver is invoked sequentially, from left to right, as `ML99_call(DATATYPE99_DERIVE_##<deriver-name>, <datatype-name>, variants..., ML99_UNTUPLE(<deriver-args>))` (see [Metalang99]), where
+    1. `variants...` is a [list](https://metalang99.readthedocs.io/en/latest/list.html) of variants represented as two-place [tuples](https://metalang99.readthedocs.io/en/latest/tuple.html): `(<variant-name>, types...)`, where
+       1. `types...` are comma-separated types of the corresponding variant.
+
+Also, there is a built-in deriver called `dummy`, which must be specified as `(dummy, (...))`; it generates nothing.
+
+See [`examples/gen_metadata.c`](examples/gen_metadata.c) as examples of writing and using derivers.
 
 #### `match99`
 
