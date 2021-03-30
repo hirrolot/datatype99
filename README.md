@@ -62,7 +62,7 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 <variant-name>  ::= <ident> ;
 
 <derive-clause> ::= "derive(" <deriver> { "," <deriver> }* ")" ;
-<deriver>       ::= "(" <deriver-name> "," <deriver-args> ")" ;
+<deriver>       ::= <deriver-name> | "(" <deriver-name> "," <deriver-args> ")" ;
 <deriver-name>  ::= <ident> ;
 <deriver-args>  ::= "(" <pp-token-list> ")" ;
 
@@ -138,7 +138,7 @@ struct <datatype-name> {
 inline static <datatype99-name> <variant-name>(...) { /* ... */ }
 ```
 
- 7. Now, when a sum type is generated, derivation takes place. Each deriver is invoked sequentially, from left to right, as `ML99_call(DATATYPE99_DERIVE_##<deriver-name>, v(<datatype-name>), variants..., ML99_untuple(v(<deriver-args>)))` (see [Metalang99]), where
+ 7. Now, when a sum type is generated, the derivation process takes place. Each deriver is invoked sequentially, from left to right, either as `ML99_call(DATATYPE99_DERIVE_##<deriver-name>, v(<datatype-name>), variants...)` (for a deriver without extra parameters) or `ML99_call(DATATYPE99_DERIVE_##<deriver-name>, v(<datatype-name>), variants..., args...` otherwise, where
     1. `variants...` is a [list](https://metalang99.readthedocs.io/en/latest/list.html) of variants represented as two-place [tuples](https://metalang99.readthedocs.io/en/latest/tuple.html): `(<variant-name>, types...)`, where
        1. `types...` are comma-separated types of the corresponding variant.
 
@@ -147,6 +147,8 @@ To specify attributes for a particular variant, follow this pattern:
 ```
 #define <variant-name>_ATTR_<deriver-name>_<attribute-name> /* attribute value */
 ```
+
+To access this attribute inside your deriver, you can simply paste appropriate identifiers together.
 
 (It is theoretically possible to specify attributes right inside a definition of a sum type (as in Rust), but this would penetrate the performance.)
 

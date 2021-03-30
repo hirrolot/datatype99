@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define DATATYPE99_DERIVE_metadata_IMPL(name, variants, ...)                                       \
+#define DATATYPE99_DERIVE_metadata_IMPL(name, variants)                                            \
     ML99_TERMS(                                                                                    \
         ML99_call(VARIANTS_METADATA, v(name, variants)),                                           \
         ML99_call(METADATA_TEMPLATE, v(name), ML99_listLen(v(variants))))
@@ -49,7 +49,7 @@ typedef struct {
 
 // clang-format off
 datatype(
-    derive((metadata, ())),
+    derive(metadata),
     Num,
     (Char, char),
     (Int, int),

@@ -94,7 +94,7 @@ static const UnitT99 unit_v99 = '\0';
 #define DATATYPE99_PRIV_IS_DERIVE_derive(...) ()
 
 #define DATATYPE99_PRIV_WITH_DERIVE_0(name, ...)                                                   \
-    DATATYPE99_PRIV_WITH_DERIVE_1(derive((dummy, ())), name, __VA_ARGS__)
+    DATATYPE99_PRIV_WITH_DERIVE_1(derive(dummy), name, __VA_ARGS__)
 
 #define DATATYPE99_PRIV_WITH_DERIVE_1(derivers, name, ...)                                         \
     ML99_EVAL(ML99_call(                                                                           \
@@ -125,13 +125,17 @@ static const UnitT99 unit_v99 = '\0';
 // Derivation {
 #define DATATYPE99_PRIV_invokeDerivers(derivers, name, variants)                                   \
     ML99_variadicsForEach(                                                                         \
-        ML99_compose(                                                                              \
-            ML99_appl(v(DATATYPE99_PRIV_invokeDeriver), v(name, variants)),                        \
-            v(ML99_untuple)),                                                                      \
+        ML99_appl(v(DATATYPE99_PRIV_invokeDeriver), v(name, variants)),                            \
         ML99_untuple(v(derivers)))
 
-#define DATATYPE99_PRIV_invokeDeriver_IMPL(name, variants, deriver, args)                          \
-    ML99_callUneval(DATATYPE99_DERIVE_##deriver, name, variants, ML99_UNTUPLE(args))
+#define DATATYPE99_PRIV_invokeDeriver_IMPL(name, variants, deriver_clause)                         \
+    ML99_IF(                                                                                       \
+        ML99_IS_UNTUPLE(deriver_clause),                                                           \
+        ML99_call(ML99_cat(v(DATATYPE99_DERIVE_), v(deriver_clause)), v(name, variants)),          \
+        ML99_call(                                                                                 \
+            ML99_cat(v(DATATYPE99_DERIVE_), ML99_tupleGet(0)(v(deriver_clause))),                  \
+            v(name, variants),                                                                     \
+            ML99_untuple(ML99_tupleGet(1)(v(deriver_clause)))))
 
 #define DATATYPE99_DERIVE_dummy_IMPL(...) ML99_empty()
 // } (Derivation)
