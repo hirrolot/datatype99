@@ -64,7 +64,7 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 <derive-clause> ::= "derive(" <deriver> { "," <deriver> }* ")" ;
 <deriver>       ::= <deriver-name> | "(" <deriver-name> "," <deriver-args> ")" ;
 <deriver-name>  ::= <ident> ;
-<deriver-args>  ::= "(" <pp-token-list> ")" ;
+<deriver-args>  ::= <pp-token-list> ;
 
 <match>         ::= "match99(" <lvalue> ")" { <arm> }+ ;
 <matches>       ::= "matches99(" <expr> "," <ident> ")" ;
@@ -147,7 +147,7 @@ inline static <datatype99-name> <variant-name>(...) { /* ... */ }
     - `ML99_call(DATATYPE99_DERIVE_##<deriver-name>, v(<datatype-name>), variants..., args...)`, where
        - `variants...` is a [list] of variants represented as two-place [tuples]: `(<variant-name>, types...)`, where
           - `types...` is a [list] of types of the corresponding variant.
-       - `args...` are extra deriver arguments supplied in `(<deriver-name>, (args...))`.
+       - `args...` are extra deriver arguments supplied in `(<deriver-name>, args...)`.
 
 [list]: https://metalang99.readthedocs.io/en/latest/list.html
 [tuples]: https://metalang99.readthedocs.io/en/latest/tuple.html
