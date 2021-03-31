@@ -130,7 +130,11 @@ struct <datatype-name> {
 };
 ```
 
-(`char dummy;` is needed to make the union contain at least one item, according to the standard, even if all variants are empty. Such a `datatype` would enforce strict type checking unlike plain C `enum`s.)
+<details>
+  <summary>Note on char dummy;</summary>
+
+  (`char dummy;` is needed to make the union contain at least one item, according to the standard, even if all variants are empty. Such a `datatype` would enforce strict type checking unlike plain C `enum`s.)
+</details>
 
  6. For each variant, the following function called a _value constructor_ is generated:
 
@@ -154,7 +158,13 @@ To specify attributes for a particular variant, follow this pattern:
 #define <variant-name>_ATTR_<deriver-name>_<attribute-name> /* attribute value */
 ```
 
-To access `/* attribute value */` inside your deriver, you can simply paste appropriate identifiers together, thus obtaining the above macro name expanding to the attribute value. (It is can be theoretically possible to specify an attribute right before the corresponding variant (as in Rust), but this would penetrate the performance.)
+To access `/* attribute value */` inside your deriver, you can simply paste appropriate identifiers together, thus obtaining the above macro name expanding to the attribute value.
+
+<details>
+  <summary>Note on this design decision</summary>
+
+  (It is can be theoretically possible to specify an attribute right before the corresponding variant (as in Rust), but this would penetrate the performance and simplicity of the library.)
+</details>
 
 Also, there is a built-in deriver called `dummy`, which can be specified either as `dummy` or `(dummy, (...))`; it generates nothing.
 
