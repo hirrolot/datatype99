@@ -158,7 +158,10 @@ To specify attributes for a particular variant, follow this pattern:
 #define <variant-name>_ATTR_<deriver-name>_<attribute-name> /* attribute value */
 ```
 
-To access `/* attribute value */` inside your deriver, you can simply paste appropriate identifiers together, thus obtaining the above macro name expanding to the attribute value. A value of an optional attribute can be surrounded by parentheses so that a deriver could check its presence through [`ML99_isTuple`].
+Then:
+
+ - To access `/* attribute value */` inside your deriver, you can simply paste appropriate identifiers together, thus obtaining the above macro name expanding to the attribute value.
+ - To specify an optional attribute, surround its value with parentheses so that a deriver could check its presence through [`ML99_isTuple`].
 
 [`ML99_isTuple`]: https://metalang99.readthedocs.io/en/latest/tuple.html#c.ML99_isTuple
 
