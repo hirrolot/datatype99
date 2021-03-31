@@ -5,7 +5,7 @@
     <img src="https://github.com/Hirrolot/datatype99/workflows/C/C++%20CI/badge.svg">
   </a>
 
-  A header-only library featuring safe, intuitive [sum types] with pattern matching & compile-time introspection facilities.
+  Safe, intuitive [sum types] with exhaustive pattern matching & compile-time introspection facilities.
 </div>
 
 [sum types]: https://en.wikipedia.org/wiki/Tagged_union
@@ -153,9 +153,7 @@ To specify attributes for a particular variant, follow this pattern:
 #define <variant-name>_ATTR_<deriver-name>_<attribute-name> /* attribute value */
 ```
 
-To access `/* attribute value */` inside your deriver, you can simply paste appropriate identifiers together.
-
-(It is can be theoretically possible to specify an attribute right before the corresponding variant (as in Rust), but this would penetrate the performance.)
+To access `/* attribute value */` inside your deriver, you can simply paste appropriate identifiers together. (It is can be theoretically possible to specify an attribute right before the corresponding variant (as in Rust), but this would penetrate the performance.)
 
 Also, there is a built-in deriver called `dummy`, which can be specified either as `dummy` or `(dummy, (...))`; it generates nothing.
 
