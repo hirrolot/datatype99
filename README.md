@@ -40,7 +40,7 @@
 
 A sum type is created using the `datatype` macro. I guess you have already caught the syntax but actually there exist one more kind of a variant: an empty variant which is expressed simply as `(Foo)`. It holds no data.
 
-Pattern matching is likewise intuitive. Just three brief notes:
+Pattern matching is likewise intuitive. Just a few brief notes:
 
  - To match an empty variant, write `of(Foo) { ... }`.
  - To match the default case, i.e. when all other cases failed, write `otherwise { ... }`.
@@ -138,11 +138,12 @@ struct <datatype-name> {
 inline static <datatype99-name> <variant-name>(...) { /* ... */ }
 ```
 
- 7. Now, when a sum type is generated, the derivation process takes place. Each deriver is invoked sequentially, from left to right, either with extra arguments supplied in `(<deriver-name>, (args...))` or without them, i.e.
+ 7. Now, when a sum type is generated, the derivation process takes place. Each deriver is invoked sequentially, from left to right, either with extra arguments or without them, i.e.
     - `ML99_call(DATATYPE99_DERIVE_##<deriver-name>, v(<datatype-name>), variants...)` or
     - `ML99_call(DATATYPE99_DERIVE_##<deriver-name>, v(<datatype-name>), variants..., args...)`, where
        - `variants...` is a [list] of variants represented as two-place [tuples]: `(<variant-name>, types...)`, where
           - `types...` is a [list] of types of the corresponding variant.
+       - `args...` are extra deriver arguments supplied in `(<deriver-name>, (args...))`.
 
 [list]: https://metalang99.readthedocs.io/en/latest/list.html
 [tuples]: https://metalang99.readthedocs.io/en/latest/tuple.html
