@@ -138,9 +138,11 @@ struct <datatype-name> {
 inline static <datatype99-name> <variant-name>(...) { /* ... */ }
 ```
 
- 7. Now, when a sum type is generated, the derivation process takes place. Each deriver is invoked sequentially, from left to right, either as `ML99_call(DATATYPE99_DERIVE_##<deriver-name>, v(<datatype-name>), variants...)` (for a deriver without extra parameters) or `ML99_call(DATATYPE99_DERIVE_##<deriver-name>, v(<datatype-name>), variants..., args...` otherwise, where
-    1. `variants...` is a [list](https://metalang99.readthedocs.io/en/latest/list.html) of variants represented as two-place [tuples](https://metalang99.readthedocs.io/en/latest/tuple.html): `(<variant-name>, types...)`, where
-       1. `types...` are comma-separated types of the corresponding variant.
+ 7. Now, when a sum type is generated, the derivation process takes place. Each deriver is invoked sequentially, from left to right, either with extra arguments supplied in `(<deriver-name>, (args...))` or without them, i.e.
+    - `ML99_call(DATATYPE99_DERIVE_##<deriver-name>, v(<datatype-name>), variants...)` or
+    - `ML99_call(DATATYPE99_DERIVE_##<deriver-name>, v(<datatype-name>), variants..., args...)`, where
+       - `variants...` is a [list](https://metalang99.readthedocs.io/en/latest/list.html) of variants represented as two-place [tuples](https://metalang99.readthedocs.io/en/latest/tuple.html): `(<variant-name>, types...)`, where
+          - `types...` are comma-separated types of the corresponding variant.
 
 To specify attributes for a particular variant, follow this pattern:
 
