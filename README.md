@@ -148,11 +148,11 @@ To specify attributes for a particular variant, follow this pattern:
 #define <variant-name>_ATTR_<deriver-name>_<attribute-name> /* attribute value */
 ```
 
-To access this attribute inside your deriver, you can simply paste appropriate identifiers together.
+To access `/* attribute value */` inside your deriver, you can simply paste appropriate identifiers together.
 
-(It is theoretically possible to specify attributes right inside a definition of a sum type (as in Rust), but this would penetrate the performance.)
+(It is can be theoretically possible to specify an attribute right before the corresponding variant (as in Rust), but this would penetrate the performance.)
 
-Also, there is a built-in deriver called `dummy`, which must be specified as `(dummy, (...))`; it generates nothing.
+Also, there is a built-in deriver called `dummy`, which can be specified either as `dummy` or `(dummy, (...))`; it generates nothing.
 
 See [`examples/gen_metadata.c`](examples/gen_metadata.c) as examples of writing and using derivers.
 
