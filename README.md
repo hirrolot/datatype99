@@ -5,7 +5,7 @@
     <img src="https://github.com/Hirrolot/datatype99/workflows/C/C++%20CI/badge.svg">
   </a>
 
-  A header-only library featuring safe, intuitive [sum types] with exhaustive pattern matching & compile-time introspection facilities.
+  A header-only library featuring safe, intuitive [sum types] with pattern matching & compile-time introspection facilities.
 </div>
 
 [sum types]: https://en.wikipedia.org/wiki/Tagged_union
