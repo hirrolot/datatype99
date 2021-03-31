@@ -154,7 +154,7 @@ To specify attributes for a particular variant, follow this pattern:
 #define <variant-name>_ATTR_<deriver-name>_<attribute-name> /* attribute value */
 ```
 
-To access `/* attribute value */` inside your deriver, you can simply paste appropriate identifiers together. (It is can be theoretically possible to specify an attribute right before the corresponding variant (as in Rust), but this would penetrate the performance.)
+To access `/* attribute value */` inside your deriver, you can simply paste appropriate identifiers together, thus obtaining the above macro name expanding to the attribute value. (It is can be theoretically possible to specify an attribute right before the corresponding variant (as in Rust), but this would penetrate the performance.)
 
 Also, there is a built-in deriver called `dummy`, which can be specified either as `dummy` or `(dummy, (...))`; it generates nothing.
 
