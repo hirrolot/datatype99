@@ -173,7 +173,7 @@ Then:
 
 Also, there is a built-in deriver called `dummy`, which can be specified either as `dummy` or `(dummy, (...))`; it generates nothing.
 
-See [`examples/gen_metadata.c`](examples/gen_metadata.c) as examples of writing and using derivers.
+See [`examples/derive/`](examples/derive/) for examples of writing and using derivers.
 
 #### `match99`
 

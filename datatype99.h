@@ -196,12 +196,10 @@ static const UnitT99 unit_v99 = '\0';
 
 #define DATATYPE99_PRIV_genBinding_IMPL(tag_, x, i)                                                \
     ML99_IF(                                                                                       \
-        ML99_DETECT_IDENT(DATATYPE99_PRIV_isUnderscore_, x),                                       \
+        ML99_DETECT_IDENT(ML99_DETECTOR(_), x),                                                    \
         ML99_empty(),                                                                              \
         v(ML99_INTRODUCE_VAR_TO_STMT(                                                              \
             tag_##_##i *x = &((tag_##SumT *)datatype99_priv_matched_val)->data.tag_._##i)))
-
-#define DATATYPE99_PRIV_isUnderscore__ ()
 // } (Pattern matching)
 
 #define DATATYPE99_PRIV_genTypedefs(name, variants)                                                \
