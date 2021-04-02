@@ -99,14 +99,15 @@ static const UnitT99 unit_v99 = '\0';
 #define DATATYPE99_PRIV_WITH_DERIVE_1(derivers, name, ...)                                         \
     ML99_EVAL(ML99_call(                                                                           \
         DATATYPE99_PRIV_genDatatype,                                                               \
-        v(DATATYPE99_PRIV_ELIM_##derivers, name),                                                  \
-        DATATYPE99_PRIV_parse(__VA_ARGS__)))                                                       \
+        v(name),                                                                                   \
+        DATATYPE99_PRIV_parse(__VA_ARGS__),                                                        \
+        v(DATATYPE99_PRIV_ELIM_##derivers)))                                                       \
     /* Used for a trailing semicolon. */                                                           \
     struct name
 
-#define DATATYPE99_PRIV_ELIM_derive(...) (__VA_ARGS__)
+#define DATATYPE99_PRIV_ELIM_derive(...) __VA_ARGS__
 
-#define DATATYPE99_PRIV_genDatatype_IMPL(derivers, name, variants)                                 \
+#define DATATYPE99_PRIV_genDatatype_IMPL(name, variants, ...)                                      \
     ML99_TERMS(                                                                                    \
         v(typedef struct name name;),                                                              \
         DATATYPE99_PRIV_genVariantTypedefsForEach(name, variants),                                 \
@@ -123,23 +124,23 @@ static const UnitT99 unit_v99 = '\0';
             name##Variants data;                                                                   \
         };),                                                                                       \
         DATATYPE99_PRIV_genCtorForEach(name, variants),                                            \
-        DATATYPE99_PRIV_invokeDeriverForEach(derivers, name, variants))
+        DATATYPE99_PRIV_invokeDeriverForEach(name, variants, __VA_ARGS__))
 // } (Sum type generation)
 
 // Derivation {
-#define DATATYPE99_PRIV_invokeDeriverForEach(derivers, name, variants)                             \
+#define DATATYPE99_PRIV_invokeDeriverForEach(name, variants, ...)                                  \
     ML99_variadicsForEach(                                                                         \
         ML99_appl(v(DATATYPE99_PRIV_invokeDeriver), v(name, variants)),                            \
-        ML99_untuple(v(derivers)))
+        v(__VA_ARGS__))
 
-#define DATATYPE99_PRIV_invokeDeriver_IMPL(name, variants, deriver_clause)                         \
+#define DATATYPE99_PRIV_invokeDeriver_IMPL(name, variants, deriver)                                \
     ML99_IF(                                                                                       \
-        ML99_IS_UNTUPLE(deriver_clause),                                                           \
-        ML99_call(ML99_cat(v(DATATYPE99_DERIVE_), v(deriver_clause)), v(name, variants)),          \
+        ML99_IS_UNTUPLE(deriver),                                                                  \
+        ML99_call(ML99_cat(v(DATATYPE99_DERIVE_), v(deriver)), v(name, variants)),                 \
         ML99_call(                                                                                 \
-            ML99_cat(v(DATATYPE99_DERIVE_), ML99_tupleGet(0)(v(deriver_clause))),                  \
+            ML99_cat(v(DATATYPE99_DERIVE_), ML99_tupleGet(0)(v(deriver))),                         \
             v(name, variants),                                                                     \
-            ML99_tupleGet(1)(v(deriver_clause))))
+            ML99_tupleGet(1)(v(deriver))))
 
 #define DATATYPE99_DERIVE_dummy_IMPL(...) ML99_empty()
 // } (Derivation)
