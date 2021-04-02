@@ -116,9 +116,7 @@ static const UnitT99 unit_v99 = '\0';
             ML99_enum(v(name##Tag), DATATYPE99_PRIV_genTagForEach(variants))),                     \
         ML99_typedef(                                                                              \
             v(name##Variants),                                                                     \
-            ML99_union(                                                                            \
-                v(name##Variants),                                                                 \
-                ML99_callUneval(DATATYPE99_PRIV_genUnionFieldForEach, name, variants))),           \
+            ML99_union(v(name##Variants), DATATYPE99_PRIV_genUnionFieldForEach(name, variants))),  \
         v(struct name {                                                                            \
             name##Tag tag;                                                                         \
             name##Variants data;                                                                   \
@@ -252,12 +250,12 @@ static const UnitT99 unit_v99 = '\0';
  * ...
  * <datatype-name><variant-name>N <variant-name>N;
  */
-#define DATATYPE99_PRIV_genUnionFieldForEach_IMPL(name, variants)                                  \
-    ML99_TERMS(                                                                                    \
+#define DATATYPE99_PRIV_genUnionFieldForEach(name, variants)                                       \
+    ML99_uncomma(ML99_QUOTE(                                                                       \
         v(char dummy;),                                                                            \
         DATATYPE99_PRIV_mapVariants(                                                               \
             ML99_appl(v(DATATYPE99_PRIV_genUnionField), v(name)),                                  \
-            v(variants)))
+            v(variants))))
 
 #define DATATYPE99_PRIV_genUnionField_IMPL(name, tag, sig)                                         \
     ML99_IF(ML99_IS_CONS(sig), v(name##tag tag;), ML99_empty())
