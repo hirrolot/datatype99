@@ -109,21 +109,25 @@ static const UnitT99 unit_v99 = '\0';
 #define DATATYPE99_PRIV_genDatatype_IMPL(derivers, name, variants)                                 \
     ML99_TERMS(                                                                                    \
         v(typedef struct name name;),                                                              \
-        DATATYPE99_PRIV_genTypedefs(name, variants),                                               \
-        ML99_typedef(v(name##Tag), ML99_enum(v(name##Tag), DATATYPE99_PRIV_genTags(variants))),    \
+        DATATYPE99_PRIV_genVariantTypedefsForEach(name, variants),                                 \
+        ML99_typedef(                                                                              \
+            v(name##Tag),                                                                          \
+            ML99_enum(v(name##Tag), DATATYPE99_PRIV_genTagForEach(variants))),                     \
         ML99_typedef(                                                                              \
             v(name##Variants),                                                                     \
-            ML99_union(v(name##Variants), DATATYPE99_PRIV_genUnionFields(v(name), v(variants)))),  \
+            ML99_union(                                                                            \
+                v(name##Variants),                                                                 \
+                ML99_callUneval(DATATYPE99_PRIV_genUnionFieldForEach, name, variants))),           \
         v(struct name {                                                                            \
             name##Tag tag;                                                                         \
             name##Variants data;                                                                   \
         };),                                                                                       \
-        DATATYPE99_PRIV_genCtors(name, variants),                                                  \
-        DATATYPE99_PRIV_invokeDerivers(derivers, name, variants))
+        DATATYPE99_PRIV_genCtorForEach(name, variants),                                            \
+        DATATYPE99_PRIV_invokeDeriverForEach(derivers, name, variants))
 // } (Sum type generation)
 
 // Derivation {
-#define DATATYPE99_PRIV_invokeDerivers(derivers, name, variants)                                   \
+#define DATATYPE99_PRIV_invokeDeriverForEach(derivers, name, variants)                             \
     ML99_variadicsForEach(                                                                         \
         ML99_appl(v(DATATYPE99_PRIV_invokeDeriver), v(name, variants)),                            \
         ML99_untuple(v(derivers)))
@@ -172,7 +176,7 @@ static const UnitT99 unit_v99 = '\0';
 #define DATATYPE99_PRIV_ofEmpty(tag) case tag##Tag:
 #define DATATYPE99_PRIV_ofNonEmpty(tag, ...)                                                       \
     case tag##Tag:                                                                                 \
-        ML99_EVAL(DATATYPE99_PRIV_genBindings(v(tag), v(__VA_ARGS__)))
+        ML99_EVAL(DATATYPE99_PRIV_genBindingForEach(v(tag), v(__VA_ARGS__)))
 
 #define otherwise99                                                                                \
     break;                                                                                         \
@@ -184,12 +188,12 @@ static const UnitT99 unit_v99 = '\0';
 #define ifLet99(val, tag_, ...) \
     if (tag_##Tag == (val).tag) \
         ML99_INTRODUCE_NON_NULL_PTR_TO_STMT(void, datatype99_priv_matched_val, (void *)&(val)) \
-            ML99_EVAL(DATATYPE99_PRIV_genBindings(v(tag_), v(__VA_ARGS__)))
+            ML99_EVAL(DATATYPE99_PRIV_genBindingForEach(v(tag_), v(__VA_ARGS__)))
 // clang-format on
 
 #define matches99(val, tag_) ((val).tag == tag_##Tag)
 
-#define DATATYPE99_PRIV_genBindings(tag, ...)                                                      \
+#define DATATYPE99_PRIV_genBindingForEach(tag, ...)                                                \
     ML99_variadicsForEachI(ML99_appl(v(DATATYPE99_PRIV_genBinding), tag), __VA_ARGS__)
 
 #define DATATYPE99_PRIV_genBinding_IMPL(tag_, x, i)                                                \
@@ -200,19 +204,19 @@ static const UnitT99 unit_v99 = '\0';
             tag_##_##i *x = &((tag_##SumT *)datatype99_priv_matched_val)->data.tag_._##i)))
 // } (Pattern matching)
 
-#define DATATYPE99_PRIV_genTypedefs(name, variants)                                                \
+#define DATATYPE99_PRIV_genVariantTypedefsForEach(name, variants)                                  \
     DATATYPE99_PRIV_mapVariants(                                                                   \
-        ML99_appl(v(DATATYPE99_PRIV_genTypedefsForVariant), v(name)),                              \
+        ML99_appl(v(DATATYPE99_PRIV_genVariantTypedefs), v(name)),                                 \
         v(variants))
 
-#define DATATYPE99_PRIV_genTypedefsForVariant_IMPL(name, tag, sig)                                 \
+#define DATATYPE99_PRIV_genVariantTypedefs_IMPL(name, tag, sig)                                    \
     ML99_TERMS(                                                                                    \
         v(typedef struct name tag##SumT;),                                                         \
         ML99_IF(                                                                                   \
             ML99_IS_CONS(sig),                                                                     \
             DATATYPE99_PRIV_genVariantStruct(name, tag, sig),                                      \
             ML99_empty()),                                                                         \
-        DATATYPE99_PRIV_genVariantParamsTypedefs(tag, sig))
+        DATATYPE99_PRIV_genParamTypedefForEach(tag, sig))
 
 /*
  * typedef struct <datatype-name><variant-name> {
@@ -229,15 +233,15 @@ static const UnitT99 unit_v99 = '\0';
  * ...
  * typedef <type>N <variant-name>_N;
  */
-#define DATATYPE99_PRIV_genVariantParamsTypedefs(tag, sig)                                         \
-    ML99_listMapInPlaceI(ML99_appl(v(DATATYPE99_PRIV_genVariantParamTypedef), v(tag)), v(sig))
+#define DATATYPE99_PRIV_genParamTypedefForEach(tag, sig)                                           \
+    ML99_listMapInPlaceI(ML99_appl(v(DATATYPE99_PRIV_genParamTypedef), v(tag)), v(sig))
 
-#define DATATYPE99_PRIV_genVariantParamTypedef_IMPL(tag, type, i) v(typedef type tag##_##i;)
+#define DATATYPE99_PRIV_genParamTypedef_IMPL(tag, type, i) v(typedef type tag##_##i;)
 
 /*
  * <variant-name>0Tag, ..., <variant-name>NTag
  */
-#define DATATYPE99_PRIV_genTags(variants)                                                          \
+#define DATATYPE99_PRIV_genTagForEach(variants)                                                    \
     DATATYPE99_PRIV_mapVariants(v(DATATYPE99_PRIV_genTag), v(variants))
 
 #define DATATYPE99_PRIV_genTag_IMPL(tag, _sig) v(tag##Tag, )
@@ -247,10 +251,7 @@ static const UnitT99 unit_v99 = '\0';
  * ...
  * <datatype-name><variant-name>N <variant-name>N;
  */
-#define DATATYPE99_PRIV_genUnionFields(name, variants)                                             \
-    ML99_call(DATATYPE99_PRIV_genUnionFields, name, variants)
-
-#define DATATYPE99_PRIV_genUnionFields_IMPL(name, variants)                                        \
+#define DATATYPE99_PRIV_genUnionFieldForEach_IMPL(name, variants)                                  \
     ML99_TERMS(                                                                                    \
         v(char dummy;),                                                                            \
         DATATYPE99_PRIV_mapVariants(                                                               \
@@ -265,7 +266,7 @@ static const UnitT99 unit_v99 = '\0';
  * ...
  * inline static <datatype99-name> <variant-name>N(...) { ... }
  */
-#define DATATYPE99_PRIV_genCtors(name, variants)                                                   \
+#define DATATYPE99_PRIV_genCtorForEach(name, variants)                                             \
     DATATYPE99_PRIV_mapVariants(ML99_appl(v(DATATYPE99_PRIV_genCtor), v(name)), v(variants))
 
 #define DATATYPE99_PRIV_genCtor_IMPL(name, tag, sig)                                               \
@@ -333,15 +334,15 @@ static const UnitT99 unit_v99 = '\0';
 // } (Compiler-specific stuff)
 
 // Arity specifiers {
-#define DATATYPE99_PRIV_parseMap_ARITY               1
-#define DATATYPE99_PRIV_invokeDeriver_ARITY          2
-#define DATATYPE99_PRIV_genBinding_ARITY             3
-#define DATATYPE99_PRIV_genTypedefsForVariant_ARITY  2
-#define DATATYPE99_PRIV_genVariantParamTypedef_ARITY 3
-#define DATATYPE99_PRIV_genTag_ARITY                 1
-#define DATATYPE99_PRIV_genUnionField_ARITY          2
-#define DATATYPE99_PRIV_genCtor_ARITY                2
-#define DATATYPE99_PRIV_assignResult_ARITY           2
+#define DATATYPE99_PRIV_parseMap_ARITY           1
+#define DATATYPE99_PRIV_invokeDeriver_ARITY      2
+#define DATATYPE99_PRIV_genBinding_ARITY         3
+#define DATATYPE99_PRIV_genVariantTypedefs_ARITY 2
+#define DATATYPE99_PRIV_genParamTypedef_ARITY    3
+#define DATATYPE99_PRIV_genTag_ARITY             1
+#define DATATYPE99_PRIV_genUnionField_ARITY      2
+#define DATATYPE99_PRIV_genCtor_ARITY            2
+#define DATATYPE99_PRIV_assignResult_ARITY       2
 // }
 
 #endif // DATATYPE99_H
