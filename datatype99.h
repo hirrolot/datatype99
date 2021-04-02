@@ -144,15 +144,14 @@ static const UnitT99 unit_v99 = '\0';
 
 // clang-format off
 
-#define match99(val)                                                                               \
-    DATATYPE99_PRIV_DIAGNOSTIC_PUSH                                                                \
-    DATATYPE99_PRIV_SUPPRESS_W_MISLEADING_INDENTATION                                              \
-    DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE                                                         \
-    ML99_CLANG_PRAGMA("clang diagnostic push")                                                     \
-    DATATYPE99_PRIV_SUPPRESS_W_CAST_QUAL                                                           \
-    ML99_INTRODUCE_VAR_TO_STMT(void *datatype99_priv_matched_val = (void *)&(val))                 \
-        ML99_CLANG_PRAGMA("clang diagnostic pop")                                                  \
-        ML99_SUPPRESS_UNUSED_BEFORE_STMT(datatype99_priv_matched_val)                              \
+#define match99(val) \
+    DATATYPE99_PRIV_DIAGNOSTIC_PUSH \
+    DATATYPE99_PRIV_SUPPRESS_W_MISLEADING_INDENTATION \
+    DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE \
+    ML99_CLANG_PRAGMA("clang diagnostic push") \
+    DATATYPE99_PRIV_SUPPRESS_W_CAST_QUAL \
+    ML99_INTRODUCE_NON_NULL_PTR_TO_STMT(void, datatype99_priv_matched_val, &(val)) \
+        ML99_CLANG_PRAGMA("clang diagnostic pop") \
             switch ((val).tag)
 
 // clang-format on
@@ -182,11 +181,10 @@ static const UnitT99 unit_v99 = '\0';
 
 // clang-format off
 
-#define ifLet99(val, tag_, ...)                                                                    \
-    if (tag_##Tag == (val).tag)                                                                    \
-        ML99_INTRODUCE_VAR_TO_STMT(void *datatype99_priv_matched_val = (void *)&(val))             \
-            ML99_SUPPRESS_UNUSED_BEFORE_STMT(datatype99_priv_matched_val)                          \
-                ML99_EVAL(DATATYPE99_PRIV_genBindings(v(tag_), v(__VA_ARGS__)))
+#define ifLet99(val, tag_, ...) \
+    if (tag_##Tag == (val).tag) \
+        ML99_INTRODUCE_NON_NULL_PTR_TO_STMT(void, datatype99_priv_matched_val, &(val)) \
+            ML99_EVAL(DATATYPE99_PRIV_genBindings(v(tag_), v(__VA_ARGS__)))
 // clang-format on
 
 #define matches99(val, tag_) ((val).tag == tag_##Tag)
@@ -280,12 +278,12 @@ static const UnitT99 unit_v99 = '\0';
 #define DATATYPE99_PRIV_assignResult_IMPL(tag, i) v(result.data.tag._##i = _##i;)
 
 // clang-format off
-#define DATATYPE99_PRIV_genCtorTemplate_IMPL(name, tag_, params, assigned_fields)                  \
-    v(inline static DATATYPE99_PRIV_CTOR_ATTRS name tag_ params {                                  \
-        name result;                                                                               \
-        result.tag = tag_##Tag;                                                                    \
-        assigned_fields                                                                            \
-        return result;                                                                             \
+#define DATATYPE99_PRIV_genCtorTemplate_IMPL(name, tag_, params, assigned_fields) \
+    v(inline static DATATYPE99_PRIV_CTOR_ATTRS name tag_ params { \
+        name result; \
+        result.tag = tag_##Tag; \
+        assigned_fields \
+        return result; \
     })
 // clang-format on
 
