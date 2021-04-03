@@ -87,8 +87,12 @@ static const UnitT99 unit_v99 = '\0';
 
 // Sum type generation {
 
-#define datatype99(x, ...)                                                                         \
-    ML99_CAT(DATATYPE99_PRIV_WITH_DERIVE_, DATATYPE99_PRIV_IS_DERIVE(x))(x, __VA_ARGS__)
+// clang-format off
+
+#define datatype99(x, ...) \
+    ML99_CAT(DATATYPE99_PRIV_WITH_DERIVE_, DATATYPE99_PRIV_IS_DERIVE(x))(x, __VA_ARGS__) \
+    ML99_TRAILING_SEMICOLON()
+// clang-format on
 
 #define DATATYPE99_PRIV_IS_DERIVE(x)          ML99_IS_TUPLE(DATATYPE99_PRIV_IS_DERIVE_##x)
 #define DATATYPE99_PRIV_IS_DERIVE_derive(...) ()
@@ -101,9 +105,7 @@ static const UnitT99 unit_v99 = '\0';
         DATATYPE99_PRIV_genDatatype,                                                               \
         v(name),                                                                                   \
         DATATYPE99_PRIV_parse(__VA_ARGS__),                                                        \
-        v(DATATYPE99_PRIV_ELIM_##derivers)))                                                       \
-    /* Used for a trailing semicolon. */                                                           \
-    struct name
+        v(DATATYPE99_PRIV_ELIM_##derivers)))
 
 #define DATATYPE99_PRIV_ELIM_derive(...) __VA_ARGS__
 

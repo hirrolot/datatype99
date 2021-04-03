@@ -75,7 +75,7 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 
 ### Semantics
 
-(It might be helpful to look at the [generated data layout](https://godbolt.org/z/cbr8qfK6M) of [`examples/binary_tree.c`](examples/binary_tree.c).)
+(It might be helpful to look at the [generated data layout](https://godbolt.org/z/vKaKqh46d) of [`examples/binary_tree.c`](examples/binary_tree.c).)
 
 #### `datatype99`
 
