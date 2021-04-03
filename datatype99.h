@@ -161,10 +161,6 @@ static const UnitT99 unit_v99 = '\0';
 // clang-format on
 
 #define of99(...)                                                                                  \
-    DATATYPE99_PRIV_DIAGNOSTIC_POP                                                                 \
-    DATATYPE99_PRIV_DIAGNOSTIC_PUSH                                                                \
-    DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE                                                         \
-                                                                                                   \
     break;                                                                                         \
     ML99_IF(                                                                                       \
         DATATYPE99_PRIV_IS_EMPTY_VARIANT(__VA_ARGS__),                                             \
