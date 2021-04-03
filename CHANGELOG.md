@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - A mechanism for deriving: `datatype99` now can be specified with `derive(...)`.
  - A deriver `dummy` which generates nothing.
 
+### Changed
+
+ - Do **not** suppress `-Wmisleading-indentation` (GCC) automatically in `match99`.
+
 ## [1.0.0] - 2021-03-28
 
 ### Added

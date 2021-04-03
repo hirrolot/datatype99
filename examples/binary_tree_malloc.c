@@ -24,11 +24,11 @@ BinaryTree *alloc_tree(BinaryTree tree) {
 
 void destroy_tree(BinaryTree *tree) {
     match(*tree) {
-        of(Leaf, x) {
+        of(Leaf, _) {
             free(tree);
             return;
         }
-        of(Node, lhs, x, rhs) {
+        of(Node, lhs, _, rhs) {
             destroy_tree(*lhs);
             destroy_tree(*rhs);
             free(tree);

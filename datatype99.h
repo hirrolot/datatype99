@@ -151,10 +151,9 @@ static const UnitT99 unit_v99 = '\0';
 
 #define match99(val) \
     DATATYPE99_PRIV_DIAGNOSTIC_PUSH \
-    DATATYPE99_PRIV_SUPPRESS_W_MISLEADING_INDENTATION \
     DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE \
     ML99_CLANG_PRAGMA("clang diagnostic push") \
-    DATATYPE99_PRIV_SUPPRESS_W_CAST_QUAL \
+    ML99_CLANG_PRAGMA("clang diagnostic ignored \"-Wcast-qual\"") \
     ML99_INTRODUCE_NON_NULL_PTR_TO_STMT(void, datatype99_priv_matched_val, (void *)&(val)) \
         ML99_CLANG_PRAGMA("clang diagnostic pop") \
             switch ((val).tag)
@@ -164,7 +163,6 @@ static const UnitT99 unit_v99 = '\0';
 #define of99(...)                                                                                  \
     DATATYPE99_PRIV_DIAGNOSTIC_POP                                                                 \
     DATATYPE99_PRIV_DIAGNOSTIC_PUSH                                                                \
-    DATATYPE99_PRIV_SUPPRESS_W_MISLEADING_INDENTATION                                              \
     DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE                                                         \
                                                                                                    \
     break;                                                                                         \
@@ -319,16 +317,6 @@ static const UnitT99 unit_v99 = '\0';
 #else
 #define DATATYPE99_PRIV_UNUSED
 #define DATATYPE99_PRIV_WARN_UNUSED_RESULT
-#endif
-
-#define DATATYPE99_PRIV_SUPPRESS_W_CAST_QUAL                                                       \
-    ML99_CLANG_PRAGMA("clang diagnostic ignored \"-Wcast-qual\"")
-
-#if !defined(__clang__) && __GNUC__ >= 6
-#define DATATYPE99_PRIV_SUPPRESS_W_MISLEADING_INDENTATION                                          \
-    _Pragma("GCC diagnostic ignored \"-Wmisleading-indentation\"")
-#else
-#define DATATYPE99_PRIV_SUPPRESS_W_MISLEADING_INDENTATION
 #endif
 
 #define DATATYPE99_PRIV_CTOR_ATTRS DATATYPE99_PRIV_WARN_UNUSED_RESULT DATATYPE99_PRIV_CONST

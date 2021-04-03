@@ -125,6 +125,11 @@ int main(void) {
     do {                                                                                           \
     } while (0)
 
+#if !defined(__clang__) && __GNUC__ >= 6
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmisleading-indentation"
+#endif
+
     TEST_MATCH(a);
     assert(0 == foo);
 
@@ -140,6 +145,10 @@ int main(void) {
     assert(13 == d.data.D._1);
     assert(191991 == d.data.D._2);
     assert(&n == d.data.D._3);
+
+#if !defined(__clang__) && __GNUC__ >= 6
+#pragma GCC diagnostic pop
+#endif
 
     // Test a nested `match`.
     match(a) {
