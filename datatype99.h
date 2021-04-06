@@ -289,33 +289,48 @@ static const UnitT99 unit_v99 = '\0';
 #define DATATYPE99_PRIV_DIAGNOSTIC_PUSH        _Pragma("clang diagnostic push")
 #define DATATYPE99_PRIV_DIAGNOSTIC_POP         _Pragma("clang diagnostic pop")
 #define DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE _Pragma("clang diagnostic ignored \"-Wreturn-type\"")
-#define DATATYPE99_PRIV_CONST
 
 #elif defined(__GNUC__)
 
+// Diagnostic pragmas are not allowed inside functions on ancient GCC versions.
+// See <https://github.com/Hirrolot/datatype99/issues/8>.
+#if (__GNUC__ == 4 && __GNUC__MINOR__ >= 6) || __GNUC__ > 4
 #define DATATYPE99_PRIV_DIAGNOSTIC_PUSH        _Pragma("GCC diagnostic push")
 #define DATATYPE99_PRIV_DIAGNOSTIC_POP         _Pragma("GCC diagnostic pop")
 #define DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE _Pragma("GCC diagnostic ignored \"-Wreturn-type\"")
-#define DATATYPE99_PRIV_CONST                  __attribute__((const))
-
-#else
-
-#define DATATYPE99_PRIV_DIAGNOSTIC_PUSH
-#define DATATYPE99_PRIV_DIAGNOSTIC_POP
-#define DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE
-#define DATATYPE99_PRIV_CONST
-
 #endif
 
-#ifdef __GNUC__
 #define DATATYPE99_PRIV_UNUSED             __attribute__((unused))
 #define DATATYPE99_PRIV_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
-#else
-#define DATATYPE99_PRIV_UNUSED
-#define DATATYPE99_PRIV_WARN_UNUSED_RESULT
+#define DATATYPE99_PRIV_CONST              __attribute__((const))
+
 #endif
 
 #define DATATYPE99_PRIV_CTOR_ATTRS DATATYPE99_PRIV_WARN_UNUSED_RESULT DATATYPE99_PRIV_CONST
+
+#ifndef DATATYPE99_PRIV_DIAGNOSTIC_PUSH
+#define DATATYPE99_PRIV_DIAGNOSTIC_PUSH
+#endif
+
+#ifndef DATATYPE99_PRIV_DIAGNOSTIC_POP
+#define DATATYPE99_PRIV_DIAGNOSTIC_POP
+#endif
+
+#ifndef DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE
+#define DATATYPE99_PRIV_SUPPRESS_W_RETURN_TYPE
+#endif
+
+#ifndef DATATYPE99_PRIV_UNUSED
+#define DATATYPE99_PRIV_UNUSED
+#endif
+
+#ifndef DATATYPE99_PRIV_WARN_UNUSED_RESULT
+#define DATATYPE99_PRIV_WARN_UNUSED_RESULT
+#endif
+
+#ifndef DATATYPE99_PRIV_CONST
+#define DATATYPE99_PRIV_CONST
+#endif
 // } (Compiler-specific stuff)
 
 // Arity specifiers {
