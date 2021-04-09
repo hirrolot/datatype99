@@ -4,8 +4,10 @@ project(examples LANGUAGES C)
 include_directories(.. ../metalang99/include)
 
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
+  # For the reason behind -Wno-return-type, see
+  # <https://github.com/Hirrolot/datatype99/issues/9>.
   add_compile_options(-Wall -Wextra -pedantic -std=c99
-                      -ftrack-macro-expansion=0)
+                      -ftrack-macro-expansion=0 -Wno-return-type)
 elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
   # Enable a standard-confirming C99/C11 preprocessor.
   add_compile_options("/std:c11")
