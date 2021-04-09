@@ -281,3 +281,20 @@ playground.c:3:1: error: unknown type name ‘NonExistingType’
 If an error is not comprehensible at all, try to look at generated code (`-E`). Hopefully, the [code generation semantics] is formally defined so normally you will not see something unexpected.
 
 [code generation semantics]: #semantics
+
+## Troubleshooting
+
+### `warning: control reaches end of non-void function [-Wreturn-type]`
+
+This is a known false positive occurring when `match99` is used to return control flow back to a caller. Unfortunately, we cannot fix it in the library itself, so the best solution is to explicitly disable this warning. For GCC:
+
+```c
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wreturn-type"
+int foo(void) {
+    /* ... */
+}
+#pragma GCC diagnostic pop
+```
+
+See [issue 9](https://github.com/Hirrolot/datatype99/issues/9).
