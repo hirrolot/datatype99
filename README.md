@@ -286,7 +286,7 @@ If an error is not comprehensible at all, try to look at generated code (`-E`). 
 
 ### `warning: control reaches end of non-void function [-Wreturn-type]`
 
-This is a known false positive occurring when `match99` is used to return control flow back to a caller. Unfortunately, we cannot fix it in the library itself, so the best solution is to explicitly disable this warning. For GCC:
+This is a known false positive occurring when `match99` is used to return control back to a caller. Unfortunately, we cannot fix it in the library itself, so the best solution is to explicitly disable this warning. For GCC:
 
 ```c
 #pragma GCC diagnostic push
