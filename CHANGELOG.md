@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
  - `#pragma GCC diagnostic` inside functions error on GCC older than 4.6 ([issue 8](https://github.com/Hirrolot/datatype99/issues/8)).
  - Inconsistent suppression of `-Wreturn-type` ([issue 9](https://github.com/Hirrolot/datatype99/issues/9)).
+ - Suppress Clang's `-Wcast-qual` in `ifLet99`.
 
 ## [1.0.0] - 2021-03-28
 

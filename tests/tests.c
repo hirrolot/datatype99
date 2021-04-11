@@ -13,7 +13,7 @@ datatype(
     Complex,
     (A),
     (B, int),
-    (C, const char *, long double),
+    (C, const char *, double),
     (D, char, unsigned, long long, int *)
 );
 // clang-format on
@@ -189,7 +189,7 @@ int main(void) {
 
     // ifLet
     {
-        Complex expr = B(42);
+        const Complex expr = B(42);
         ifLet(expr, B, x) {
             *x = 8601;
         }

@@ -153,7 +153,7 @@ static const UnitT99 unit_v99 = '\0';
     ML99_CLANG_PRAGMA("clang diagnostic push") \
     ML99_CLANG_PRAGMA("clang diagnostic ignored \"-Wcast-qual\"") \
     ML99_INTRODUCE_NON_NULL_PTR_TO_STMT(void, datatype99_priv_matched_val, (void *)&(val)) \
-        ML99_CLANG_PRAGMA("clang diagnostic pop") \
+    ML99_CLANG_PRAGMA("clang diagnostic pop") \
             switch ((val).tag)
 
 // clang-format on
@@ -179,7 +179,10 @@ static const UnitT99 unit_v99 = '\0';
 
 #define ifLet99(val, tag_, ...) \
     if (tag_##Tag == (val).tag) \
+        ML99_CLANG_PRAGMA("clang diagnostic push") \
+        ML99_CLANG_PRAGMA("clang diagnostic ignored \"-Wcast-qual\"") \
         ML99_INTRODUCE_NON_NULL_PTR_TO_STMT(void, datatype99_priv_matched_val, (void *)&(val)) \
+        ML99_CLANG_PRAGMA("clang diagnostic pop") \
             ML99_EVAL(DATATYPE99_PRIV_genBindingForEach(v(tag_), v(__VA_ARGS__)))
 // clang-format on
 
