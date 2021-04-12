@@ -229,6 +229,7 @@ static const UnitT99 unit_v99 = '\0';
 ## Pitfalls
 
  - For the sake of simplicity, pattern matching works as if you were always supplying a modifiable value to `match99`, so make sure you do **not** mutate it through bindings introduced by `of99`.
+ - To accept an array in a variant, you must put it into a separate `struct`; see [`examples/array_in_variant.c`](examples/array_in_variant.c).
 
 ## Credits
 
