@@ -287,15 +287,37 @@ If an error is not comprehensible at all, try to look at generated code (`-E`). 
 
 ### `warning: control reaches end of non-void function [-Wreturn-type]`
 
-This is a known false positive occurring when `match99` is used to return control back to a caller. Unfortunately, we cannot fix it in the library itself, so the best solution is to explicitly disable this warning. For GCC:
+This is a known false positive occurring when `match99` is used to return control back to a caller. Unfortunately, we cannot fix it in the library itself, but there are two workarounds:
+
+ 1. Disable this warning explicitly. With [GCC diagnostic pragmas] (or the [Clang's counterpart](https://clang.llvm.org/docs/UsersManual.html#controlling-diagnostics-via-pragmas)):
 
 ```c
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wreturn-type"
 int foo(void) {
-    /* ... */
+    match99(x) {
+        of(Foo, foo) return X;
+        of(Bar, bar) return Y;
+    }
 }
 #pragma GCC diagnostic pop
+```
+
+[GCC diagnostic pragmas]: https://gcc.gnu.org/onlinedocs/gcc/Diagnostic-Pragmas.html
+
+ 2. Assign a result variable inside branches and return it after `match99`:
+
+```c
+int foo(void) {
+    int result;
+
+    match99(x) {
+        of(Foo, foo) result = X;
+        of(Bar, bar) result = Y;
+    }
+
+    return result;
+}
 ```
 
 See [issue 9](https://github.com/Hirrolot/datatype99/issues/9).
