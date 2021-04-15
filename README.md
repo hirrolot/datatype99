@@ -309,7 +309,7 @@ int foo(void) {
 
 ```c
 int foo(void) {
-    int result;
+    int result = 0;
 
     match99(x) {
         of(Foo, foo) result = X;
