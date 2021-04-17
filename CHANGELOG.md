@@ -8,18 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
- - A mechanism for deriving: `datatype99` now can be specified with `derive(...)`.
+ - A mechanism for deriving: `datatype` now can be specified with `derive(...)`.
  - A deriver `dummy` which generates nothing.
 
 ### Changed
 
- - Do **not** suppress `-Wmisleading-indentation` (GCC) automatically in `match99`.
+ - Do **not** suppress `-Wmisleading-indentation` (GCC) automatically in `match`.
 
 ### Fixed
 
  - `#pragma GCC diagnostic` inside functions error on GCC older than 4.6 ([issue 8](https://github.com/Hirrolot/datatype99/issues/8)).
  - Inconsistent suppression of `-Wreturn-type` ([issue 9](https://github.com/Hirrolot/datatype99/issues/9)).
- - Suppress Clang's `-Wcast-qual` in `ifLet99`.
+ - Suppress Clang's `-Wcast-qual` in `ifLet`.
 
 ## [1.0.0] - 2021-03-28
 
@@ -29,17 +29,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
- - `Unit99` -> `UnitT99`, `unit99` -> `unit_v99` (less likely to conflict with user-defined identifiers)
+ - `Unit` -> `UnitT`, `unit` -> `unit_v` (less likely to conflict with user-defined identifiers)
 
 ### Fixed
 
- - Suppress Clang's `-Wcast-qual` in `match99`.
+ - Suppress Clang's `-Wcast-qual` in `match`.
 
 ## [0.4.0] - 2021-03-27
 
 ### Added
 
- - `ifLet99`
+ - `ifLet`
 
 ### Changed
 
@@ -48,8 +48,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
  - Avoid using `METALANG99_semicolon` because it turned out to be [dangerous](https://github.com/Hirrolot/metalang99/commit/f17f06adf1a747a8897bbc90c598b2be21c945c8).
- - Clang's `-Wused-but-marked-unused` in `of99`.
- - The specification now requires an lvalue for `match99`.
+ - Clang's `-Wused-but-marked-unused` in `of`.
+ - The specification now requires an lvalue for `match`.
 
 ## [0.3.1] - 2021-02-28
 
@@ -73,9 +73,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
  - Generate `typedef struct <datatype-name> <datatype-name>;` beforehand so `<datatype-name> *` can be used instead of `struct <datatype-name> *` inside variants.
- - The reserved `_` identifier for `of99`.
+ - The reserved `_` identifier for `of`.
  - Error reporting about an unparenthesised variant like `Bar(int)`.
- - `Unit99` and `unit99`.
+ - `Unit` and `unit`.
 
 ## [0.2.0] - 2021-02-05
 

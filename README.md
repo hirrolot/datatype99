@@ -55,7 +55,7 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 ### EBNF syntax
 
 ```ebnf
-<datatype>      ::= "datatype99(" [ <derive-clause> "," ] <datatype-name> { "," <variant> }+ ")" ;
+<datatype>      ::= "datatype(" [ <derive-clause> "," ] <datatype-name> { "," <variant> }+ ")" ;
 
 <variant>       ::= "(" <variant-name> { "," <type> }* ")" ;
 <datatype-name> ::= <ident> ;
@@ -66,18 +66,18 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 <deriver-name>  ::= <ident> ;
 <deriver-args>  ::= <pp-token-list> ;
 
-<match>         ::= "match99(" <lvalue> ")" { <arm> }+ ;
-<matches>       ::= "matches99(" <expr> "," <ident> ")" ;
-<if-let>        ::= "ifLet99(" <lvalue> "," <variant-name> "," <ident> { "," <ident> }* ")" <stmt> ;
-<of>            ::= "of99(" <variant-name> { "," <ident> }* ")" <stmt> ;
-<otherwise>     ::= "otherwise99" <stmt> ;
+<match>         ::= "match(" <lvalue> ")" { <arm> }+ ;
+<matches>       ::= "matches(" <expr> "," <ident> ")" ;
+<if-let>        ::= "ifLet(" <lvalue> "," <variant-name> "," <ident> { "," <ident> }* ")" <stmt> ;
+<of>            ::= "of(" <variant-name> { "," <ident> }* ")" <stmt> ;
+<otherwise>     ::= "otherwise" <stmt> ;
 ```
 
 ### Semantics
 
 (It might be helpful to look at the [generated data layout](https://godbolt.org/z/vKaKqh46d) of [`examples/binary_tree.c`](examples/binary_tree.c).)
 
-#### `datatype99`
+#### `datatype`
 
  1. Before everything, the following type definition is generated:
 
@@ -139,7 +139,7 @@ struct <datatype-name> {
  6. For each variant, the following function called a _value constructor_ is generated:
 
 ```
-inline static <datatype99-name> <variant-name>(...) { /* ... */ }
+inline static <datatype-name> <variant-name>(...) { /* ... */ }
 ```
 
  7. Now, when a sum type is generated, the derivation process takes place. Each deriver is invoked sequentially, from left to right, either with extra arguments or without them, i.e.
@@ -175,31 +175,31 @@ Also, there is a built-in deriver called `dummy`, which can be specified either 
 
 See [`examples/derive/`](examples/derive/) for examples of writing and using derivers.
 
-#### `match99`
+#### `match`
 
-`match99` has the expected semantics: it sequentially tries to match the given instance of a sum type against the given variants, and, if a match has succeeded, it executes the corresponding statement and moves down to the next instruction (`match(val) { ... } next-instruction;`). If all the matches have failed, it executes the statement after `otherwise99` and moves down to the next instruction.
+`match` has the expected semantics: it sequentially tries to match the given instance of a sum type against the given variants, and, if a match has succeeded, it executes the corresponding statement and moves down to the next instruction (`match(val) { ... } next-instruction;`). If all the matches have failed, it executes the statement after `otherwise` and moves down to the next instruction.
 
-#### `of99`
+#### `of`
 
-`of99` accepts a matched variant name as a first argument and the rest of arguments comprise a comma-separated list of bindings.
+`of` accepts a matched variant name as a first argument and the rest of arguments comprise a comma-separated list of bindings.
 
  - A binding equal to `_` is ignored.
- - A binding **not** equal to `_` stands for a pointer to a corresponding data of the variant (e.g., let there be `(Foo, T1, T2)` and `of99(Foo, x, y)`, then `x` has the type `T1 *` and `y` is `T2 *`).
+ - A binding **not** equal to `_` stands for a pointer to a corresponding data of the variant (e.g., let there be `(Foo, T1, T2)` and `of(Foo, x, y)`, then `x` has the type `T1 *` and `y` is `T2 *`).
 
 There can be more than one `_` binding, however, non-`_` bindings must be distinct.
 
-To match an empty variant, write `of99(Bar)`.
+To match an empty variant, write `of(Bar)`.
 
-#### `matches99`
+#### `matches`
 
-`matches99` just tests an instance of a sum type for a given variant. If the given instance corresponds to the given variant, it expands to truthfulness, otherwise it expands to falsehood.
+`matches` just tests an instance of a sum type for a given variant. If the given instance corresponds to the given variant, it expands to truthfulness, otherwise it expands to falsehood.
 
-#### `ifLet99`
+#### `ifLet`
 
-`ifLet99` tests for only one variant. It works conceptually the same as
+`ifLet` tests for only one variant. It works conceptually the same as
 
 ```
-match99(<expr>) {
+match(<expr>) {
     of(<variant-name>, vars...) { /* ... */ }
     otherwise {}
 }
@@ -208,27 +208,27 @@ match99(<expr>) {
 , but has a shorter syntax:
 
 ```
-ifLet99(<expr>, <variant-name>, vars...) { /* ... */ }
+ifLet(<expr>, <variant-name>, vars...) { /* ... */ }
 ```
 
 ### Unit type
 
-The unit type `UnitT99` represents a type of a single value, `unit_v99` (it should not be assigned to anything else). `UnitT99` and `unit_v99` are defined as follows:
+The unit type `UnitT` represents a type of a single value, `unit_v` (it should not be assigned to anything else). `UnitT` and `unit_v` are defined as follows:
 
 ```c
-typedef char UnitT99;
-static const UnitT99 unit_v99 = '\0';
+typedef char UnitT;
+static const UnitT unit_v = '\0';
 ```
 
 ### Miscellaneous
 
  - The macros `DATATYPE99_MAJOR`, `DATATYPE99_MINOR`, and `DATATYPE99_PATCH` stand for the corresponding components of a version of Datatype99.
 
- - If you do **not** want the shortened versions to appear (e.g. `datatype` and `match` instead of `datatype99` and `match99`), define `DATATYPE99_NO_ALIASES` before `#include <datatype99.h>`.
+ - If you do **not** want the shortened versions to appear (e.g. `match` without the prefix `99`), define `DATATYPE99_NO_ALIASES` before `#include <datatype99.h>`.
 
 ## Pitfalls
 
- - For the sake of simplicity, pattern matching works as if you were always supplying a modifiable value to `match99`, so make sure you do **not** mutate it through bindings introduced by `of99`.
+ - For the sake of simplicity, pattern matching works as if you were always supplying a modifiable value to `match`, so make sure you do **not** mutate it through bindings introduced by `of`.
 
 ## Credits
 
@@ -253,7 +253,7 @@ A: See [Metalang99's README >>](https://github.com/Hirrolot/metalang99#q-why-not
 
 ### Q: How does it work?
 
-A: The `datatype99` macro generates a tagged union accompanied with type hints and value constructors. Pattern matching desugars merely to a switch statement. To generate all this stuff, [Metalang99] is used, which is a preprocessor metaprogramming library.
+A: The `datatype` macro generates a tagged union accompanied with type hints and value constructors. Pattern matching desugars merely to a switch statement. To generate all this stuff, [Metalang99] is used, which is a preprocessor metaprogramming library.
 
 ### Q: What about compile-time errors?
 
@@ -286,7 +286,7 @@ If an error is not comprehensible at all, try to look at generated code (`-E`). 
 
 ### `warning: control reaches end of non-void function [-Wreturn-type]`
 
-This is a known false positive occurring when `match99` is used to return control back to a caller. Unfortunately, we cannot fix it in the library itself, so the best solution is to explicitly disable this warning. For GCC:
+This is a known false positive occurring when `match` is used to return control back to a caller. Unfortunately, we cannot fix it in the library itself, so the best solution is to explicitly disable this warning. For GCC:
 
 ```c
 #pragma GCC diagnostic push
