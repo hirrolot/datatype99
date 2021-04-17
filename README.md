@@ -229,6 +229,7 @@ static const UnitT unit_v = '\0';
 ## Pitfalls
 
  - For the sake of simplicity, pattern matching works as if you were always supplying a modifiable value to `match`, so make sure you do **not** mutate it through bindings introduced by `of`.
+ - To accept an array in a variant, you must put it into a separate `struct`; see [`examples/array_in_variant.c`](examples/array_in_variant.c).
 
 ## Credits
 
@@ -286,15 +287,37 @@ If an error is not comprehensible at all, try to look at generated code (`-E`). 
 
 ### `warning: control reaches end of non-void function [-Wreturn-type]`
 
-This is a known false positive occurring when `match` is used to return control back to a caller. Unfortunately, we cannot fix it in the library itself, so the best solution is to explicitly disable this warning. For GCC:
+This is a known false positive occurring when `match` is used to return control back to a caller. Unfortunately, we cannot fix it in the library itself, but there are two workarounds:
+
+ 1. Disable this warning explicitly. With [GCC diagnostic pragmas] (or the [Clang's counterpart](https://clang.llvm.org/docs/UsersManual.html#controlling-diagnostics-via-pragmas)):
 
 ```c
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wreturn-type"
 int foo(void) {
-    /* ... */
+    match(x) {
+        of(Foo, foo) return X;
+        of(Bar, bar) return Y;
+    }
 }
 #pragma GCC diagnostic pop
+```
+
+[GCC diagnostic pragmas]: https://gcc.gnu.org/onlinedocs/gcc/Diagnostic-Pragmas.html
+
+ 2. Assign a result variable inside branches and return it after `match`:
+
+```c
+int foo(void) {
+    int result = 0;
+
+    match(x) {
+        of(Foo, foo) result = X;
+        of(Bar, bar) result = Y;
+    }
+
+    return result;
+}
 ```
 
 See [issue 9](https://github.com/Hirrolot/datatype99/issues/9).
