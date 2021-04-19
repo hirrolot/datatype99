@@ -211,7 +211,7 @@ match(<expr>) {
 ifLet(<expr>, <variant-name>, vars...) { /* ... */ }
 ```
 
-A complete `ifLet` construct results in a single C statement.
+A complete `ifLet` construct results in a single C statement, just as `match`.
 
 ### Unit type
 
