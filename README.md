@@ -158,16 +158,16 @@ To specify attributes for a particular variant, follow this pattern:
 #define <variant-name>_<deriver-name>_<attribute-name> attr(/* attribute value */)
 ```
 
-There are a few helping macros:
-
- - `DATATYPE99_ATTR_IS_PRESENT` accepts an attribute name and checks if it is present or not.
- - `DATATYPE99_ATTR_VALUE` accepts an attribute name and expands to its value. A provided attribute **must** be present.
-
 <details>
   <summary>Note on this design decision</summary>
 
   (It is theoretically possible to specify an attribute right before the corresponding variant (as in Rust), but this would penetrate the performance and simplicity of the library.)
 </details>
+
+There are a few helping macros:
+
+ - `DATATYPE99_ATTR_IS_PRESENT` accepts an attribute name and checks if it is present or not.
+ - `DATATYPE99_ATTR_VALUE` accepts an attribute name and expands to its value. A provided attribute **must** be present.
 
 Also, there is a built-in deriver called `dummy`, which can be specified either as `dummy` or `(dummy, (...))`; it generates nothing.
 
