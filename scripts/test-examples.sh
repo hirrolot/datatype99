@@ -1,0 +1,19 @@
+#!/bin/bash
+
+mkdir -p examples/build
+cd examples/build
+cmake ..
+cmake --build .
+
+run_example() {
+    echo "executing ./$1 ..."
+    ./$1
+}
+
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    run_example "array_in_variant"
+    run_example "ast"
+    run_example "binary_tree_malloc"
+    run_example "binary_tree"
+    run_example "token"
+fi

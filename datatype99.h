@@ -143,6 +143,13 @@ static const UnitT99 unit_v99 = '\0';
             ML99_tupleGet(1)(v(deriver))))
 
 #define DATATYPE99_DERIVE_dummy_IMPL(...) ML99_empty()
+
+#define DATATYPE99_ATTR_IS_PRESENT(attr_name)                                                      \
+    ML99_VARIADICS_GET(1)(ML99_CAT(DATATYPE99_PRIV_ATTR_IS_PRESENT_, attr_name), 0, ~)
+#define DATATYPE99_PRIV_ATTR_IS_PRESENT_attr(...) ~, 1
+
+#define DATATYPE99_ATTR_VALUE(attr_name)     ML99_CAT(DATATYPE99_PRIV_ATTR_VALUE_, attr_name)
+#define DATATYPE99_PRIV_ATTR_VALUE_attr(...) __VA_ARGS__
 // } (Derivation)
 
 // Pattern matching {

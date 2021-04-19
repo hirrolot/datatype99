@@ -12,4 +12,8 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
 endif()
 
 add_executable(tests tests.c)
-set_target_properties(tests PROPERTIES C_STANDARD 99 C_STANDARD_REQUIRED ON)
+add_executable(derive derive.c)
+
+foreach(TARGET ${BUILDSYSTEM_TARGETS})
+  set_target_properties(TARGET PROPERTIES C_STANDARD 99 C_STANDARD_REQUIRED ON)
+endforeach()

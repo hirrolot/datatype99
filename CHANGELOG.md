@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
  - A mechanism for deriving: `datatype` now can be specified with `derive(...)`.
+ - `DATATYPE99_ATTR_IS_PRESENT` and `DATATYPE99_ATTR_VALUE` to manipulate variant-specific attributes.
  - A deriver `dummy` which generates nothing.
 
 ### Changed

@@ -21,15 +21,7 @@ jobs:
       run: git clone https://github.com/Hirrolot/metalang99.git
 
     - name: Tests
-      run: |
-        mkdir tests/build
-        cd tests/build
-        cmake ..
-        cmake --build .
+      run: bash scripts/test.sh
 
     - name: Examples
-      run: |
-        mkdir examples/build
-        cd examples/build
-        cmake ..
-        cmake --build .
+      run: bash scripts/test-examples.sh

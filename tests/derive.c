@@ -1,0 +1,22 @@
+#include <datatype99.h>
+
+#include <metalang99.h>
+
+// DATATYPE99_ATTR_IS_PRESENT {
+#define FOO attr(1, 2, 3)
+
+ML99_ASSERT_UNEVAL(DATATYPE99_ATTR_IS_PRESENT(FOO));
+ML99_ASSERT_UNEVAL(!DATATYPE99_ATTR_IS_PRESENT(BAR));
+
+#undef FOO
+// }
+
+// DATATYPE99_ATTR_VALUE {
+#define FOO attr(678)
+
+ML99_ASSERT_UNEVAL(DATATYPE99_ATTR_VALUE(FOO) == 678);
+
+#undef FOO
+// }
+
+int main(void) {}

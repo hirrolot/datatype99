@@ -155,15 +155,13 @@ inline static <datatype-name> <variant-name>(...) { /* ... */ }
 To specify attributes for a particular variant, follow this pattern:
 
 ```
-#define <variant-name>_ATTR_<deriver-name>_<attribute-name> /* attribute value */
+#define <variant-name>_<deriver-name>_<attribute-name> attr(/* attribute value */)
 ```
 
-Then:
+There are a few helping macros:
 
- - To access `/* attribute value */` inside your deriver, you can simply paste appropriate identifiers together, thus obtaining the above macro name expanding to the attribute value.
- - To specify an optional attribute, surround its value with parentheses so that a deriver could check its presence through [`ML99_isTuple`].
-
-[`ML99_isTuple`]: https://metalang99.readthedocs.io/en/latest/tuple.html#c.ML99_isTuple
+ - `DATATYPE99_ATTR_IS_PRESENT` accepts an attribute name and checks if it is present or not.
+ - `DATATYPE99_ATTR_VALUE` accepts an attribute name and expands to its value. A provided attribute **must** be present.
 
 <details>
   <summary>Note on this design decision</summary>
