@@ -167,7 +167,7 @@ int main(void) {
 
     // Test the reserved identifier `_`.
     {
-        Complex expr = C("abc", 124.1404);
+        const Complex expr = C("abc", 124.1404);
 
         match(expr) {
             of(A) {
@@ -201,6 +201,18 @@ int main(void) {
             (void)x;
             assert(false);
         }
+    }
+
+    // Make sure that `match` and `ifLet` result in a single C statement.
+    {
+        const Complex expr = B(42);
+        if (true)
+            match(expr) {
+                otherwise {}
+            }
+
+        if (true)
+            ifLet(expr, B, _) {}
     }
 
     UnitT dummy = unit_v;

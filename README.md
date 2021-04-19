@@ -177,6 +177,8 @@ See [`examples/derive/`](examples/derive/) for examples of writing and using der
 
 `match` has the expected semantics: it sequentially tries to match the given instance of a sum type against the given variants, and, if a match has succeeded, it executes the corresponding statement and moves down to the next instruction (`match(val) { ... } next-instruction;`). If all the matches have failed, it executes the statement after `otherwise` and moves down to the next instruction.
 
+A complete `match` construct results in a single C statement.
+
 #### `of`
 
 `of` accepts a matched variant name as a first argument and the rest of arguments comprise a comma-separated list of bindings.
@@ -208,6 +210,8 @@ match(<expr>) {
 ```
 ifLet(<expr>, <variant-name>, vars...) { /* ... */ }
 ```
+
+A complete `ifLet` construct results in a single C statement.
 
 ### Unit type
 
