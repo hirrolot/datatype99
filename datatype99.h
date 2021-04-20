@@ -62,10 +62,9 @@ static const UnitT99 unit_v99 = '\0';
     ML99_listMap(v(DATATYPE99_PRIV_parseMap), ML99_list(v(__VA_ARGS__)))
 
 #define DATATYPE99_PRIV_parseMap_IMPL(variant)                                                     \
-    ML99_IF(                                                                                       \
-        ML99_IS_TUPLE(variant),                                                                    \
-        ML99_call(DATATYPE99_PRIV_parseVariant, ML99_untuple(v(variant))),                         \
-        ML99_fatal(datatype99, variant is unparenthesised))
+    ML99_TERMS(                                                                                    \
+        ML99_assertIsTuple(v(variant)),                                                            \
+        ML99_call(DATATYPE99_PRIV_parseVariant, ML99_untuple(v(variant))))
 
 #define DATATYPE99_PRIV_parseVariant_IMPL(...)                                                     \
     ML99_CAT(DATATYPE99_PRIV_parseVariantIsEmpty_, DATATYPE99_PRIV_IS_EMPTY_VARIANT(__VA_ARGS__))  \
@@ -161,7 +160,7 @@ static const UnitT99 unit_v99 = '\0';
     ML99_CLANG_PRAGMA("clang diagnostic ignored \"-Wcast-qual\"") \
     ML99_INTRODUCE_NON_NULL_PTR_TO_STMT(void, datatype99_priv_matched_val, (void *)&(val)) \
     ML99_CLANG_PRAGMA("clang diagnostic pop") \
-            switch ((val).tag)
+        switch ((val).tag)
 
 // clang-format on
 
