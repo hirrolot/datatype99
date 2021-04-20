@@ -144,7 +144,7 @@ static const UnitT99 unit_v99 = '\0';
 #define DATATYPE99_DERIVE_dummy_IMPL(...) ML99_empty()
 
 #define DATATYPE99_ATTR_IS_PRESENT(attr_name)                                                      \
-    ML99_VARIADICS_GET(1)(ML99_CAT(DATATYPE99_PRIV_ATTR_IS_PRESENT_, attr_name), 0, ~)
+    ML99_VARIADICS_GET(1)(ML99_CAT(DATATYPE99_PRIV_ATTR_IS_PRESENT_, attr_name), 0)
 #define DATATYPE99_PRIV_ATTR_IS_PRESENT_attr(...) ~, 1
 
 #define DATATYPE99_ATTR_VALUE(attr_name)     ML99_CAT(DATATYPE99_PRIV_ATTR_VALUE_, attr_name)
@@ -279,15 +279,13 @@ static const UnitT99 unit_v99 = '\0';
 
 #define DATATYPE99_PRIV_assignResult_IMPL(tag, i) v(result.data.tag._##i = _##i;)
 
-// clang-format off
-#define DATATYPE99_PRIV_genCtorTemplate_IMPL(name, tag_, params, assigned_fields) \
-    v(inline static DATATYPE99_PRIV_CTOR_ATTRS name tag_ params { \
-        name result; \
-        result.tag = tag_##Tag; \
-        assigned_fields \
-        return result; \
+#define DATATYPE99_PRIV_genCtorTemplate_IMPL(name, tag_, params, assigned_fields)                  \
+    v(inline static DATATYPE99_PRIV_CTOR_ATTRS name tag_ params {                                  \
+        name result;                                                                               \
+        result.tag = tag_##Tag;                                                                    \
+        { assigned_fields }                                                                        \
+        return result;                                                                             \
     })
-// clang-format on
 
 // Compiler-specific stuff {
 #if defined(__GNUC__)
