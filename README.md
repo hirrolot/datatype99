@@ -196,7 +196,9 @@ To match an empty variant, write `of(Bar)`.
 
 #### `ifLet`
 
-`ifLet` tests for only one variant. It works the same as
+`ifLet` tries to match the given instance of a sum type against the given variant, and, if a match has succeeded, it executes the corresponding statement and moves down to the next instruction; otherwise, the provided statement is not executed and `ifLet` moves down to the next instruction immediately.
+
+Think of `ifLet(<expr>, <variant-name>, vars...) { /* ... */ }` as of an abbreviation of
 
 ```
 match(<expr>) {
@@ -205,13 +207,7 @@ match(<expr>) {
 }
 ```
 
-, but has a shorter syntax:
-
-```
-ifLet(<expr>, <variant-name>, vars...) { /* ... */ }
-```
-
-A complete `ifLet` construct results in a single C statement, just as `match`.
+A complete `ifLet` construct results in a single C statement.
 
 ### Unit type
 
