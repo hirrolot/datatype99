@@ -228,7 +228,7 @@ static const UnitT unit_v = '\0';
 
  - Do **not** use `break`/`continue` inside statements provided to `of` and `ifLet`; use `goto` labels instead.
  - To specify an array as a variant parameter, you must put it into a separate `struct`; see [`examples/array_in_variant.c`](examples/array_in_variant.c).
- - For the sake of simplicity, pattern matching works as if you were always supplying a modifiable value to `match`, so make sure you do **not** mutate it through bindings introduced by `of`.
+ - Bindings introduced by `of` are **always** mutable, so make sure you do **not** mutate them if the value passed to `match` is qualified as `const`.
 
 ## Credits
 
