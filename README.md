@@ -196,7 +196,7 @@ To match an empty variant, write `of(Bar)`.
 
 #### `ifLet`
 
-`ifLet` tests for only one variant. It works conceptually the same as
+`ifLet` tests for only one variant. It works the same as
 
 ```
 match(<expr>) {
@@ -230,7 +230,7 @@ static const UnitT unit_v = '\0';
 
 ## Pitfalls
 
- - `break`/`continue` are prohibited inside user-provided statements to `of` and `ifLet`; use `goto` labels instead.
+ - `break`/`continue` are prohibited inside statements provided to `of` and `ifLet`; use `goto` labels instead.
  - For the sake of simplicity, pattern matching works as if you were always supplying a modifiable value to `match`, so make sure you do **not** mutate it through bindings introduced by `of`.
  - To accept an array in a variant, you must put it into a separate `struct`; see [`examples/array_in_variant.c`](examples/array_in_variant.c).
 
