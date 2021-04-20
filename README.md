@@ -12,13 +12,13 @@
 
 ## Highlights
 
- - **Type-safe.** Unlike manually written tagged unions, Datatype99 is type-safe: normally you cannot access invalid data or construct an invalid variant. Pattern matching is exhaustive too.
+ - **Type-safe.** Normally you cannot access invalid data or construct an invalid variant. Pattern matching is exhaustive too.
 
  - **Pure C99/C++11.** No external tools are required -- Datatype99 is implemented using only preprocessor macros.
 
- - **Can be used everywhere.** Literally everywhere provided that you have a standard-confirming C99/C++11 preprocessor. Even on freestanding environments.
+ - **Can be used everywhere.** Literally everywhere provided you have a standard-confirming C99/C++11 preprocessor. Even on freestanding environments.
 
- - **Transparent.** Datatype99 comes with formal [code generation semantics], meaning if you try to look at `datatype`'s output, normally you will not see something unexpected.
+ - **Transparent.** Datatype99 comes with formal [code generation semantics], so if you try to look at `datatype`'s output, you will not see something unexpected.
 
  - **FFI-tolerant.** Because of transparency, writing an FFI is not a challenge.
 
