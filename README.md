@@ -196,7 +196,7 @@ To match an empty variant, write `of(Bar)`.
 
 #### `ifLet`
 
-`ifLet` tries to match the given instance of a sum type against the given variant, and, if a match has succeeded, it executes the corresponding statement and moves down to the next instruction; otherwise, the provided statement is not executed and `ifLet` moves down to the next instruction immediately.
+`ifLet` tries to match the given instance of a sum type against the given variant, and, if a match has succeeded, it executes the corresponding statement.
 
 Think of `ifLet(<expr>, <variant-name>, vars...) { /* ... */ }` as of an abbreviation of
 
