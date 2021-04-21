@@ -11,9 +11,15 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
   add_compile_options("/std:c11")
 endif()
 
+function(set_standard TARGET NUM)
+  set_target_properties(${TARGET}
+                        PROPERTIES C_STANDARD ${NUM} C_STANDARD_REQUIRED ON)
+endfunction()
+
 add_executable(tests tests.c)
 add_executable(derive derive.c)
 
-foreach(TARGET ${BUILDSYSTEM_TARGETS})
-  set_target_properties(TARGET PROPERTIES C_STANDARD 99 C_STANDARD_REQUIRED ON)
-endforeach()
+set_standard(tests 99)
+
+# For `_Static_assert`, which can be used on the same line number.
+set_standard(derive 11)

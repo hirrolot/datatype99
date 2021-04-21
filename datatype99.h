@@ -78,6 +78,12 @@ static const UnitT99 unit_v99 = '\0';
 // Variant {
 #define DATATYPE99_PRIV_variant(tag, sig) ML99_tuple(tag, sig)
 
+#define DATATYPE99_variantTag(variant) ML99_call(DATATYPE99_variantTag, variant)
+#define DATATYPE99_variantSig(variant) ML99_call(DATATYPE99_variantSig, variant)
+
+#define DATATYPE99_variantTag_IMPL(variant) ML99_tupleGet(0)(v(variant))
+#define DATATYPE99_variantSig_IMPL(variant) ML99_tupleGet(1)(v(variant))
+
 #define DATATYPE99_PRIV_IS_EMPTY_VARIANT(...) ML99_NAT_EQ(ML99_VARIADICS_COUNT(__VA_ARGS__), 1)
 
 #define DATATYPE99_PRIV_mapVariants(f, variants)                                                   \
@@ -317,6 +323,9 @@ static const UnitT99 unit_v99 = '\0';
 #define DATATYPE99_PRIV_genUnionField_ARITY      2
 #define DATATYPE99_PRIV_genCtor_ARITY            2
 #define DATATYPE99_PRIV_assignResult_ARITY       2
+
+#define DATATYPE99_variantTag_ARITY 1
+#define DATATYPE99_variantSig_ARITY 1
 // }
 
 #endif // DATATYPE99_H
