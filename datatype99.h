@@ -145,7 +145,7 @@ static const UnitT99 unit_v99 = '\0';
         ML99_call(                                                                                 \
             ML99_cat(v(DATATYPE99_DERIVE_), ML99_tupleGet(0)(v(deriver))),                         \
             v(name, variants),                                                                     \
-            ML99_tupleGet(1)(v(deriver))))
+            ML99_tupleTail(v(deriver))))
 
 #define DATATYPE99_DERIVE_dummy_IMPL(...) ML99_empty()
 
