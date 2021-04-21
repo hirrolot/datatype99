@@ -99,7 +99,12 @@ typedef UnitT C;
 
 // clang-format off
 datatype(
-    derive(TestDerive, (TestDeriveWithArgs, 1, 2, 3)),
+    derive(
+        TestDerive,
+        (TestDeriveWithArgs, 1, 2, 3),
+        dummy,
+        (dummy, ~, ~, ~)
+    ),
     MyType,
     (Foo, A),
     (Bar, B, C),
