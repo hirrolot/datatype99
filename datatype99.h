@@ -78,12 +78,6 @@ static const UnitT99 unit_v99 = '\0';
 // Variant {
 #define DATATYPE99_PRIV_variant(tag, sig) ML99_tuple(tag, sig)
 
-#define DATATYPE99_variantTag(variant) ML99_call(DATATYPE99_variantTag, variant)
-#define DATATYPE99_variantSig(variant) ML99_call(DATATYPE99_variantSig, variant)
-
-#define DATATYPE99_variantTag_IMPL(variant) ML99_tupleGet(0)(v(variant))
-#define DATATYPE99_variantSig_IMPL(variant) ML99_tupleGet(1)(v(variant))
-
 #define DATATYPE99_PRIV_IS_EMPTY_VARIANT(...) ML99_NAT_EQ(ML99_VARIADICS_COUNT(__VA_ARGS__), 1)
 
 #define DATATYPE99_PRIV_mapVariants(f, variants)                                                   \
@@ -149,12 +143,19 @@ static const UnitT99 unit_v99 = '\0';
 
 #define DATATYPE99_DERIVE_dummy_IMPL(...) ML99_empty()
 
-#define DATATYPE99_ATTR_IS_PRESENT(attr_name)                                                      \
-    ML99_IS_TUPLE(ML99_CAT(DATATYPE99_PRIV_ATTR_IS_PRESENT_, attr_name))
+#define DATATYPE99_ATTR_IS_PRESENT(attr)                                                           \
+    ML99_IS_TUPLE(ML99_CAT(DATATYPE99_PRIV_ATTR_IS_PRESENT_, attr))
 #define DATATYPE99_PRIV_ATTR_IS_PRESENT_attr(...) ()
 
-#define DATATYPE99_ATTR_VALUE(attr_name)     ML99_CAT(DATATYPE99_PRIV_ATTR_VALUE_, attr_name)
+#define DATATYPE99_ATTR_VALUE(attr)          ML99_CAT(DATATYPE99_PRIV_ATTR_VALUE_, attr)
 #define DATATYPE99_PRIV_ATTR_VALUE_attr(...) __VA_ARGS__
+
+#define DATATYPE99_assertAttrIsPresent(attr) ML99_call(DATATYPE99_assertAttrIsPresent, attr)
+#define DATATYPE99_assertAttrIsPresent_IMPL(attr)                                                  \
+    ML99_IF(                                                                                       \
+        DATATYPE99_ATTR_IS_PRESENT(attr),                                                          \
+        ML99_empty(),                                                                              \
+        ML99_fatal(DATATYPE99_assertAttrIsPresent, attr must be defined))
 // } (Derivation)
 
 // Pattern matching {
@@ -324,8 +325,7 @@ static const UnitT99 unit_v99 = '\0';
 #define DATATYPE99_PRIV_genCtor_ARITY            2
 #define DATATYPE99_PRIV_assignResult_ARITY       2
 
-#define DATATYPE99_variantTag_ARITY 1
-#define DATATYPE99_variantSig_ARITY 1
+#define DATATYPE99_assertAttrIsPresent_ARITY 1
 // }
 
 #endif // DATATYPE99_H

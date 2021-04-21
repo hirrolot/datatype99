@@ -168,6 +168,7 @@ There are a few helping macros:
 
  - `DATATYPE99_ATTR_IS_PRESENT` accepts an attribute name and checks if it is present or not.
  - `DATATYPE99_ATTR_VALUE` accepts an attribute name and expands to its value. A provided attribute **must** be present.
+ - `DATATYPE99_assertAttrIsPresent` (Metalang99-compliant) accepts an attribute name and emits a fatal error if the attribute is not present, otherwise results in emptiness.
 
 Also, there is a built-in deriver called `dummy`, which can be specified either as `dummy` or `(dummy, (...))`; it generates nothing.
 

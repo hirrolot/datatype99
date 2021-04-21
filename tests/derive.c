@@ -5,7 +5,7 @@
 #include <assert.h>
 
 // DATATYPE99_ATTR_IS_PRESENT {
-#define FOO attr(1, 2, 3)
+#define FOO attr(~, ~, ~)
 
 ML99_ASSERT_UNEVAL(DATATYPE99_ATTR_IS_PRESENT(FOO));
 ML99_ASSERT_UNEVAL(!DATATYPE99_ATTR_IS_PRESENT(BAR));
@@ -17,6 +17,14 @@ ML99_ASSERT_UNEVAL(!DATATYPE99_ATTR_IS_PRESENT(BAR));
 #define FOO attr(678)
 
 ML99_ASSERT_UNEVAL(DATATYPE99_ATTR_VALUE(FOO) == 678);
+
+#undef FOO
+// }
+
+// DATATYPE99_assertAttrIsPresent {
+#define FOO attr(~, ~, ~)
+
+ML99_EVAL(DATATYPE99_assertAttrIsPresent(v(FOO)))
 
 #undef FOO
 // }
