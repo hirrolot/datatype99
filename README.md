@@ -166,9 +166,11 @@ To specify attributes for a particular variant, follow this pattern:
 
 There are a few helping macros:
 
- - `DATATYPE99_ATTR_IS_PRESENT` accepts an attribute name and checks if it is present or not.
- - `DATATYPE99_ATTR_VALUE` accepts an attribute name and expands to its value. A provided attribute **must** be present.
- - `DATATYPE99_assertAttrIsPresent` (Metalang99-compliant) accepts an attribute name and emits a fatal error if the attribute is not present, otherwise results in emptiness.
+| Macro | Description |
+|----------|----------|
+| `DATATYPE99_ATTR_IS_PRESENT(attr)` | Accepts an attribute name and checks if it is present or not. |
+| `DATATYPE99_ATTR_VALUE(attr)` | Accepts an attribute name and expands to its value. A provided attribute **must** be present. |
+| `DATATYPE99_assertAttrIsPresent(attr)` | Accepts an attribute name and emits a fatal error if the attribute is not present, otherwise results in emptiness (Metalang99-compliant). |
 
 Also, there is a built-in deriver called `dummy`, which can be specified either as `dummy` or `(dummy, (...))`; it generates nothing.
 
