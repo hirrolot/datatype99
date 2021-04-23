@@ -165,8 +165,6 @@ There are a few helping macros:
 
 (The naming convention here is the same [as of Metalang99](https://metalang99.readthedocs.io/en/latest/#naming-conventions).)
 
-Also, there is a built-in deriver `dummy` which generates nothing.
-
 See [`examples/derive/`](examples/derive/) for examples of writing and using derivers.
 
 #### `match`
@@ -226,6 +224,8 @@ static const UnitT unit_v = '\0';
 |----------|----------|
 | `of` | `DATATYPE99_of` |
 | `ifLet` | `DATATYPE99_ifLet` |
+
+ - There is a built-in deriver `dummy` which generates nothing.
 
  - [Arity specifiers] and [desugaring macros] are provided for each public Metalang99-compliant macro exposed by Datatype99.
 
