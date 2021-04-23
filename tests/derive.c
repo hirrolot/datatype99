@@ -33,13 +33,6 @@ typedef UnitT A;
 typedef UnitT B;
 typedef UnitT C;
 
-// TestDeriveWithArgs {
-#define DATATYPE99_DERIVE_TestDeriveWithArgs_IMPL(name, variants, a, b, c)                         \
-    ML99_TERMS(                                                                                    \
-        v(static_assert(a == 1 && b == 2 && c == 3, "Invalid a, b, c args");),                     \
-        ML99_call(DATATYPE99_DERIVE_TestDerive, v(name, variants)))
-// }
-
 // TestDerive {
 #define DATATYPE99_DERIVE_TestDerive_IMPL(name, variants)                                          \
     ML99_TERMS(                                                                                    \
@@ -99,12 +92,7 @@ typedef UnitT C;
 
 // clang-format off
 datatype(
-    derive(
-        TestDerive,
-        (TestDeriveWithArgs, 1, 2, 3),
-        dummy,
-        (dummy, ~, ~, ~)
-    ),
+    derive(TestDerive, dummy),
     MyType,
     (Foo, A),
     (Bar, B, C),

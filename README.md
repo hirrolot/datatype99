@@ -61,10 +61,8 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 <datatype-name> ::= <ident> ;
 <variant-name>  ::= <ident> ;
 
-<derive-clause> ::= "derive(" <deriver> { "," <deriver> }* ")" ;
-<deriver>       ::= <deriver-name> | "(" <deriver-name> "," <deriver-args> ")" ;
+<derive-clause> ::= "derive(" <deriver-name> { "," <deriver-name> }* ")" ;
 <deriver-name>  ::= <ident> ;
-<deriver-args>  ::= <pp-token-list> ;
 
 <match>         ::= "match(" <lvalue> ")" { <arm> }+ ;
 <matches>       ::= "matches(" <expr> "," <ident> ")" ;
@@ -142,12 +140,9 @@ struct <datatype-name> {
 inline static <datatype-name> <variant-name>(...) { /* ... */ }
 ```
 
- 7. Now, when a sum type is generated, the derivation process takes place. Each deriver is invoked sequentially, from left to right, either with extra arguments or without them, i.e.
-    - `ML99_call(DATATYPE99_DERIVE_##<deriver-name>, v(<datatype-name>), variants...)` or
-    - `ML99_call(DATATYPE99_DERIVE_##<deriver-name>, v(<datatype-name>), variants..., args...)`, where
-       - `variants...` is a [list] of variants represented as two-place [tuples]: `(<variant-name>, types...)`, where
-          - `types...` is a [list] of types of the corresponding variant.
-       - `args...` are extra deriver arguments supplied in `(<deriver-name>, args...)`.
+ 7. Now, when a sum type is generated, the derivation process takes place. Each deriver is invoked sequentially, from left to right, as `ML99_call(DATATYPE99_DERIVE_##<deriver-name>, v(<datatype-name>), variants...)`, where
+    - `variants...` is a [list] of variants represented as two-place [tuples]: `(<variant-name>, types...)`, where
+      - `types...` is a [list] of types of the corresponding variant.
 
 [list]: https://metalang99.readthedocs.io/en/latest/list.html
 [tuples]: https://metalang99.readthedocs.io/en/latest/tuple.html
@@ -158,11 +153,7 @@ To specify attributes for a particular variant, follow this pattern:
 #define <variant-name>_<deriver-name>_<attribute-name> attr(/* attribute value */)
 ```
 
-<details>
-  <summary>Note on this design decision</summary>
-
-  (It is theoretically possible to specify an attribute right before the corresponding variant (as in Rust), but this would penetrate the performance and simplicity of the library.)
-</details>
+To specify attributes belonged to a whole sum type, instead of `<variant-name>` write `<datatype-name>`.
 
 There are a few helping macros:
 
@@ -174,7 +165,7 @@ There are a few helping macros:
 
 (The naming convention here is the same [as of Metalang99](https://metalang99.readthedocs.io/en/latest/#naming-conventions).)
 
-Also, there is a built-in deriver called `dummy`, which can be specified either as `dummy` or `(dummy, (...))`; it generates nothing.
+Also, there is a built-in deriver `dummy` which generates nothing.
 
 See [`examples/derive/`](examples/derive/) for examples of writing and using derivers.
 

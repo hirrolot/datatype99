@@ -102,6 +102,8 @@ static const UnitT99 unit_v99 = '\0';
 #define DATATYPE99_PRIV_IS_DERIVE(x)          ML99_IS_TUPLE(DATATYPE99_PRIV_IS_DERIVE_##x)
 #define DATATYPE99_PRIV_IS_DERIVE_derive(...) ()
 
+#define DATATYPE99_PRIV_ELIM_derive(...) __VA_ARGS__
+
 #define DATATYPE99_PRIV_WITH_DERIVE_0(name, ...)                                                   \
     DATATYPE99_PRIV_WITH_DERIVE_1(derive(dummy), name, __VA_ARGS__)
 
@@ -111,8 +113,6 @@ static const UnitT99 unit_v99 = '\0';
         v(name),                                                                                   \
         DATATYPE99_PRIV_parse(__VA_ARGS__),                                                        \
         v(DATATYPE99_PRIV_ELIM_##derivers)))
-
-#define DATATYPE99_PRIV_ELIM_derive(...) __VA_ARGS__
 
 #define DATATYPE99_PRIV_genDatatype_IMPL(name, variants, ...)                                      \
     ML99_TERMS(                                                                                    \
@@ -139,13 +139,7 @@ static const UnitT99 unit_v99 = '\0';
         v(__VA_ARGS__))
 
 #define DATATYPE99_PRIV_invokeDeriver_IMPL(name, variants, deriver)                                \
-    ML99_IF(                                                                                       \
-        ML99_IS_UNTUPLE(deriver),                                                                  \
-        ML99_call(ML99_cat(v(DATATYPE99_DERIVE_), v(deriver)), v(name, variants)),                 \
-        ML99_call(                                                                                 \
-            ML99_cat(v(DATATYPE99_DERIVE_), ML99_tupleGet(0)(v(deriver))),                         \
-            v(name, variants),                                                                     \
-            ML99_tupleTail(v(deriver))))
+    ML99_callUneval(DATATYPE99_DERIVE_##deriver, name, variants)
 
 #define DATATYPE99_DERIVE_dummy_IMPL(...) ML99_empty()
 
