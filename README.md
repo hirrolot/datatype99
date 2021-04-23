@@ -236,6 +236,8 @@ static const UnitT unit_v = '\0';
 | `of` | `DATATYPE99_of` |
 | `ifLet` | `DATATYPE99_ifLet` |
 
+ - [Arity specifiers](https://hirrolot.gitbook.io/metalang99/partial-application) are provided for each public Metalang99-compliant macro exposed by Datatype99.
+
 ## Pitfalls
 
  - Do **not** use `break`/`continue` inside statements provided to `of` and `ifLet`; use `goto` labels instead.
