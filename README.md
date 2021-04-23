@@ -140,9 +140,15 @@ struct <datatype-name> {
 inline static <datatype-name> <variant-name>(...) { /* ... */ }
 ```
 
- 7. Now, when a sum type is generated, the derivation process takes place. Each deriver is invoked sequentially, from left to right, as `ML99_call(DATATYPE99_DERIVE_##<deriver-name>, v(<datatype-name>), variants...)`, where
-    - `variants...` is a [list] of variants represented as two-place [tuples]: `(<variant-name>, types...)`, where
-      - `types...` is a [list] of types of the corresponding variant.
+ 7. Now, when a sum type is generated, the derivation process takes place. Each deriver is invoked sequentially, from left to right, as
+
+```
+ML99_call(DATATYPE99_DERIVE_##<deriver-name>, v(<datatype-name>), variants...)
+```
+
+where
+ - `variants...` is a [list] of variants represented as two-place [tuples]: `(<variant-name>, types...)`, where
+   - `types...` is a [list] of types of the corresponding variant.
 
 [list]: https://metalang99.readthedocs.io/en/latest/list.html
 [tuples]: https://metalang99.readthedocs.io/en/latest/tuple.html
