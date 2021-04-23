@@ -236,7 +236,10 @@ static const UnitT unit_v = '\0';
 | `of` | `DATATYPE99_of` |
 | `ifLet` | `DATATYPE99_ifLet` |
 
- - [Arity specifiers and desugaring macros](https://metalang99.readthedocs.io/en/latest/#definitions) are provided for each public Metalang99-compliant macro exposed by Datatype99.
+ - [Arity specifiers] and [desugaring macros] are provided for each public Metalang99-compliant macro exposed by Datatype99.
+
+[Arity specifiers]: https://hirrolot.gitbook.io/metalang99/partial-application
+[desugaring macros]: https://metalang99.readthedocs.io/en/latest/#definitions
 
 ## Pitfalls
 
