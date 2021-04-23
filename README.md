@@ -165,7 +165,7 @@ There are a few helping macros:
 
 | Macro | Description |
 |----------|----------|
-| `DATATYPE99_ATTR_IS_PRESENT(attr)` | Accepts an attribute name and checks if it is present or not. |
+| `DATATYPE99_ATTR_IS_PRESENT(attr)` | Accepts an attribute name and checks if it is present or not. It can be used to check the presence of an optional attribute. |
 | `DATATYPE99_ATTR_VALUE(attr)` | Accepts an attribute name and expands to its value. A provided attribute **must** be present. |
 | `DATATYPE99_assertAttrIsPresent(attr)` | Accepts an attribute name and emits a fatal error if the attribute is not present, otherwise results in emptiness. |
 
