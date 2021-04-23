@@ -229,14 +229,14 @@ static const UnitT unit_v = '\0';
 
  - If you do **not** want the shortened versions to appear (e.g. `match` without the prefix `99`), define `DATATYPE99_NO_ALIASES` before `#include <datatype99.h>`.
 
- - For each macro using `ML99_EVAL`, Datatype99 provides its [Metalang99-compliant](https://metalang99.readthedocs.io/en/latest/#naming-conventions) counterpart which can be used inside derivers and other Metalang99-compliant macros:
+ - For each macro using `ML99_EVAL`, Datatype99 provides its [Metalang99-compliant](https://metalang99.readthedocs.io/en/latest/#definitions) counterpart which can be used inside derivers and other Metalang99-compliant macros:
 
 | Macro | Metalang99-compliant counterpart |
 |----------|----------|
 | `of` | `DATATYPE99_of` |
 | `ifLet` | `DATATYPE99_ifLet` |
 
- - [Arity specifiers](https://hirrolot.gitbook.io/metalang99/partial-application) are provided for each public Metalang99-compliant macro exposed by Datatype99.
+ - [Arity specifiers and desugaring macros](https://metalang99.readthedocs.io/en/latest/#definitions) are provided for each public Metalang99-compliant macro exposed by Datatype99.
 
 ## Pitfalls
 
