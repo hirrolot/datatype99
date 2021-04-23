@@ -47,6 +47,14 @@ SOFTWARE.
 
 #endif // DATATYPE99_NO_ALIASES
 
+#define DATATYPE99_of(...)               ML99_call(DATATYPE99_of, __VA_ARGS__)
+#define DATATYPE99_ifLet(val, tag_, ...) ML99_call(DATATYPE99_ifLet, val, tag_, __VA_ARGS__)
+
+#define of99(...)              ML99_EVAL(DATATYPE99_of_IMPL(__VA_ARGS__))
+#define ifLet99(val, tag, ...) ML99_EVAL(DATATYPE99_ifLet_IMPL(val, tag, __VA_ARGS__))
+
+#define DATATYPE99_assertAttrIsPresent(attr) ML99_call(DATATYPE99_assertAttrIsPresent, attr)
+
 #define DATATYPE99_MAJOR 1
 #define DATATYPE99_MINOR 0
 #define DATATYPE99_PATCH 0
@@ -67,7 +75,7 @@ static const UnitT99 unit_v99 = '\0';
         ML99_call(DATATYPE99_PRIV_parseVariant, ML99_untuple(v(variant))))
 
 #define DATATYPE99_PRIV_parseVariant_IMPL(...)                                                     \
-    ML99_CAT(DATATYPE99_PRIV_parseVariantIsEmpty_, DATATYPE99_PRIV_IS_EMPTY_VARIANT(__VA_ARGS__))  \
+    ML99_CAT(DATATYPE99_PRIV_parseVariantIsEmpty_, ML99_VARIADICS_IS_SINGLE(__VA_ARGS__))          \
     (__VA_ARGS__)
 
 #define DATATYPE99_PRIV_parseVariantIsEmpty_1(tag) DATATYPE99_PRIV_variant(v(tag), ML99_nil())
@@ -78,9 +86,7 @@ static const UnitT99 unit_v99 = '\0';
 // Variant {
 #define DATATYPE99_PRIV_variant(tag, sig) ML99_tuple(tag, sig)
 
-#define DATATYPE99_PRIV_IS_EMPTY_VARIANT(...) ML99_NAT_EQ(ML99_VARIADICS_COUNT(__VA_ARGS__), 1)
-
-#define DATATYPE99_PRIV_mapVariants(f, variants)                                                   \
+#define DATATYPE99_PRIV_forEachVariant(f, variants)                                                \
     ML99_listMapInPlace(ML99_compose(f, v(ML99_untuple)), variants)
 // } (Variant)
 
@@ -150,7 +156,6 @@ static const UnitT99 unit_v99 = '\0';
 #define DATATYPE99_ATTR_VALUE(attr)          ML99_CAT(DATATYPE99_PRIV_ATTR_VALUE_, attr)
 #define DATATYPE99_PRIV_ATTR_VALUE_attr(...) __VA_ARGS__
 
-#define DATATYPE99_assertAttrIsPresent(attr) ML99_call(DATATYPE99_assertAttrIsPresent, attr)
 #define DATATYPE99_assertAttrIsPresent_IMPL(attr)                                                  \
     ML99_IF(                                                                                       \
         DATATYPE99_ATTR_IS_PRESENT(attr),                                                          \
@@ -169,40 +174,36 @@ static const UnitT99 unit_v99 = '\0';
     ML99_CLANG_PRAGMA("clang diagnostic pop") \
         switch ((val).tag)
 
+#define DATATYPE99_of_IMPL(...) \
+    ML99_TERMS( \
+        v(break; case ML99_CAT(ML99_VARIADICS_GET(0)(__VA_ARGS__), Tag):),                                                                                      \
+        ML99_IF( \
+            ML99_VARIADICS_IS_SINGLE(__VA_ARGS__), \
+            ML99_empty(), \
+            DATATYPE99_PRIV_genBindingForEach(v(__VA_ARGS__))))
 // clang-format on
-
-#define of99(...)                                                                                  \
-    break;                                                                                         \
-    ML99_IF(                                                                                       \
-        DATATYPE99_PRIV_IS_EMPTY_VARIANT(__VA_ARGS__),                                             \
-        DATATYPE99_PRIV_ofEmpty,                                                                   \
-        DATATYPE99_PRIV_ofNonEmpty)                                                                \
-    (__VA_ARGS__)
-
-#define DATATYPE99_PRIV_ofEmpty(tag) case tag##Tag:
-#define DATATYPE99_PRIV_ofNonEmpty(tag, ...)                                                       \
-    case tag##Tag:                                                                                 \
-        ML99_EVAL(DATATYPE99_PRIV_genBindingForEach(v(tag), v(__VA_ARGS__)))
 
 #define otherwise99                                                                                \
     break;                                                                                         \
     default:
 
 // clang-format off
-
-#define ifLet99(val, tag_, ...) \
-    if (tag_##Tag == (val).tag) \
-        ML99_CLANG_PRAGMA("clang diagnostic push") \
-        ML99_CLANG_PRAGMA("clang diagnostic ignored \"-Wcast-qual\"") \
-        ML99_INTRODUCE_NON_NULL_PTR_TO_STMT(void, datatype99_priv_matched_val, (void *)&(val)) \
-        ML99_CLANG_PRAGMA("clang diagnostic pop") \
-            ML99_EVAL(DATATYPE99_PRIV_genBindingForEach(v(tag_), v(__VA_ARGS__)))
+#define DATATYPE99_ifLet_IMPL(val, tag_, ...) \
+    ML99_TERMS( \
+        v(if (tag_##Tag == (val).tag) \
+            ML99_CLANG_PRAGMA("clang diagnostic push") \
+            ML99_CLANG_PRAGMA("clang diagnostic ignored \"-Wcast-qual\"") \
+            ML99_INTRODUCE_NON_NULL_PTR_TO_STMT(void, datatype99_priv_matched_val, (void *)&(val)) \
+            ML99_CLANG_PRAGMA("clang diagnostic pop")), \
+        DATATYPE99_PRIV_genBindingForEach(v(tag_, __VA_ARGS__)))
 // clang-format on
 
 #define matches99(val, tag_) ((val).tag == tag_##Tag)
 
-#define DATATYPE99_PRIV_genBindingForEach(tag, ...)                                                \
-    ML99_variadicsForEachI(ML99_appl(v(DATATYPE99_PRIV_genBinding), tag), __VA_ARGS__)
+#define DATATYPE99_PRIV_genBindingForEach(...)                                                     \
+    ML99_call(DATATYPE99_PRIV_genBindingForEach, __VA_ARGS__)
+#define DATATYPE99_PRIV_genBindingForEach_IMPL(tag, ...)                                           \
+    ML99_variadicsForEachI(ML99_appl(v(DATATYPE99_PRIV_genBinding), v(tag)), v(__VA_ARGS__))
 
 #define DATATYPE99_PRIV_genBinding_IMPL(tag_, x, i)                                                \
     ML99_IF(                                                                                       \
@@ -213,7 +214,7 @@ static const UnitT99 unit_v99 = '\0';
 // } (Pattern matching)
 
 #define DATATYPE99_PRIV_genVariantTypedefsForEach(name, variants)                                  \
-    DATATYPE99_PRIV_mapVariants(                                                                   \
+    DATATYPE99_PRIV_forEachVariant(                                                                \
         ML99_appl(v(DATATYPE99_PRIV_genVariantTypedefs), v(name)),                                 \
         v(variants))
 
@@ -250,7 +251,7 @@ static const UnitT99 unit_v99 = '\0';
  * <variant-name>0Tag, ..., <variant-name>NTag
  */
 #define DATATYPE99_PRIV_genTagForEach(variants)                                                    \
-    DATATYPE99_PRIV_mapVariants(v(DATATYPE99_PRIV_genTag), v(variants))
+    DATATYPE99_PRIV_forEachVariant(v(DATATYPE99_PRIV_genTag), v(variants))
 
 #define DATATYPE99_PRIV_genTag_IMPL(tag, _sig) v(tag##Tag, )
 
@@ -262,7 +263,7 @@ static const UnitT99 unit_v99 = '\0';
 #define DATATYPE99_PRIV_genUnionFieldForEach(name, variants)                                       \
     ML99_uncomma(ML99_QUOTE(                                                                       \
         v(char dummy;),                                                                            \
-        DATATYPE99_PRIV_mapVariants(                                                               \
+        DATATYPE99_PRIV_forEachVariant(                                                            \
             ML99_appl(v(DATATYPE99_PRIV_genUnionField), v(name)),                                  \
             v(variants))))
 
@@ -275,7 +276,7 @@ static const UnitT99 unit_v99 = '\0';
  * inline static <datatype99-name> <variant-name>N(...) { ... }
  */
 #define DATATYPE99_PRIV_genCtorForEach(name, variants)                                             \
-    DATATYPE99_PRIV_mapVariants(ML99_appl(v(DATATYPE99_PRIV_genCtor), v(name)), v(variants))
+    DATATYPE99_PRIV_forEachVariant(ML99_appl(v(DATATYPE99_PRIV_genCtor), v(name)), v(variants))
 
 #define DATATYPE99_PRIV_genCtor_IMPL(name, tag, sig)                                               \
     ML99_call(                                                                                     \
@@ -325,6 +326,9 @@ static const UnitT99 unit_v99 = '\0';
 #define DATATYPE99_PRIV_genCtor_ARITY            2
 #define DATATYPE99_PRIV_assignResult_ARITY       2
 
+// Public:
+#define DATATYPE99_of_ARITY                  1
+#define DATATYPE99_ifLet_ARITY               3
 #define DATATYPE99_assertAttrIsPresent_ARITY 1
 // }
 

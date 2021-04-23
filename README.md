@@ -170,7 +170,9 @@ There are a few helping macros:
 |----------|----------|
 | `DATATYPE99_ATTR_IS_PRESENT(attr)` | Accepts an attribute name and checks if it is present or not. |
 | `DATATYPE99_ATTR_VALUE(attr)` | Accepts an attribute name and expands to its value. A provided attribute **must** be present. |
-| `DATATYPE99_assertAttrIsPresent(attr)` | Accepts an attribute name and emits a fatal error if the attribute is not present, otherwise results in emptiness (Metalang99-compliant). |
+| `DATATYPE99_assertAttrIsPresent(attr)` | Accepts an attribute name and emits a fatal error if the attribute is not present, otherwise results in emptiness. |
+
+(The naming convention here is the same [as of Metalang99](https://metalang99.readthedocs.io/en/latest/#naming-conventions).)
 
 Also, there is a built-in deriver called `dummy`, which can be specified either as `dummy` or `(dummy, (...))`; it generates nothing.
 
@@ -226,6 +228,13 @@ static const UnitT unit_v = '\0';
  - The macros `DATATYPE99_MAJOR`, `DATATYPE99_MINOR`, and `DATATYPE99_PATCH` stand for the corresponding components of a version of Datatype99.
 
  - If you do **not** want the shortened versions to appear (e.g. `match` without the prefix `99`), define `DATATYPE99_NO_ALIASES` before `#include <datatype99.h>`.
+
+ - For each macro using `ML99_EVAL`, Datatype99 provides its counterpart which is Metalang99-compliant, and therefore, it can be used inside derivers and other Metalang99-compliant macros:
+
+| Macro | Metalang99-compliant counterpart |
+|----------|----------|
+| `of` | `DATATYPE99_of` |
+| `ifLet` | `DATATYPE99_ifLet` |
 
 ## Pitfalls
 
