@@ -16,4 +16,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     run_example "binary_tree_malloc"
     run_example "binary_tree"
     run_example "token"
+
+    run_example "derive/metadata"
+    run_example "derive/print"
 fi
