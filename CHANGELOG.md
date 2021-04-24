@@ -9,7 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
  - A mechanism for deriving: `datatype` now can be specified with `derive(...)`.
- - `DATATYPE99_ATTR_IS_PRESENT`, `DATATYPE99_ATTR_VALUE`, and `DATATYPE99_assertAttrIsPresent` to manipulate variant-specific attributes.
+ - Manipulation of attributes:
+   - `DATATYPE99_attrIsPresent`/`DATATYPE99_ATTR_IS_PRESENT` to check the presence of an attribute.
+   - `DATATYPE99_attrValue`/`DATATYPE99_ATTR_VALUE` to extract an attribute's value.
+   - `DATATYPE99_assertAttrIsPresent` to assert a mandatory attribute.
  - A deriver `dummy` which generates nothing.
  - Metalang99-compliant counterparts: `DATATYPE99_of`, `DATATYPE99_ifLet`.
 
