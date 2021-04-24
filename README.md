@@ -44,7 +44,9 @@ Pattern matching is likewise intuitive. Just a few brief notes:
 
  - To match an empty variant, write `of(Foo) { ... }`.
  - To match the default case, i.e. when all other cases failed, write `otherwise { ... }`.
- - To ignore one or more variables inside `of`, write `of(Foo, a, b, _, d)`.
+ - To ignore a variable inside `of`, write `_`: `of(Foo, a, b, _, d)`.
+
+Also, you can introspect your sum types at compile-time; see [`examples/derive/`](examples/derive/) for the examples.
 
 Happy hacking!
 
@@ -150,7 +152,7 @@ where
  - `variants...` is a [list] of variants represented as two-place [tuples]: `(<variant-name>, types...)`, where
    - `types...` is a [list] of types of the corresponding variant.
 
-See [`examples/derive/`](examples/derive/) for examples of writing and using derivers.
+That is, each deriver is meant to generate something global for a sum type, like function/variable definitions or any other stuff.
 
 [list]: https://metalang99.readthedocs.io/en/latest/list.html
 [tuples]: https://metalang99.readthedocs.io/en/latest/tuple.html
