@@ -150,34 +150,10 @@ where
  - `variants...` is a [list] of variants represented as two-place [tuples]: `(<variant-name>, types...)`, where
    - `types...` is a [list] of types of the corresponding variant.
 
+See [`examples/derive/`](examples/derive/) for examples of writing and using derivers.
+
 [list]: https://metalang99.readthedocs.io/en/latest/list.html
 [tuples]: https://metalang99.readthedocs.io/en/latest/tuple.html
-
-You can pass named arguments to a deriver; these are called _derive helper attributes_. They must be specified as object-like macros of the form:
-
-```
-#define <variant-name>_<namespace>_<attribute-name> attr(/* attribute value */)
-```
-
-where `<namespace>` is either `<datatype-name>` or `<variant-name>` for `datatype`-specific and variant-specific attributes, respectively.
-
-To manipulate derive helper attributes, there are a few predefined macros:
-
- - `DATATYPE99_attrIsPresent`/`DATATYPE99_ATTR_IS_PRESENT`
-
-    Accepts an attribute name and checks if it is present or not. It can be used to check the presence of an optional attribute.
-
- - `DATATYPE99_attrValue`/`DATATYPE99_ATTR_VALUE`
-
-    Accepts an attribute name extracts its value. A provided attribute **must** be present.
-
- - `DATATYPE99_assertAttrIsPresent`
-
-    Accepts an attribute name and emits a fatal error if the attribute is not present, otherwise results in emptiness. It can be used for mandatory attributes.
-
-(The naming convention here is the same [as of Metalang99](https://metalang99.readthedocs.io/en/latest/#naming-conventions).)
-
-See [`examples/derive/`](examples/derive/) for examples of writing and using derivers.
 
 #### `match`
 
@@ -223,6 +199,32 @@ The unit type `UnitT` represents a type of a single value, `unit_v` (it should n
 typedef char UnitT;
 static const UnitT unit_v = '\0';
 ```
+
+### Derive helper attributes
+
+You can pass named arguments to a deriver; these are called _derive helper attributes_. They must be specified as object-like macros of the form:
+
+```
+#define <variant-name>_<namespace>_<attribute-name> attr(/* attribute value */)
+```
+
+where `<namespace>` is either `<datatype-name>` or `<variant-name>` for `datatype`-specific and variant-specific attributes, respectively.
+
+To manipulate derive helper attributes, there are a few predefined macros:
+
+ - `DATATYPE99_attrIsPresent`/`DATATYPE99_ATTR_IS_PRESENT`
+
+    Accepts an attribute name and checks if it is present or not. It can be used to check the presence of an optional attribute.
+
+ - `DATATYPE99_attrValue`/`DATATYPE99_ATTR_VALUE`
+
+    Accepts an attribute name extracts its value. A provided attribute **must** be present.
+
+ - `DATATYPE99_assertAttrIsPresent`
+
+    Accepts an attribute name and emits a fatal error if the attribute is not present, otherwise results in emptiness. It can be used for mandatory attributes.
+
+(The naming convention here is the same [as of Metalang99](https://metalang99.readthedocs.io/en/latest/#naming-conventions).)
 
 ### Miscellaneous
 
