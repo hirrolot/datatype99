@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <string.h>
 
+// Deriver implementation {
 #define DATATYPE99_DERIVE_Metadata_IMPL(name, variants)                                            \
     ML99_TERMS(VARIANTS_METADATA(name, variants), METADATA(name, variants))
 
@@ -32,6 +33,7 @@
             ML99_assign(v(.name), v(#name_)),                                                      \
             ML99_assign(v(.variants), v((const VariantMetadata *)&name_##_variants_metadata)),     \
             ML99_assign(v(.variants_count), ML99_listLen(v(variants_)))))
+// } (Deriver implementation)
 
 typedef struct {
     const char *name;

@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 
+// Deriver implementation {
 #define DATATYPE99_DERIVE_Print_IMPL(name, variants)                                               \
     ML99_prefixedBlock(                                                                            \
         v(inline static void name##_print(name self, FILE *stream)),                               \
@@ -16,6 +17,7 @@
             DATATYPE99_of(v(tag), ML99_indexedArgs(ML99_listLen(v(sig)))),                         \
             ML99_invokeStmt(v(fprintf), v(stream), DATATYPE99_attrValue(v(tag##_Print_fmt)))))
 #define GEN_ARM_ARITY 1
+// (Deriver implementation)
 
 #define Foo_Print_fmt attr("Foo(\"%s\")", *_0)
 #define Bar_Print_fmt attr("Bar(%d, %d)", *_0, *_1)
