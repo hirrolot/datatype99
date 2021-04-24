@@ -140,7 +140,7 @@ struct <datatype-name> {
 inline static <datatype-name> <variant-name>(...) { /* ... */ }
 ```
 
- 7. Now, when a sum type is generated, the derivation process takes place. Each deriver is invoked sequentially, from left to right, as
+ 7. Now, when a sum type is fully generated, the derivation process takes place. Each deriver is invoked sequentially, from left to right, as
 
 ```
 ML99_call(DATATYPE99_DERIVE_##<deriver-name>, v(<datatype-name>), variants...)
@@ -245,6 +245,11 @@ To manipulate derive helper attributes, there are a few predefined macros:
 
 [Arity specifiers]: https://hirrolot.gitbook.io/metalang99/partial-application
 [desugaring macros]: https://metalang99.readthedocs.io/en/latest/#definitions
+
+## Guidelines
+
+ - Cancel formatting for a `datatype` definition using `// clang-format off` & `// clang-format on`.
+ - Always `#undef` derive helper attributes after a corresponding `datatype` definition to not pollute your namespace.
 
 ## Pitfalls
 
