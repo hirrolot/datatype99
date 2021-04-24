@@ -152,7 +152,7 @@ where
  - `variants...` is a [list] of variants represented as two-place [tuples]: `(<variant-name>, types...)`, where
    - `types...` is a [list] of types of the corresponding variant.
 
-That is, each deriver is meant to generate something global for a sum type, like function/variable definitions or any other stuff.
+Put simly, a deriver is a macro which is meant to generate something global for a sum type, like function/variable definitions or any other stuff.
 
 [list]: https://metalang99.readthedocs.io/en/latest/list.html
 [tuples]: https://metalang99.readthedocs.io/en/latest/tuple.html
