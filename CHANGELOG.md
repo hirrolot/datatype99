@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+### Fixed
+
+ - Add the missing arity specifier for `DATATYPE99_datatype`.
+
 ## [1.1.0] - 2021-04-24
 
 ### Added

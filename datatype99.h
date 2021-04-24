@@ -333,6 +333,7 @@ static const UnitT99 unit_v99 = '\0';
 #define DATATYPE99_PRIV_assignResult_ARITY       2
 
 // Public:
+#define DATATYPE99_datatype_ARITY            1
 #define DATATYPE99_of_ARITY                  1
 #define DATATYPE99_ifLet_ARITY               3
 #define DATATYPE99_attrIsPresent_ARITY       1
