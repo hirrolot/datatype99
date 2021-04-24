@@ -153,15 +153,15 @@ where
 [list]: https://metalang99.readthedocs.io/en/latest/list.html
 [tuples]: https://metalang99.readthedocs.io/en/latest/tuple.html
 
-To specify attributes for a particular variant, follow this pattern:
+You can pass named arguments to a deriver; these are called _derive helper attributes_. They must be specified as object-like macros of the form:
 
 ```
-#define <variant-name>_<deriver-name>_<attribute-name> attr(/* attribute value */)
+#define <variant-name>_<namespace>_<attribute-name> attr(/* attribute value */)
 ```
 
-To specify attributes belonged to a whole sum type, instead of `<variant-name>` write `<datatype-name>`.
+where `<namespace>` is either `<datatype-name>` and `<variant-name>` for `datatype`-specific and variant-specific attributes, respectively.
 
-There are a few helping macros:
+To manipulate derive helper attributes, there are a few predefined macros:
 
  - `DATATYPE99_attrIsPresent`/`DATATYPE99_ATTR_IS_PRESENT`
 
