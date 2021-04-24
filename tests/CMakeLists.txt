@@ -17,9 +17,11 @@ function(set_standard TARGET NUM)
 endfunction()
 
 add_executable(tests tests.c)
+add_executable(metalang99_compliant metalang99_compliant.c)
 add_executable(derive derive.c)
 
 set_standard(tests 99)
+set_standard(metalang99_compliant 99)
 
 # For `_Static_assert`, which can be used on the same line number.
 set_standard(derive 11)

@@ -47,22 +47,46 @@ SOFTWARE.
 
 #endif // DATATYPE99_NO_ALIASES
 
-#define DATATYPE99_of(...)               ML99_call(DATATYPE99_of, __VA_ARGS__)
-#define DATATYPE99_ifLet(val, tag_, ...) ML99_call(DATATYPE99_ifLet, val, tag_, __VA_ARGS__)
+// Various public stuff {
 
+// Metalang99-compliant `datatype`, `of`, and `ifLet` {
+#define DATATYPE99_datatype(...)        ML99_call(DATATYPE99_datatype, __VA_ARGS__)
+#define DATATYPE99_of(...)              ML99_call(DATATYPE99_of, __VA_ARGS__)
+#define DATATYPE99_ifLet(val, tag, ...) ML99_call(DATATYPE99_ifLet, val, tag, __VA_ARGS__)
+
+#define datatype99(...)        ML99_EVAL(DATATYPE99_datatype_IMPL(__VA_ARGS__))
+#define of99(...)              ML99_EVAL(DATATYPE99_of_IMPL(__VA_ARGS__))
+#define ifLet99(val, tag, ...) ML99_EVAL(DATATYPE99_ifLet_IMPL(val, tag, __VA_ARGS__))
+// }
+
+// Attributes manipulation {
 #define DATATYPE99_attrIsPresent(attr)       ML99_call(DATATYPE99_attrIsPresent, attr)
 #define DATATYPE99_attrValue(attr)           ML99_call(DATATYPE99_attrValue, attr)
 #define DATATYPE99_assertAttrIsPresent(attr) ML99_call(DATATYPE99_assertAttrIsPresent, attr)
 
-#define of99(...)              ML99_EVAL(DATATYPE99_of_IMPL(__VA_ARGS__))
-#define ifLet99(val, tag, ...) ML99_EVAL(DATATYPE99_ifLet_IMPL(val, tag, __VA_ARGS__))
-
 #define DATATYPE99_attrIsPresent_IMPL(attr) v(DATATYPE99_ATTR_IS_PRESENT(attr))
 #define DATATYPE99_attrValue_IMPL(attr)     v(DATATYPE99_ATTR_VALUE(attr))
+#define DATATYPE99_assertAttrIsPresent_IMPL(attr)                                                  \
+    ML99_IF(                                                                                       \
+        DATATYPE99_ATTR_IS_PRESENT(attr),                                                          \
+        ML99_empty(),                                                                              \
+        ML99_fatal(DATATYPE99_assertAttrIsPresent, attr must be defined))
+
+#define DATATYPE99_ATTR_IS_PRESENT(attr)                                                           \
+    ML99_IS_TUPLE(ML99_CAT(DATATYPE99_PRIV_ATTR_IS_PRESENT_, attr))
+#define DATATYPE99_PRIV_ATTR_IS_PRESENT_attr(...) ()
+
+#define DATATYPE99_ATTR_VALUE(attr)          ML99_CAT(DATATYPE99_PRIV_ATTR_VALUE_, attr)
+#define DATATYPE99_PRIV_ATTR_VALUE_attr(...) __VA_ARGS__
+// }
+
+#define DATATYPE99_DERIVE_dummy_IMPL(...) ML99_empty()
 
 #define DATATYPE99_MAJOR 1
 #define DATATYPE99_MINOR 0
 #define DATATYPE99_PATCH 0
+
+// } (Various public stuff)
 
 // Unit type {
 
@@ -97,12 +121,10 @@ static const UnitT99 unit_v99 = '\0';
 
 // Sum type generation {
 
-// clang-format off
-
-#define datatype99(x, ...) \
-    ML99_CAT(DATATYPE99_PRIV_WITH_DERIVE_, DATATYPE99_PRIV_IS_DERIVE(x))(x, __VA_ARGS__) \
-    ML99_TRAILING_SEMICOLON()
-// clang-format on
+#define DATATYPE99_datatype_IMPL(x, ...)                                                           \
+    ML99_TERMS(                                                                                    \
+        ML99_CAT(DATATYPE99_PRIV_WITH_DERIVE_, DATATYPE99_PRIV_IS_DERIVE(x))(x, __VA_ARGS__),      \
+        v(ML99_TRAILING_SEMICOLON()))
 
 #define DATATYPE99_PRIV_IS_DERIVE(x)          ML99_IS_TUPLE(DATATYPE99_PRIV_IS_DERIVE_##x)
 #define DATATYPE99_PRIV_IS_DERIVE_derive(...) ()
@@ -113,11 +135,11 @@ static const UnitT99 unit_v99 = '\0';
     DATATYPE99_PRIV_WITH_DERIVE_1(derive(dummy), name, __VA_ARGS__)
 
 #define DATATYPE99_PRIV_WITH_DERIVE_1(derivers, name, ...)                                         \
-    ML99_EVAL(ML99_call(                                                                           \
+    ML99_call(                                                                                     \
         DATATYPE99_PRIV_genDatatype,                                                               \
         v(name),                                                                                   \
         DATATYPE99_PRIV_parse(__VA_ARGS__),                                                        \
-        v(DATATYPE99_PRIV_ELIM_##derivers)))
+        v(DATATYPE99_PRIV_ELIM_##derivers))
 
 #define DATATYPE99_PRIV_genDatatype_IMPL(name, variants, ...)                                      \
     ML99_TERMS(                                                                                    \
@@ -145,21 +167,6 @@ static const UnitT99 unit_v99 = '\0';
 
 #define DATATYPE99_PRIV_invokeDeriver_IMPL(name, variants, deriver)                                \
     ML99_callUneval(DATATYPE99_DERIVE_##deriver, name, variants)
-
-#define DATATYPE99_DERIVE_dummy_IMPL(...) ML99_empty()
-
-#define DATATYPE99_ATTR_IS_PRESENT(attr)                                                           \
-    ML99_IS_TUPLE(ML99_CAT(DATATYPE99_PRIV_ATTR_IS_PRESENT_, attr))
-#define DATATYPE99_PRIV_ATTR_IS_PRESENT_attr(...) ()
-
-#define DATATYPE99_ATTR_VALUE(attr)          ML99_CAT(DATATYPE99_PRIV_ATTR_VALUE_, attr)
-#define DATATYPE99_PRIV_ATTR_VALUE_attr(...) __VA_ARGS__
-
-#define DATATYPE99_assertAttrIsPresent_IMPL(attr)                                                  \
-    ML99_IF(                                                                                       \
-        DATATYPE99_ATTR_IS_PRESENT(attr),                                                          \
-        ML99_empty(),                                                                              \
-        ML99_fatal(DATATYPE99_assertAttrIsPresent, attr must be defined))
 // } (Derivation)
 
 // Pattern matching {

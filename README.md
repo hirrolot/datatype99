@@ -239,6 +239,7 @@ To manipulate derive helper attributes, there are a few predefined macros:
 
 | Macro | Metalang99-compliant counterpart |
 |----------|----------|
+| `datatype` | `DATATYPE99_datatype` |
 | `of` | `DATATYPE99_of` |
 | `ifLet` | `DATATYPE99_ifLet` |
 

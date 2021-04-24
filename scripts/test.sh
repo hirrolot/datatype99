@@ -11,4 +11,7 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
 
     echo "Executing ./derive ..."
     ./derive
+
+    echo "Executing ./metalang99_compliant ..."
+    ./metalang99_compliant
 fi
