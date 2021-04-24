@@ -14,8 +14,7 @@
         DATATYPE99_assertAttrIsPresent(v(tag##_Print_fmt)),                                        \
         ML99_prefixedBlock(                                                                        \
             DATATYPE99_of(v(tag), ML99_indexedArgs(ML99_listLen(v(sig)))),                         \
-            ML99_semicoloned(                                                                      \
-                ML99_invoke(v(fprintf), v(stream), DATATYPE99_attrValue(v(tag##_Print_fmt))))))
+            ML99_invokeStmt(v(fprintf), v(stream), DATATYPE99_attrValue(v(tag##_Print_fmt)))))
 #define GEN_ARM_ARITY 1
 
 #define Foo_Print_fmt attr("Foo(\"%s\")", *_0)

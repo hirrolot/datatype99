@@ -7,9 +7,9 @@
     ML99_TERMS(VARIANTS_METADATA(name, variants), METADATA(name, variants))
 
 #define VARIANTS_METADATA(name, variants)                                                          \
-    ML99_semicoloned(ML99_assign(                                                                  \
+    ML99_assignStmt(                                                                               \
         v(static const VariantMetadata name##_variants_metadata[]),                                \
-        GEN_VARIANTS_INITIALIZER_LIST(name, variants)))
+        GEN_VARIANTS_INITIALIZER_LIST(name, variants))
 
 #define GEN_VARIANTS_INITIALIZER_LIST(name, variants)                                              \
     ML99_braced(ML99_listMapInPlace(                                                               \
@@ -26,12 +26,12 @@
 #define GEN_VARIANT_ARITY 2
 
 #define METADATA(name_, variants_)                                                                 \
-    ML99_semicoloned(ML99_assign(                                                                  \
+    ML99_assignStmt(                                                                               \
         v(static const DatatypeMetadata name_##_metadata),                                         \
         ML99_braced(                                                                               \
             ML99_assign(v(.name), v(#name_)),                                                      \
             ML99_assign(v(.variants), v((const VariantMetadata *)&name_##_variants_metadata)),     \
-            ML99_assign(v(.variants_count), ML99_listLen(v(variants_))))))
+            ML99_assign(v(.variants_count), ML99_listLen(v(variants_)))))
 
 typedef struct {
     const char *name;

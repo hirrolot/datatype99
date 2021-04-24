@@ -46,10 +46,10 @@ typedef UnitT C;
 
 #define ASSERT_VARIANTS(variants)                                                                  \
     ML99_TERMS(                                                                                    \
-        ML99_semicoloned(ML99_invoke(                                                              \
+        ML99_invokeStmt(                                                                           \
             v(static_assert),                                                                      \
             ML99_natEq(ML99_listLen(v(variants)), v(3)),                                           \
-            v("not 3 variants"))),                                                                 \
+            v("not 3 variants")),                                                                  \
         ML99_listMapInPlaceI(v(visitVariant), v(variants)))
 
 #define visitVariant_IMPL(variant, i) ML99_call(assertVariant_##i, ML99_untuple(v(variant)))
@@ -71,14 +71,14 @@ typedef UnitT C;
 
 #define assertSig(sig, ...)                                                                        \
     ML99_TERMS(                                                                                    \
-        ML99_semicoloned(ML99_invoke(                                                              \
+        ML99_invokeStmt(                                                                           \
             v(static_assert),                                                                      \
             ML99_natEq(ML99_listLen(v(sig)), ML99_variadicsCount(v(__VA_ARGS__))),                 \
-            v("Invalid variant arity"))),                                                          \
-        ML99_semicoloned(ML99_invoke(                                                              \
+            v("Invalid variant arity")),                                                           \
+        ML99_invokeStmt(                                                                           \
             v(static_assert),                                                                      \
             ML99_listEq(ML99_appl(v(ML99_identEq), v(CHECK_)), v(sig), ML99_list(v(__VA_ARGS__))), \
-            v("Non-equal types"))))
+            v("Non-equal types")))
 // }
 
 // Defined identifiers {
