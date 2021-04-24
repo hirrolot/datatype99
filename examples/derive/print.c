@@ -29,6 +29,9 @@ datatype(
 );
 // clang-format on
 
+#undef Foo_Print_fmt
+#undef Bar_Print_fmt
+
 /*
  * Output:
  *
