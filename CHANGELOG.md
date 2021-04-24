@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+## [1.1.0] - 2021-04-24
+
 ### Added
 
  - A mechanism for deriving: `datatype` now can be specified with `derive(...)`.

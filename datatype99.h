@@ -29,8 +29,8 @@ SOFTWARE.
 
 #include <metalang99.h>
 
-#if ML99_MAJOR != 1
-#error "Please, update Metalang99 to v1.0.0 or later"
+#if ML99_MAJOR != 1 && ML99_MINOR < 1
+#error "Please, update Metalang99 to v1.1.0 or later"
 #endif
 
 #ifndef DATATYPE99_NO_ALIASES
@@ -83,7 +83,7 @@ SOFTWARE.
 #define DATATYPE99_DERIVE_dummy_IMPL(...) ML99_empty()
 
 #define DATATYPE99_MAJOR 1
-#define DATATYPE99_MINOR 0
+#define DATATYPE99_MINOR 1
 #define DATATYPE99_PATCH 0
 
 // } (Various public stuff)
