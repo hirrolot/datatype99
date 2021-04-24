@@ -163,9 +163,17 @@ To specify attributes belonged to a whole sum type, instead of `<variant-name>` 
 
 There are a few helping macros:
 
- - `DATATYPE99_attrIsPresent`/`DATATYPE99_ATTR_IS_PRESENT` Accepts an attribute name and checks if it is present or not. It can be used to check the presence of an optional attribute.
- - `DATATYPE99_attrValue`/`DATATYPE99_ATTR_VALUE` Accepts an attribute name extracts its value. A provided attribute **must** be present.
- - `DATATYPE99_assertAttrIsPresent` Accepts an attribute name and emits a fatal error if the attribute is not present, otherwise results in emptiness. It can be used for mandatory attributes.
+ - `DATATYPE99_attrIsPresent`/`DATATYPE99_ATTR_IS_PRESENT`
+
+    Accepts an attribute name and checks if it is present or not. It can be used to check the presence of an optional attribute.
+
+ - `DATATYPE99_attrValue`/`DATATYPE99_ATTR_VALUE`
+
+    Accepts an attribute name extracts its value. A provided attribute **must** be present.
+
+ - `DATATYPE99_assertAttrIsPresent`
+
+    Accepts an attribute name and emits a fatal error if the attribute is not present, otherwise results in emptiness. It can be used for mandatory attributes.
 
 (The naming convention here is the same [as of Metalang99](https://metalang99.readthedocs.io/en/latest/#naming-conventions).)
 
