@@ -152,7 +152,7 @@ where
  - `variants...` is a [list] of variants represented as two-place [tuples]: `(<variant-name>, types...)`, where
    - `types...` is a [list] of types of the corresponding variant.
 
-Put simply, a deriver is a [Metalang99-compliant](https://metalang99.readthedocs.io/en/latest/#definitions) macro which is meant to generate something global for a sum type, like function/variable definitions or almost any other stuff. If you are acquainted with Rust, Datatype99's derive macros are conceptually the same as the [derive attribute] for `enum`s.
+Put simply, a deriver is a [Metalang99-compliant](https://metalang99.readthedocs.io/en/latest/#definitions) macro which is meant to generate something global for a sum type, like function/variable definitions or almost any other stuff. If you are acquainted with Rust, Datatype99's derive macros are conceptually the same as the [derive attribute] for `enum`s. From my experience, derive macros allow to provide really nice, declarative, type-safe APIs.
 
 [list]: https://metalang99.readthedocs.io/en/latest/list.html
 [tuples]: https://metalang99.readthedocs.io/en/latest/tuple.html
