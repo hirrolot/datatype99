@@ -50,10 +50,15 @@ SOFTWARE.
 #define DATATYPE99_of(...)               ML99_call(DATATYPE99_of, __VA_ARGS__)
 #define DATATYPE99_ifLet(val, tag_, ...) ML99_call(DATATYPE99_ifLet, val, tag_, __VA_ARGS__)
 
+#define DATATYPE99_attrIsPresent(attr)       ML99_call(DATATYPE99_attrIsPresent, attr)
+#define DATATYPE99_attrValue(attr)           ML99_call(DATATYPE99_attrValue, attr)
+#define DATATYPE99_assertAttrIsPresent(attr) ML99_call(DATATYPE99_assertAttrIsPresent, attr)
+
 #define of99(...)              ML99_EVAL(DATATYPE99_of_IMPL(__VA_ARGS__))
 #define ifLet99(val, tag, ...) ML99_EVAL(DATATYPE99_ifLet_IMPL(val, tag, __VA_ARGS__))
 
-#define DATATYPE99_assertAttrIsPresent(attr) ML99_call(DATATYPE99_assertAttrIsPresent, attr)
+#define DATATYPE99_attrIsPresent_IMPL(attr) v(DATATYPE99_ATTR_IS_PRESENT(attr))
+#define DATATYPE99_attrValue_IMPL(attr)     v(DATATYPE99_ATTR_VALUE(attr))
 
 #define DATATYPE99_MAJOR 1
 #define DATATYPE99_MINOR 0
@@ -323,6 +328,8 @@ static const UnitT99 unit_v99 = '\0';
 // Public:
 #define DATATYPE99_of_ARITY                  1
 #define DATATYPE99_ifLet_ARITY               3
+#define DATATYPE99_attrIsPresent_ARITY       1
+#define DATATYPE99_attrValue_ARITY           1
 #define DATATYPE99_assertAttrIsPresent_ARITY 1
 // }
 
