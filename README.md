@@ -249,7 +249,7 @@ To manipulate derive helper attributes, there are a few predefined macros:
 ## Guidelines
 
  - If you use [Clang-Format], cancel formatting for a `datatype` definition using `// clang-format off` & `// clang-format on` to make it look prettier.
- - Always `#undef` derive helper attributes after a corresponding `datatype` definition to not pollute your namespace.
+ - Always `#undef` derive helper attributes after a corresponding `datatype` definition not to pollute your namespace.
 
 [Clang-Format]: https://clang.llvm.org/docs/ClangFormatStyleOptions.html
 
