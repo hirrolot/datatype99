@@ -35,10 +35,11 @@ double eval(const Expr *expr) {
 }
 
 #define EXPR(expr)       ((Expr *)(Expr[]){expr})
-#define OP(op, lhs, rhs) op(EXPR(lhs), EXPR(rhs))
+#define OP(lhs, op, rhs) op(EXPR(lhs), EXPR(rhs))
 
 int main(void) {
-    Expr expr = OP(Add, Const(53), OP(Sub, OP(Div, Const(155), Const(5)), Const(113)));
+    // 53 + ((155 / 5) - 113)
+    Expr expr = OP(Const(53), Add, OP(OP(Const(155), Div, Const(5)), Sub, Const(113)));
 
     /*
      * Output:
