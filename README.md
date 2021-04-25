@@ -270,6 +270,7 @@ Thanks to Rust and ML for their implementations of sum types.
 ## Learning resources
 
  - [_Unleashing Sum Types in Pure C99_](https://medium.com/@hirrolot/unleashing-sum-types-in-pure-c99-31544302d2ba) by Hirrolot
+ - [_Compile-Time Introspection of Sum Types in Pure C99_](https://hirrolot.medium.com/compile-time-introspection-of-sum-types-in-pure-c99-ffa523b60385) by Hirrolot
 
 ## FAQ
 
