@@ -316,6 +316,12 @@ If an error is not comprehensible at all, try to look at generated code (`-E`). 
 
 [code generation semantics]: #semantics
 
+### Q: What about IDE support?
+
+![Suggestion](images/suggestion.png)
+
+VS Code enables suggestions of generated variants but, of course, it does not highlight the syntax of macros.
+
 ## Troubleshooting
 
 ### `warning: control reaches end of non-void function [-Wreturn-type]`
