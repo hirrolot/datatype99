@@ -320,7 +320,7 @@ If an error is not comprehensible at all, try to look at generated code (`-E`). 
 
 ![Suggestion](images/suggestion.png)
 
-VS Code enables suggestions of generated variants but, of course, it does not highlight the syntax of macros.
+VS Code automatically enables suggestions of generated types but, of course, it does not support macro syntax highlightment.
 
 ## Troubleshooting
 
