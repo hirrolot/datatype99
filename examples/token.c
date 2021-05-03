@@ -2,6 +2,9 @@
 
 #include <stdio.h>
 
+// Does not work properly on TCC for some reason.
+#ifndef __TINYC__
+
 // clang-format off
 datatype(
     Token,
@@ -42,3 +45,9 @@ int main(void) {
 
     puts("");
 }
+
+#else
+
+int main(void) {}
+
+#endif // __TINYC__

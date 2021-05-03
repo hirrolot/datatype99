@@ -58,10 +58,14 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 
 ```ebnf
 <datatype>      ::= "datatype(" [ <derive-clause> "," ] <datatype-name> { "," <variant> }+ ")" ;
+<record>        ::= "record(" [ <derive-clause> "," ] <record-name> { "," <field> } ")" ;
+<datatype-name> ::= <ident> ;
+<record-name>   ::= <ident> ;
 
 <variant>       ::= "(" <variant-name> { "," <type> }* ")" ;
-<datatype-name> ::= <ident> ;
+<field>         ::= "(" <type> "," <field-name> ")" ;
 <variant-name>  ::= <ident> ;
+<field-name>    ::= <ident> ;
 
 <derive-clause> ::= "derive(" <deriver-name> { "," <deriver-name> }* ")" ;
 <deriver-name>  ::= <ident> ;
@@ -158,6 +162,29 @@ Put simply, a deriver is a [Metalang99-compliant](https://metalang99.readthedocs
 [tuples]: https://metalang99.readthedocs.io/en/latest/tuple.html
 [derive attribute]: https://doc.rust-lang.org/reference/attributes/derive.html
 
+#### `record`
+
+`record` represents a _record type_: it is simply a `struct` for which the derivation process is defined.
+
+ 1. The following structure is generated:
+
+```
+typedef struct <record-name> {
+    <type>0 <field-name>0;
+    ...
+    <type>N <field-name>N;
+} <record-name>;
+```
+
+ 2. Each deriver is invoked sequentially, from left to right, as
+
+```
+ML99_call(DATATYPE99_RECORD_DERIVE_##<deriver-name>, v(<record-name>), fields...)
+```
+
+where
+ - `fields...` is a [list] of fields represented as two-place [tuples]: `(<type>, <field-name>)`.
+
 #### `match`
 
 `match` has the expected semantics: it sequentially tries to match the given instance of a sum type against the given variants, and, if a match has succeeded, it executes the corresponding statement and moves down to the next instruction (`match(val) { ... } next-instruction;`). If all the matches have failed, it executes the statement after `otherwise` and moves down to the next instruction.
@@ -211,7 +238,7 @@ You can pass named arguments to a deriver; these are called _derive helper attri
 #define <variant-name>_<namespace>_<attribute-name> attr(/* attribute value */)
 ```
 
-where `<namespace>` is either `<datatype-name>` or `<variant-name>` for `datatype`-specific and variant-specific attributes, respectively.
+where `<namespace>` is either `<datatype-name>`/`<record-name>` or `<variant-name>`/`<field-name>` for `datatype`-specific and variant-specific attributes, respectively.
 
 To manipulate derive helper attributes, there are a few predefined macros:
 
@@ -240,10 +267,11 @@ To manipulate derive helper attributes, there are a few predefined macros:
 | Macro | Metalang99-compliant counterpart |
 |----------|----------|
 | `datatype` | `DATATYPE99_datatype` |
+| `record` | `DATATYPE99_record` |
 | `of` | `DATATYPE99_of` |
 | `ifLet` | `DATATYPE99_ifLet` |
 
- - There is a built-in deriver `dummy` which generates nothing.
+ - There is a built-in deriver `dummy` which generates nothing. It is defined both for record and sum types.
 
  - [Arity specifiers] and [desugaring macros] are provided for each public Metalang99-compliant macro exposed by Datatype99.
 

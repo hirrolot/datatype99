@@ -36,6 +36,7 @@ SOFTWARE.
 #ifndef DATATYPE99_NO_ALIASES
 
 #define datatype  datatype99
+#define record    record99
 #define match     match99
 #define matches   matches99
 #define ifLet     ifLet99
@@ -51,10 +52,12 @@ SOFTWARE.
 
 // Metalang99-compliant `datatype`, `of`, and `ifLet` {
 #define DATATYPE99_datatype(...)        ML99_call(DATATYPE99_datatype, __VA_ARGS__)
+#define DATATYPE99_record(...)          ML99_call(DATATYPE99_record, __VA_ARGS__)
 #define DATATYPE99_of(...)              ML99_call(DATATYPE99_of, __VA_ARGS__)
 #define DATATYPE99_ifLet(val, tag, ...) ML99_call(DATATYPE99_ifLet, val, tag, __VA_ARGS__)
 
 #define datatype99(...)        ML99_EVAL(DATATYPE99_datatype_IMPL(__VA_ARGS__))
+#define record99(...)          ML99_EVAL(DATATYPE99_record_IMPL(__VA_ARGS__))
 #define of99(...)              ML99_EVAL(DATATYPE99_of_IMPL(__VA_ARGS__))
 #define ifLet99(val, tag, ...) ML99_EVAL(DATATYPE99_ifLet_IMPL(val, tag, __VA_ARGS__))
 // }
@@ -80,7 +83,8 @@ SOFTWARE.
 #define DATATYPE99_PRIV_ATTR_VALUE_attr(...) __VA_ARGS__
 // }
 
-#define DATATYPE99_DERIVE_dummy_IMPL(...) ML99_empty()
+#define DATATYPE99_DERIVE_dummy_IMPL(...)        ML99_empty()
+#define DATATYPE99_RECORD_DERIVE_dummy_IMPL(...) ML99_empty()
 
 #define DATATYPE99_MAJOR 1
 #define DATATYPE99_MINOR 1
@@ -94,42 +98,12 @@ typedef char UnitT99;
 static const UnitT99 unit_v99 = '\0';
 // }
 
-// Parsing {
-#define DATATYPE99_PRIV_parse(...)                                                                 \
-    ML99_listMap(v(DATATYPE99_PRIV_parseMap), ML99_list(v(__VA_ARGS__)))
-
-#define DATATYPE99_PRIV_parseMap_IMPL(variant)                                                     \
-    ML99_TERMS(                                                                                    \
-        ML99_assertIsTuple(v(variant)),                                                            \
-        ML99_call(DATATYPE99_PRIV_parseVariant, ML99_untuple(v(variant))))
-
-#define DATATYPE99_PRIV_parseVariant_IMPL(...)                                                     \
-    ML99_CAT(DATATYPE99_PRIV_parseVariantIsEmpty_, ML99_VARIADICS_IS_SINGLE(__VA_ARGS__))          \
-    (__VA_ARGS__)
-
-#define DATATYPE99_PRIV_parseVariantIsEmpty_1(tag) DATATYPE99_PRIV_variant(v(tag), ML99_nil())
-#define DATATYPE99_PRIV_parseVariantIsEmpty_0(tag, ...)                                            \
-    DATATYPE99_PRIV_variant(v(tag), ML99_list(v(__VA_ARGS__)))
-// } (Parsing)
-
-// Variant {
-#define DATATYPE99_PRIV_variant(tag, sig) ML99_tuple(tag, sig)
-
-#define DATATYPE99_PRIV_forEachVariant(f, variants)                                                \
-    ML99_listMapInPlace(ML99_compose(f, v(ML99_untuple)), variants)
-// } (Variant)
-
 // Sum type generation {
 
 #define DATATYPE99_datatype_IMPL(x, ...)                                                           \
     ML99_TERMS(                                                                                    \
         ML99_CAT(DATATYPE99_PRIV_WITH_DERIVE_, DATATYPE99_PRIV_IS_DERIVE(x))(x, __VA_ARGS__),      \
         v(ML99_TRAILING_SEMICOLON()))
-
-#define DATATYPE99_PRIV_IS_DERIVE(x)          ML99_IS_TUPLE(DATATYPE99_PRIV_IS_DERIVE_##x)
-#define DATATYPE99_PRIV_IS_DERIVE_derive(...) ()
-
-#define DATATYPE99_PRIV_ELIM_derive(...) __VA_ARGS__
 
 #define DATATYPE99_PRIV_WITH_DERIVE_0(name, ...)                                                   \
     DATATYPE99_PRIV_WITH_DERIVE_1(derive(dummy), name, __VA_ARGS__)
@@ -138,7 +112,7 @@ static const UnitT99 unit_v99 = '\0';
     ML99_call(                                                                                     \
         DATATYPE99_PRIV_genDatatype,                                                               \
         v(name),                                                                                   \
-        DATATYPE99_PRIV_parse(__VA_ARGS__),                                                        \
+        DATATYPE99_PRIV_parseVariants(__VA_ARGS__),                                                \
         v(DATATYPE99_PRIV_ELIM_##derivers))
 
 #define DATATYPE99_PRIV_genDatatype_IMPL(name, variants, ...)                                      \
@@ -156,17 +130,79 @@ static const UnitT99 unit_v99 = '\0';
             name##Variants data;                                                                   \
         };),                                                                                       \
         DATATYPE99_PRIV_genCtorForEach(name, variants),                                            \
-        DATATYPE99_PRIV_invokeDeriverForEach(name, variants, __VA_ARGS__))
+        DATATYPE99_PRIV_invokeDeriverForEach(DATATYPE99_DERIVE_, name, variants, __VA_ARGS__))
 // } (Sum type generation)
 
+// Record type generation {
+#define DATATYPE99_record_IMPL(x, ...)                                                             \
+    ML99_TERMS(                                                                                    \
+        ML99_CAT(DATATYPE99_PRIV_RECORD_WITH_DERIVE_, DATATYPE99_PRIV_IS_DERIVE(x))(               \
+            x,                                                                                     \
+            __VA_ARGS__),                                                                          \
+        v(ML99_TRAILING_SEMICOLON()))
+
+#define DATATYPE99_PRIV_RECORD_WITH_DERIVE_0(name, ...)                                            \
+    DATATYPE99_PRIV_RECORD_WITH_DERIVE_1(derive(dummy), name, __VA_ARGS__)
+
+#define DATATYPE99_PRIV_RECORD_WITH_DERIVE_1(derivers, name, ...)                                  \
+    ML99_call(                                                                                     \
+        DATATYPE99_PRIV_genRecord,                                                                 \
+        v(name),                                                                                   \
+        DATATYPE99_PRIV_parseFields(__VA_ARGS__),                                                  \
+        v(DATATYPE99_PRIV_ELIM_##derivers))
+
+#define DATATYPE99_PRIV_genRecord_IMPL(name, fields, ...)                                          \
+    ML99_TERMS(                                                                                    \
+        ML99_typedef(                                                                              \
+            v(name),                                                                               \
+            ML99_struct(v(name), DATATYPE99_PRIV_genRecordFieldForEach(fields))),                  \
+        DATATYPE99_PRIV_invokeDeriverForEach(                                                      \
+            DATATYPE99_RECORD_DERIVE_,                                                             \
+            name,                                                                                  \
+            fields,                                                                                \
+            __VA_ARGS__))
+// } (Record type generation)
+
+// Parse variants {
+#define DATATYPE99_PRIV_parseVariants(...)                                                         \
+    ML99_listFromTuples(v(DATATYPE99_PRIV_parseVariant), v(__VA_ARGS__))
+
+#define DATATYPE99_PRIV_parseVariant_IMPL(...)                                                     \
+    ML99_CAT(DATATYPE99_PRIV_parseVariantIsEmpty_, ML99_VARIADICS_IS_SINGLE(__VA_ARGS__))          \
+    (__VA_ARGS__)
+
+#define DATATYPE99_PRIV_parseVariantIsEmpty_1(tag) DATATYPE99_PRIV_variant(v(tag), ML99_nil())
+#define DATATYPE99_PRIV_parseVariantIsEmpty_0(tag, ...)                                            \
+    DATATYPE99_PRIV_variant(v(tag), ML99_list(v(__VA_ARGS__)))
+// } (Parse variants)
+
+// Parse fields {
+#define DATATYPE99_PRIV_parseFields(...)                                                           \
+    ML99_listFromTuples(v(DATATYPE99_PRIV_parseField), v(__VA_ARGS__))
+
+#define DATATYPE99_PRIV_parseField_IMPL(ty, ident) v((ty, ident))
+// } (Parse fields)
+
+// Variant {
+#define DATATYPE99_PRIV_variant(tag, sig) ML99_tuple(tag, sig)
+
+#define DATATYPE99_PRIV_forEachVariant(f, variants)                                                \
+    ML99_listMapInPlace(ML99_compose(f, v(ML99_untuple)), variants)
+// } (Variant)
+
 // Derivation {
-#define DATATYPE99_PRIV_invokeDeriverForEach(name, variants, ...)                                  \
+#define DATATYPE99_PRIV_IS_DERIVE(x)          ML99_IS_TUPLE(DATATYPE99_PRIV_IS_DERIVE_##x)
+#define DATATYPE99_PRIV_IS_DERIVE_derive(...) ()
+
+#define DATATYPE99_PRIV_ELIM_derive(...) __VA_ARGS__
+
+#define DATATYPE99_PRIV_invokeDeriverForEach(prefix, name, repr, ...)                              \
     ML99_variadicsForEach(                                                                         \
-        ML99_appl(v(DATATYPE99_PRIV_invokeDeriver), v(name, variants)),                            \
+        ML99_appl(v(DATATYPE99_PRIV_invokeDeriver), v(prefix, name, repr)),                        \
         v(__VA_ARGS__))
 
-#define DATATYPE99_PRIV_invokeDeriver_IMPL(name, variants, deriver)                                \
-    ML99_callUneval(DATATYPE99_DERIVE_##deriver, name, variants)
+#define DATATYPE99_PRIV_invokeDeriver_IMPL(prefix, name, repr, deriver)                            \
+    ML99_callUneval(prefix##deriver, name, repr)
 // } (Derivation)
 
 // Pattern matching {
@@ -219,6 +255,22 @@ static const UnitT99 unit_v99 = '\0';
             tag_##_##i *x = &((tag_##SumT *)datatype99_priv_matched_val)->data.tag_._##i)))
 // } (Pattern matching)
 
+/*
+ * For each variant:
+ *
+ * typedef struct <datatype-name> <variant-name>SumT;
+ *
+ * (For a non-empty variant:)
+ * typedef struct <datatype-name><variant-name> {
+ *     <type>0 _0;
+ *     ...
+ *     <type>N _N;
+ * } <datatype-name><variant-name>;
+ *
+ * typedef <type>0 <variant-name>_0;
+ * ...
+ * typedef <type>N <variant-name>_N;
+ */
 #define DATATYPE99_PRIV_genVariantTypedefsForEach(name, variants)                                  \
     DATATYPE99_PRIV_forEachVariant(                                                                \
         ML99_appl(v(DATATYPE99_PRIV_genVariantTypedefs), v(name)),                                 \
@@ -301,6 +353,16 @@ static const UnitT99 unit_v99 = '\0';
         return result;                                                                             \
     })
 
+/*
+ * <field-type>0 <field-name>0;
+ * ...
+ * <field-type>N <field-name>N;
+ */
+#define DATATYPE99_PRIV_genRecordFieldForEach(fields)                                              \
+    ML99_listMapInPlace(ML99_compose(v(DATATYPE99_PRIV_genRecordField), v(ML99_untuple)), v(fields))
+
+#define DATATYPE99_PRIV_genRecordField_IMPL(ty, ident) v(ty ident;)
+
 // Compiler-specific stuff {
 #if defined(__GNUC__)
 #define DATATYPE99_PRIV_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
@@ -322,7 +384,8 @@ static const UnitT99 unit_v99 = '\0';
 // } (Compiler-specific stuff)
 
 // Arity specifiers {
-#define DATATYPE99_PRIV_parseMap_ARITY           1
+#define DATATYPE99_PRIV_parseVariant_ARITY       1
+#define DATATYPE99_PRIV_parseField_ARITY         1
 #define DATATYPE99_PRIV_invokeDeriver_ARITY      2
 #define DATATYPE99_PRIV_genBinding_ARITY         3
 #define DATATYPE99_PRIV_genVariantTypedefs_ARITY 2
@@ -331,9 +394,11 @@ static const UnitT99 unit_v99 = '\0';
 #define DATATYPE99_PRIV_genUnionField_ARITY      2
 #define DATATYPE99_PRIV_genCtor_ARITY            2
 #define DATATYPE99_PRIV_assignResult_ARITY       2
+#define DATATYPE99_PRIV_genRecordField_ARITY     1
 
 // Public:
 #define DATATYPE99_datatype_ARITY            1
+#define DATATYPE99_record_ARITY              1
 #define DATATYPE99_of_ARITY                  1
 #define DATATYPE99_ifLet_ARITY               3
 #define DATATYPE99_attrIsPresent_ARITY       1

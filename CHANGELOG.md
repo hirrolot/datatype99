@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+### Added
+
+ - `record`, `DATATYPE99_record`, `DATATYPE99_RECORD_DERIVE_` to generate a record type.
+ - The `dummy` deriver for record types.
+
 ### Fixed
 
  - Add the missing arity specifier for `DATATYPE99_datatype`.

@@ -34,9 +34,8 @@ ML99_EVAL(DATATYPE99_assertAttrIsPresent(v(FOO)))
 #undef FOO
 // }
 
-typedef UnitT A;
-typedef UnitT B;
-typedef UnitT C;
+// `static_assert` is not working on TCC for some reason.
+#ifndef __TINYC__
 
 // TestDerive {
 #define DATATYPE99_DERIVE_TestDerive_IMPL(name, variants)                                          \
@@ -61,7 +60,7 @@ typedef UnitT C;
     ML99_TERMS(                                                                                    \
         v(static_assert(CMP_IDENTS(tag, Baz), "Variant #3 is not Baz");),                          \
         v(static_assert(ML99_IS_NIL(sig), "Baz is not empty");))
-// }
+// } (TestDerive)
 
 // assertVariant {
 #define assertVariant(tag, sig, expected_tag, ...)                                                 \
@@ -79,7 +78,7 @@ typedef UnitT C;
             v(static_assert),                                                                      \
             ML99_listEq(ML99_appl(v(ML99_identEq), v(CHECK_)), v(sig), ML99_list(v(__VA_ARGS__))), \
             v("Non-equal types")))
-// }
+// } (assertVariant)
 
 // Defined identifiers {
 #define CMP_IDENTS(x, y) ML99_IDENT_EQ(CHECK_, x, y)
@@ -95,6 +94,10 @@ typedef UnitT C;
 #define CHECK_C_C ()
 // }
 
+typedef UnitT A;
+typedef UnitT B;
+typedef UnitT C;
+
 // clang-format off
 datatype(
     derive(TestDerive, dummy),
@@ -104,5 +107,7 @@ datatype(
     (Baz)
 );
 // clang-format on
+
+#endif // __TINYC__
 
 int main(void) {}

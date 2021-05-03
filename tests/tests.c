@@ -16,6 +16,18 @@ datatype(
     (C, const char *, double),
     (D, char, unsigned, long long, int *)
 );
+
+record(
+    MyTinyRecord,
+    (int, x)
+);
+
+record(
+    MyRecord,
+    (int, x),
+    (double, d),
+    (const char *, str)
+);
 // clang-format on
 
 int main(void) {
@@ -213,6 +225,19 @@ int main(void) {
 
         if (true)
             ifLet(expr, B, _) {}
+    }
+
+    // Test record types.
+    {
+        MyTinyRecord tiny = (MyTinyRecord){.x = 123};
+        struct MyTinyRecord tiny2 = tiny;
+        (void)tiny;
+        (void)tiny2;
+
+        MyRecord r = (MyRecord){.x = 123, .d = 15.25, .str = "hello world"};
+        struct MyRecord r2 = r;
+        (void)r;
+        (void)r2;
     }
 
     UnitT dummy = unit_v;
