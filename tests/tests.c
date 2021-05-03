@@ -1,8 +1,18 @@
 #include <datatype99.h>
 
+#include <metalang99.h>
+
 #include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>
+
+ML99_ASSERT_UNEVAL(DATATYPE99_datatype_ARITY == 1);
+ML99_ASSERT_UNEVAL(DATATYPE99_record_ARITY == 1);
+ML99_ASSERT_UNEVAL(DATATYPE99_of_ARITY == 1);
+ML99_ASSERT_UNEVAL(DATATYPE99_ifLet_ARITY == 3);
+ML99_ASSERT_UNEVAL(DATATYPE99_attrIsPresent_ARITY == 1);
+ML99_ASSERT_UNEVAL(DATATYPE99_attrValue_ARITY == 1);
+ML99_ASSERT_UNEVAL(DATATYPE99_assertAttrIsPresent_ARITY == 1);
 
 datatype(Trivial1, (Trivial1A));
 datatype(Trivial2, (Trivial2A));
