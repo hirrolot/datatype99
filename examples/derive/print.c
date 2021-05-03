@@ -46,4 +46,6 @@ int main(void) {
 
     MyType_print(Bar(3, 5), stdout);
     puts("");
+
+    return 0;
 }

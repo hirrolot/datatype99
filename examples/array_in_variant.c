@@ -16,4 +16,6 @@ datatype(
 int main(void) {
     Foo foo = MkFoo((MyArray){.data = {1, 2, 3, 4, 5}});
     (void)foo;
+
+    return 0;
 }

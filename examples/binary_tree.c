@@ -31,4 +31,6 @@ int main(void) {
      * 28
      */
     printf("%d\n", sum(tree));
+
+    return 0;
 }

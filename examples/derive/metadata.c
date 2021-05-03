@@ -90,4 +90,6 @@ int main(void) {
 
     assert(strcmp(Num_metadata.name, "Num") == 0);
     assert(3 == Num_metadata.variants_count);
+
+    return 0;
 }

@@ -46,4 +46,6 @@ int main(void) {
      * -29.000000
      */
     printf("%f\n", eval(&expr));
+
+    return 0;
 }

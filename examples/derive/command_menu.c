@@ -54,4 +54,6 @@ datatype(
  */
 int main(void) {
     UserCommand_print_menu();
+
+    return 0;
 }

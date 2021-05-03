@@ -44,10 +44,14 @@ int main(void) {
     }
 
     puts("");
+
+    return 0;
 }
 
 #else
 
-int main(void) {}
+int main(void) {
+    return 0;
+}
 
 #endif // __TINYC__

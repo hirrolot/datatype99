@@ -79,4 +79,6 @@ int main(void) {
 
     assert(strcmp(Point_metadata.name, "Point") == 0);
     assert(2 == Point_metadata.fields_count);
+
+    return 0;
 }
