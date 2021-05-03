@@ -51,6 +51,7 @@ SOFTWARE.
 // Various public stuff {
 
 // Metalang99-compliant `datatype`, `of`, and `ifLet` {
+
 #define DATATYPE99_datatype(...)        ML99_call(DATATYPE99_datatype, __VA_ARGS__)
 #define DATATYPE99_record(...)          ML99_call(DATATYPE99_record, __VA_ARGS__)
 #define DATATYPE99_of(...)              ML99_call(DATATYPE99_of, __VA_ARGS__)
@@ -63,6 +64,7 @@ SOFTWARE.
 // }
 
 // Attributes manipulation {
+
 #define DATATYPE99_attrIsPresent(attr)       ML99_call(DATATYPE99_attrIsPresent, attr)
 #define DATATYPE99_attrValue(attr)           ML99_call(DATATYPE99_attrValue, attr)
 #define DATATYPE99_assertAttrIsPresent(attr) ML99_call(DATATYPE99_assertAttrIsPresent, attr)

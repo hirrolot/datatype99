@@ -10,6 +10,12 @@ ML99_EVAL(DATATYPE99_datatype(
     v((A, const char *)),
     v((B, int, int))
 ));
+
+ML99_EVAL(DATATYPE99_record(
+    v(MyRecord),
+    v((int, x)),
+    v((int, y))
+));
 // clang-format on
 
 int main(void) {
@@ -37,5 +43,11 @@ int main(void) {
             assert(*x == 5);
             assert(*y == 7);
         }
+    }
+
+    // Record type usage.
+    {
+        MyRecord r = (MyRecord){.x = 3, .y = 5};
+        (void)r;
     }
 }
