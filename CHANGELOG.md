@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
  - Add the missing arity specifier for `DATATYPE99_datatype`.
+ - Make Datatype99 work on TCC (see [issue 10](https://github.com/Hirrolot/datatype99/issues/10)).
 
 ## [1.1.0] - 2021-04-24
 
