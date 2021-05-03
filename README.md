@@ -238,7 +238,7 @@ You can pass named arguments to a deriver; these are called _derive helper attri
 #define <variant-name>_<namespace>_<attribute-name> attr(/* attribute value */)
 ```
 
-where `<namespace>` is either `<datatype-name>`/`<record-name>` or `<variant-name>`/`<field-name>` for `datatype`-specific and variant-specific attributes, respectively.
+where `<namespace>` is either `<datatype-name>`/`<record-name>` or `<variant-name>`/`<field-name>` for `datatype`/`record`-specific and variant/field-specific attributes, respectively.
 
 To manipulate derive helper attributes, there are a few predefined macros:
 
