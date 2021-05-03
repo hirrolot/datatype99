@@ -56,7 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
- - `ifLet`.
+ - `ifLet` to match only a single variant.
 
 ### Changed
 
