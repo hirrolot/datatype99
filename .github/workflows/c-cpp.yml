@@ -46,3 +46,15 @@ jobs:
 
       - name: Test
         run: bash scripts/test-all.sh
+
+  check-fmt:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Download run-clang-format
+        run: git submodule update --init run-clang-format
+
+      - name: Check code formatting
+        run: bash scripts/check-fmt.sh
