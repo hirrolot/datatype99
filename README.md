@@ -350,6 +350,15 @@ If an error is not comprehensible at all, try to look at generated code (`-E`). 
 
 VS Code automatically enables suggestions of generated types but, of course, it does not support macro syntax highlightment.
 
+### Q: What compilers are tested?
+
+A: Datatype99 is known to work on these compilers:
+
+ - GCC
+ - Clang
+ - MSVC
+ - TCC
+
 ## Troubleshooting
 
 ### `warning: control reaches end of non-void function [-Wreturn-type]`
