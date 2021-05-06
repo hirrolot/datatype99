@@ -5,10 +5,10 @@
     <img src="https://github.com/Hirrolot/datatype99/workflows/C/C++%20CI/badge.svg">
   </a>
 
-  Safe, intuitive [sum types] with exhaustive pattern matching & compile-time introspection facilities.
+  Safe, intuitive [algebraic data types] with exhaustive pattern matching & compile-time introspection facilities.
 </div>
 
-[sum types]: https://en.wikipedia.org/wiki/Tagged_union
+[algebraic data types]: https://en.wikipedia.org/wiki/Algebraic_data_type
 
 ## Highlights
 
