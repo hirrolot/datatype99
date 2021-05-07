@@ -5,18 +5,18 @@
     <img src="https://github.com/Hirrolot/datatype99/workflows/C/C++%20CI/badge.svg">
   </a>
 
-  Safe, intuitive [algebraic data types] with exhaustive pattern matching & compile-time introspection facilities.
+  Safe, intuitive [algebraic data types] with exhaustive pattern matching & compile-time introspection facilities. No external tools required, pure C99/C++11.
 </div>
 
 [algebraic data types]: https://en.wikipedia.org/wiki/Algebraic_data_type
 
 ## Highlights
 
- - **Type-safe.** Normally you cannot access invalid data or construct an invalid variant.
+ - **Type-safe.** Normally you cannot access or construct an invalid variant.
 
  - **Exhaustive pattern matching.** A sane compiler will warn you if not all cases are handled in `match`.
 
- - **Portable.** Everything you need is a standard-confirming C99/C++11 preprocessor.
+ - **Portable.** Everything you need is a standard-conforming C99/C++11 preprocessor.
 
  - **Transparent.** Datatype99 comes with formal [code generation semantics], so if you try to look at `datatype`'s output, you will not see something unexpected.
 
