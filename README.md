@@ -12,11 +12,11 @@
 
 ## Highlights
 
- - **Type-safe.** Normally you cannot access invalid data or construct an invalid variant. Pattern matching is exhaustive too.
+ - **Type-safe.** Normally you cannot access invalid data or construct an invalid variant.
 
- - **Pure C99/C++11.** No external tools are required -- Datatype99 is implemented using only preprocessor macros.
+ - **Exhaustive pattern matching.** A sane compiler will warn you if not all cases are handled in `match`.
 
- - **Can be used everywhere.** Literally everywhere provided you have a standard-confirming C99/C++11 preprocessor. Even on freestanding environments.
+ - **Portable.** Everything you need is a standard-confirming C99/C++11 preprocessor.
 
  - **Transparent.** Datatype99 comes with formal [code generation semantics], so if you try to look at `datatype`'s output, you will not see something unexpected.
 
