@@ -307,7 +307,9 @@ Thanks to Rust and ML for their implementations of sum types.
 A:
 
  - Datatype99 can be integrated into existing code bases written in pure C.
- - Sometimes C is the only choice.
+ - Sometimes C is the only choice:
+   - Some resource-constrained systems do not allow for a higher level programming language.
+   - Some embedded devices only have C backend.
 
 ### Q: Why not third-party code generators?
 
