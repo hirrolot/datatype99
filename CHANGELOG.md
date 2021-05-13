@@ -46,7 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
- - `Unit` -> `UnitT`, `unit` -> `unit_v` (less likely to conflict with user-defined identifiers).
+ - `Unit` => `UnitT`, `unit` => `unit_v` (less likely to conflict with user-defined identifiers).
 
 ### Fixed
 
@@ -60,7 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
- - `<datatype-name>Data` -> `<datatype-name>Variants` (less likely to conflict with user-defined types).
+ - `<datatype-name>Data` => `<datatype-name>Variants` (less likely to conflict with user-defined types).
 
 ### Fixed
 
