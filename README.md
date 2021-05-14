@@ -299,6 +299,7 @@ Thanks to Rust and ML for their implementations of sum types.
 
  - [_Unleashing Sum Types in Pure C99_](https://medium.com/@hirrolot/unleashing-sum-types-in-pure-c99-31544302d2ba) by Hirrolot
  - [_Compile-Time Introspection of Sum Types in Pure C99_](https://hirrolot.medium.com/compile-time-introspection-of-sum-types-in-pure-c99-ffa523b60385) by Hirrolot
+ - [_Comparing algebraic data types: Rust and Datatype99_](https://www.reddit.com/r/ProgrammingLanguages/comments/nc1o18/comparing_algebraic_data_types_rust_and_datatype99/) by Hirrolot
 
 ## FAQ
 
