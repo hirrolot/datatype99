@@ -260,7 +260,7 @@ To manipulate derive helper attributes, there are a few predefined macros:
 
  - The macros `DATATYPE99_MAJOR`, `DATATYPE99_MINOR`, and `DATATYPE99_PATCH` stand for the corresponding components of a version of Datatype99.
 
- - If you do **not** want the shortened versions to appear (e.g. `match` without the prefix `99`), define `DATATYPE99_NO_ALIASES` before `#include <datatype99.h>`.
+ - If you do **not** want the shortened versions to appear (e.g., `match` without the prefix `99`), define `DATATYPE99_NO_ALIASES` before `#include <datatype99.h>`.
 
  - For each macro using `ML99_EVAL`, Datatype99 provides its [Metalang99-compliant](https://metalang99.readthedocs.io/en/latest/#definitions) counterpart which can be used inside derivers and other Metalang99-compliant macros:
 
@@ -311,6 +311,7 @@ A:
  - Sometimes C is the only choice:
    - Some resource-constrained systems do not allow for a higher level programming language.
    - Some embedded devices only have C backend.
+   - C has a stable ABI which is vital for some projects (e.g., plugin systems).
 
 ### Q: Why not third-party code generators?
 
