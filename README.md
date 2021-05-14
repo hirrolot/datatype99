@@ -320,6 +320,10 @@ A: See [Metalang99's README >>](https://github.com/Hirrolot/metalang99#q-why-not
 
 A: The `datatype` macro generates a tagged union accompanied with type hints and value constructors. Pattern matching desugars merely to a switch statement. To generate all this stuff, [Metalang99] is used, which is a preprocessor metaprogramming library.
 
+### Q: What is the difference between Datatype99 and Metalang99?
+
+A: [Metalang99] is a functional language for metaprogramming, whereas Datatype99 is an implementation of algebraic data types written in this language.
+
 ### Q: What about compile-time errors?
 
 A: Some kinds of syntactic errors are detected by the library itself (`-E` flag):
