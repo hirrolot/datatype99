@@ -322,7 +322,7 @@ A: The `datatype` macro generates a tagged union accompanied with type hints and
 
 ### Q: What about compile-time errors?
 
-A: With `-ftrack-macro-expansion=0` (GCC), there are no chances that compile-time errors will be longer than usual. Some kinds of syntactic errors are detected by the library itself, for example (`-E` flag):
+A: Some kinds of syntactic errors are detected by the library itself (`-E` flag):
 
 ```c
 // !"Metalang99 error" (ML99_assertIsTuple): "Bar(int) must be (x1, ..., xN)"
