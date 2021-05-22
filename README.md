@@ -282,6 +282,43 @@ To manipulate derive helper attributes, there are a few predefined macros:
 
  - If you use [Clang-Format], cancel formatting for a `datatype` definition using `// clang-format off` & `// clang-format on` to make it look prettier.
  - Always `#undef` derive helper attributes after a corresponding `datatype` definition not to pollute your namespace.
+ - If the meaning of variant parameters is not clear from the context, give them descriptive names. This can be achieved in several ways:
+
+```c
+// 1. Define type aliases to variant parameters.
+typedef double XCoordinate;
+typedef double YCoordinate;
+
+typedef double Width;
+typedef double Height;
+
+datatype(
+    Shape,
+    (Point, XCoordinate, YCoordinate),
+    (Rectangle, Width, Height)
+);
+
+// 2. Define separate structures.
+typedef struct {
+    double x, y;
+} Point;
+
+typedef struct {
+    double width, height;
+} Rectangle;
+
+datatype(
+    Shape,
+    (MkPoint, Point),
+    (MkRectangle, Rectangle)
+);
+```
+
+Comparison:
+
+ - The former option has more concise syntax: `MkPoint(x, y)` instead of `MkPoint((Point){x, y})`.
+ - The latter option is more appropriate when the structures are to be used separately from the containing sum type.
+ - The latter option allows for more graduate control over the data layout: you can accompain the structures with compiler-specific attributes, alignment properties like `__attribute__ ((__packed__))`, etc.
 
 [Clang-Format]: https://clang.llvm.org/docs/ClangFormatStyleOptions.html
 
