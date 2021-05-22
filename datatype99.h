@@ -220,7 +220,7 @@ static const UnitT99 unit_v99 = '\0';
 
 #define DATATYPE99_of_IMPL(...) \
     ML99_TERMS( \
-        v(break; case ML99_CAT(ML99_VARIADICS_GET(0)(__VA_ARGS__), Tag):),                                                                                      \
+        v(break; case ML99_CAT(ML99_VARIADICS_GET(0)(__VA_ARGS__), Tag):), \
         ML99_IF( \
             ML99_VARIADICS_IS_SINGLE(__VA_ARGS__), \
             ML99_empty(), \
