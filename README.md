@@ -280,9 +280,17 @@ To manipulate derive helper attributes, there are a few predefined macros:
 
 ## Guidelines
 
- - If you use [Clang-Format], cancel formatting for a `datatype` definition using `// clang-format off` & `// clang-format on` to make it look prettier.
- - Always `#undef` derive helper attributes after a corresponding `datatype` definition not to pollute your namespace.
- - If the meaning of variant parameters is not clear from the context, give them descriptive names. This can be achieved in several ways:
+### Clang-Format issues
+
+If you use [Clang-Format], cancel formatting for a `datatype` definition using `// clang-format off` & `// clang-format on` to make it look prettier, as in the examples.
+
+### `#undef` derive helper attributes
+
+Always `#undef` derive helper attributes after a corresponding `datatype` definition not to pollute your namespace.
+
+### Descriptive names
+
+If the meaning of variant parameters is not clear from the context, give them descriptive names. This can be achieved in several ways:
 
 ```c
 // 1. Define type aliases to variant parameters.
