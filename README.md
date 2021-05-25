@@ -367,12 +367,7 @@ A: See [Metalang99's README >>](https://github.com/Hirrolot/metalang99#q-why-not
 
 ### Q: How does it work?
 
-A:
-
- - `datatype` expands to a tagged union accompanied with type hints and value constructors. This is the data layout of a sum type.
- - `match` expands to a switch statement.
-
-To generate all this stuff, [Metalang99] is used, a preprocessor metaprogramming library.
+A: In short, `datatype` expands to a tagged union with value constructors; `match` expands to a switch statement. To generate all this stuff, [Metalang99] is used, a preprocessor metaprogramming library.
 
 More on it in [_Compiling Algebraic Data Types in Pure C99_].
 
