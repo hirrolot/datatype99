@@ -367,7 +367,12 @@ A: See [Metalang99's README >>](https://github.com/Hirrolot/metalang99#q-why-not
 
 ### Q: How does it work?
 
-A: In short, the `datatype` macro expands to a tagged union accompanied with type hints and value constructors. Pattern matching desugars merely to a switch statement. To generate all this stuff, [Metalang99] is used, which is a preprocessor metaprogramming library.
+A:
+
+ - `datatype` expands to a tagged union accompanied with type hints and value constructors. This is the data layout of a sum type.
+ - `match` expands to a switch statement.
+
+To generate all this stuff, [Metalang99] is used, a preprocessor metaprogramming library.
 
 More on it in [_Compiling Algebraic Data Types in Pure C99_].
 
