@@ -342,10 +342,12 @@ Thanks to Rust and ML for their implementations of sum types.
 
 ## Learning resources
 
- - [_Compiling Algebraic Data Types in Pure C99_](https://dev.to/hirrolot/compiling-algebraic-data-types-in-pure-c99-5225) by Hirrolot
+ - [_Compiling Algebraic Data Types in Pure C99_] by Hirrolot
  - [_Comparing Rust and Datatype99_](https://www.reddit.com/r/ProgrammingLanguages/comments/nc1o18/comparing_algebraic_data_types_rust_and_datatype99/) by Hirrolot
  - [_Compile-Time Introspection of Sum Types in Pure C99_](https://hirrolot.medium.com/compile-time-introspection-of-sum-types-in-pure-c99-ffa523b60385) by Hirrolot
  - [_Unleashing Sum Types in Pure C99_](https://medium.com/@hirrolot/unleashing-sum-types-in-pure-c99-31544302d2ba) by Hirrolot
+
+[_Compiling Algebraic Data Types in Pure C99_]: https://dev.to/hirrolot/compiling-algebraic-data-types-in-pure-c99-5225
 
 ## FAQ
 
@@ -365,7 +367,9 @@ A: See [Metalang99's README >>](https://github.com/Hirrolot/metalang99#q-why-not
 
 ### Q: How does it work?
 
-A: The `datatype` macro generates a tagged union accompanied with type hints and value constructors. Pattern matching desugars merely to a switch statement. To generate all this stuff, [Metalang99] is used, which is a preprocessor metaprogramming library.
+A: In short, the `datatype` macro expands to a tagged union accompanied with type hints and value constructors. Pattern matching desugars merely to a switch statement. To generate all this stuff, [Metalang99] is used, which is a preprocessor metaprogramming library.
+
+More on it in [_Compiling Algebraic Data Types in Pure C99_].
 
 ### Q: What is the difference between Datatype99 and Metalang99?
 
