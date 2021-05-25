@@ -12,15 +12,13 @@
 
 ## Highlights
 
- - **Type-safe.** Normally you cannot access or construct an invalid variant.
-
- - **Exhaustive pattern matching.** A sane compiler will warn you if not all cases are handled in `match`.
+ - **Type-safe.** Improperly typed variants and non-exhaustive pattern matching are caught at compile-time.
 
  - **Portable.** Everything you need is a standard-conforming C99/C++11 preprocessor.
 
- - **Transparent.** Datatype99 comes with formal [code generation semantics], so if you try to look at `datatype`'s output, you will not see something unexpected.
+ - **Predictable.** Datatype99 comes with formal [code generation semantics], meaning that the generated data layout is guaranteed to always be the same.
 
- - **FFI-tolerant.** Because of transparency, writing an FFI is not a challenge.
+ - **Comprehensible errors.** Despite that Datatype99 is built upon macros, compilation errors are usually comprehensible.
 
 ## Installation
 
