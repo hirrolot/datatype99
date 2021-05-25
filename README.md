@@ -269,12 +269,12 @@ To manipulate derive helper attributes, there are a few predefined macros:
 | `of` | `DATATYPE99_of` |
 | `ifLet` | `DATATYPE99_ifLet` |
 
+(An [arity specifier] and [desugaring macro] are provided for each of the above macros.)
+
  - There is a built-in deriver `dummy` which generates nothing. It is defined both for record and sum types.
 
- - [Arity specifiers] and [desugaring macros] are provided for each public Metalang99-compliant macro exposed by Datatype99.
-
-[Arity specifiers]: https://hirrolot.gitbook.io/metalang99/partial-application
-[desugaring macros]: https://metalang99.readthedocs.io/en/latest/#definitions
+[arity specifier]: https://hirrolot.gitbook.io/metalang99/partial-application
+[desugaring macro]: https://metalang99.readthedocs.io/en/latest/#definitions
 
 ## Guidelines
 
