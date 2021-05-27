@@ -13,8 +13,6 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
   add_compile_options("/std:c11")
 endif()
 
-file(GLOB EXAMPLES *.c)
-
 add_executable(array_in_variant array_in_variant.c)
 add_executable(ast ast.c)
 add_executable(binary_tree_malloc binary_tree_malloc.c)

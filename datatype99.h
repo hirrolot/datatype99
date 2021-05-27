@@ -50,7 +50,7 @@ SOFTWARE.
 
 // Various public stuff {
 
-// Metalang99-compliant `datatype`, `of`, and `ifLet` {
+// Metalang99-compliant macros {
 
 #define DATATYPE99_datatype(...)        ML99_call(DATATYPE99_datatype, __VA_ARGS__)
 #define DATATYPE99_record(...)          ML99_call(DATATYPE99_record, __VA_ARGS__)
