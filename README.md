@@ -219,7 +219,7 @@ match(<expr>) {
 
 A complete `ifLet` construct results in a single C statement.
 
-### Unit type
+## Unit type
 
 The unit type `UnitT` represents a type of a single value, `unit_v` (it should not be assigned to anything else). `UnitT` and `unit_v` are defined as follows:
 
@@ -228,7 +228,7 @@ typedef char UnitT;
 static const UnitT unit_v = '\0';
 ```
 
-### Derive helper attributes
+## Derive helper attributes
 
 You can pass named arguments to a deriver; these are called _derive helper attributes_. They must be specified as object-like macros of the form:
 
@@ -254,7 +254,7 @@ To manipulate derive helper attributes, there are a few predefined macros:
 
 (The naming convention here is the same [as of Metalang99](https://metalang99.readthedocs.io/en/latest/#naming-conventions).)
 
-### Miscellaneous
+## Miscellaneous
 
  - The macros `DATATYPE99_MAJOR`, `DATATYPE99_MINOR`, and `DATATYPE99_PATCH` stand for the corresponding components of a version of Datatype99.
 
