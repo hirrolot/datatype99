@@ -466,9 +466,11 @@ playground.c:6:1: note: expected ‘int’ but argument is of type ‘char *’
 #### Error: an undereferenced binder
 
 ```c
-match(*tree) {
-    of(Leaf, x) return x; // x is int *
-    of(Node, lhs, x, rhs) return sum(*lhs) + *x + sum(*rhs);
+int sum(const BinaryTree *tree) {
+    match(*tree) {
+        of(Leaf, x) return x; // x is int *
+        of(Node, lhs, x, rhs) return sum(*lhs) + *x + sum(*rhs);
+    }
 }
 ```
 
