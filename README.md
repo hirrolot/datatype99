@@ -18,7 +18,7 @@
 
  - **Predictable.** Datatype99 comes with formal [code generation semantics], meaning that the generated data layout is guaranteed to always be the same.
 
- - **Comprehensible errors.** Despite that Datatype99 is built upon macros, compilation errors are usually comprehensible.
+ - **Comprehensible errors.** Despite that Datatype99 is built upon macros, compilation errors are usually [comprehensible](#q-what-about-compile-time-errors).
 
 ## Installation
 
@@ -384,6 +384,10 @@ datatype(A, (Foo, int), Bar(int));
 
 The others are understandable as well:
 
+----------
+
+#### Error: unknown type name specified in `datatype`
+
 ```c
 datatype(Foo, (FooA, NonExistingType));
 ```
@@ -395,6 +399,89 @@ playground.c:3:1: error: unknown type name ‘NonExistingType’
 playground.c:3:1: error: unknown type name ‘NonExistingType’
 playground.c:3:1: error: unknown type name ‘NonExistingType’
 ```
+
+----------
+
+#### Error: non-exhaustive `match`
+
+```c
+match(*tree) {
+    of(Leaf, x) return *x;
+    // of(Node, lhs, x, rhs) return sum(*lhs) + *x + sum(*rhs);
+}
+```
+
+```
+playground.c: In function ‘sum’:
+playground.c:6:5: warning: enumeration value ‘NodeTag’ not handled in switch [-Wswitch]
+    6 |     match(*tree) {
+      |     ^~~~~
+```
+
+----------
+
+#### Error: excess binders in `of`
+
+```c
+match(*tree) {
+    of(Leaf, x, excess) return *x;
+    of(Node, lhs, x, rhs) return sum(*lhs) + *x + sum(*rhs);
+}
+```
+
+```
+playground.c: In function ‘sum’:
+playground.c:15:9: error: unknown type name ‘Leaf_1’; did you mean ‘Leaf_0’?
+   15 |         of(Leaf, x, excess) return *x;
+      |         ^~
+      |         Leaf_0
+playground.c:15:9: error: ‘BinaryTreeLeaf’ has no member named ‘_1’; did you mean ‘_0’?
+   15 |         of(Leaf, x, excess) return *x;
+      |         ^~
+      |         _0
+```
+
+----------
+
+#### Error: improperly typed variant arguments
+
+```c
+BinaryTree tree = Leaf("hello world");
+```
+
+```
+playground.c: In function ‘main’:
+playground.c:18:28: warning: passing argument 1 of ‘Leaf’ makes integer from pointer without a cast [-Wint-conversion]
+   18 |     BinaryTree tree = Leaf("hello world");
+      |                            ^~~~~~~~~~~~~
+      |                            |
+      |                            char *
+playground.c:6:1: note: expected ‘int’ but argument is of type ‘char *’
+    6 | datatype(
+      | ^~~~~~~~
+```
+
+----------
+
+#### Error: an undereferenced binder
+
+```c
+match(*tree) {
+    of(Leaf, x) return x; // x is int *
+    of(Node, lhs, x, rhs) return sum(*lhs) + *x + sum(*rhs);
+}
+```
+
+```
+playground.c: In function ‘sum’:
+playground.c:17:28: warning: returning ‘Leaf_0 *’ {aka ‘int *’} from a function with return type ‘int’ makes integer from pointer without a cast [-Wint-conversion]
+   17 |         of(Leaf, x) return x; // x is int *
+      |                            ^
+```
+
+----------
+
+From my experience, nearly 95% of errors make sense.
 
 If an error is not comprehensible at all, try to look at generated code (`-E`). Hopefully, the [code generation semantics] is formally defined so normally you will not see something unexpected.
 
