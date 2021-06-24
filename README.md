@@ -353,11 +353,10 @@ Thanks to Rust and ML for their implementations of sum types.
 
 A:
 
- - Datatype99 can be integrated into existing code bases written in pure C.
- - Sometimes C is the only choice:
-   - Some resource-constrained systems do not allow for a higher level programming language.
-   - Some embedded devices only have C backend.
-   - C has a stable ABI which is vital for some projects (e.g., plugin systems).
+ - Datatype99 can be integrated into existing codebases written in pure C. There are lots of them; C is #1 programming language as of 2020, [according to TIOBE](https://jaxenter.com/c-programming-may-2020-171598.html).
+ - In some environments, developers strick to pure C for historical reasons (e.g., embedded devices, Linux and other operating systems).
+ - C has a stable ABI which is vital for some projects (e.g., plugin systems).
+ - Etc.
 
 ### Q: Why not third-party code generators?
 
