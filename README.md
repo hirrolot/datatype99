@@ -5,7 +5,7 @@
     <img src="https://github.com/Hirrolot/datatype99/workflows/C/C++%20CI/badge.svg">
   </a>
 
-  Safe, intuitive [algebraic data types] with exhaustive pattern matching & compile-time introspection facilities. No external tools required, pure C99/C++11.
+  Safe, intuitive [algebraic data types] with exhaustive pattern matching & compile-time introspection facilities. No external tools required, pure C99.
 </div>
 
 [algebraic data types]: https://en.wikipedia.org/wiki/Algebraic_data_type
@@ -14,7 +14,7 @@
 
  - **Type-safe.** Improperly typed variants and non-exhaustive pattern matching are caught at compile-time.
 
- - **Portable.** Everything you need is a standard-conforming C99/C++11 preprocessor.
+ - **Portable.** Everything you need is a standard-conforming C99 preprocessor.
 
  - **Predictable.** Datatype99 comes with formal [code generation semantics], meaning that the generated data layout is guaranteed to always be the same.
 
@@ -367,6 +367,10 @@ A: See [Metalang99's README >>](https://github.com/Hirrolot/metalang99#q-why-not
 A: In short, `datatype` expands to a tagged union with value constructors; `match` expands to a switch statement. To generate all this stuff, [Metalang99] is used, a preprocessor metaprogramming library.
 
 More on it in [_Compiling Algebraic Data Types in Pure C99_].
+
+### Q: Does it work on C++?
+
+A: Yes, C++11 and onwards is supported.
 
 ### Q: What is the difference between Datatype99 and Metalang99?
 
