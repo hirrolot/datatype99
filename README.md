@@ -340,10 +340,10 @@ Thanks to Rust and ML for their implementations of sum types.
 
 ## Learning resources
 
- - [_Compiling Algebraic Data Types in Pure C99_] by Hirrolot
- - [_Comparing Rust and Datatype99_](https://www.reddit.com/r/ProgrammingLanguages/comments/nc1o18/comparing_algebraic_data_types_rust_and_datatype99/) by Hirrolot
- - [_Compile-Time Introspection of Sum Types in Pure C99_](https://hirrolot.medium.com/compile-time-introspection-of-sum-types-in-pure-c99-ffa523b60385) by Hirrolot
- - [_Unleashing Sum Types in Pure C99_](https://medium.com/@hirrolot/unleashing-sum-types-in-pure-c99-31544302d2ba) by Hirrolot
+ - [_Compiling Algebraic Data Types in Pure C99_] by Hirrolot.
+ - [_Comparing Rust and Datatype99_](https://www.reddit.com/r/ProgrammingLanguages/comments/nc1o18/comparing_algebraic_data_types_rust_and_datatype99/) by Hirrolot.
+ - [_Compile-Time Introspection of Sum Types in Pure C99_](https://hirrolot.medium.com/compile-time-introspection-of-sum-types-in-pure-c99-ffa523b60385) by Hirrolot.
+ - [_Unleashing Sum Types in Pure C99_](https://medium.com/@hirrolot/unleashing-sum-types-in-pure-c99-31544302d2ba) by Hirrolot.
 
 [_Compiling Algebraic Data Types in Pure C99_]: https://dev.to/hirrolot/compiling-algebraic-data-types-in-pure-c99-5225
 
@@ -356,7 +356,11 @@ A:
  - Datatype99 can be integrated into existing codebases written in pure C. There are lots of them; C is #1 programming language as of 2020, [according to TIOBE](https://jaxenter.com/c-programming-may-2020-171598.html).
  - In some environments, developers strick to pure C for historical reasons (e.g., embedded devices, Linux and other operating systems).
  - C has a stable ABI which is vital for some projects (e.g., plugin systems).
+ - C has a complete specification, unlike Rust. This has far-reaching implications, such as multiple implementations and fixed language behaviour.
  - Etc.
+
+See also:
+ - [_Rust is not a good C replacement_](https://drewdevault.com/2019/03/25/Rust-is-not-a-good-C-replacement.html) by Drew DeVault.
 
 ### Q: Why not third-party code generators?
 
