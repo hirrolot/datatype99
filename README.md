@@ -29,7 +29,8 @@
 There are a few more things to consider:
 
  - **PLEASE**, use Datatype99 only with [`-ftrack-macro-expansion=0`] (GCC), [`-fmacro-backtrace-limit=1`] (Clang), or something similar, otherwise it will throw your compiler to the moon.
- - Use Datatype99 with [precompiled headers] to reduce compilation times. It is helpful but not mandatory.
+
+ - Use [precompiled headers] to reduce compilation times. It is helpful but not mandatory.
 
 [Metalang99]: https://github.com/Hirrolot/metalang99
 [precompiled headers]: https://en.wikipedia.org/wiki/Precompiled_header
