@@ -26,10 +26,13 @@
  2. Add `datatype99` and `metalang99/include` to your include paths.
  3. `#include <datatype99.h>` beforehand.
 
-**PLEASE**, use Datatype99 only with [`-ftrack-macro-expansion=0`] (GCC), [`-fmacro-backtrace-limit=1`] (Clang), or something similar for your compiler, otherwise it will throw your compiler to the moon. Also, consider using [precompiled headers] in order to reduce compilation times. It is helpful but not mandatory.
+Some handy advices:
+
+ - **PLEASE**, use Datatype99 only with [`-ftrack-macro-expansion=0`] (GCC), [`-fmacro-backtrace-limit=1`] (Clang), or something similar, otherwise it will throw your compiler to the moon.
+ - [Precompile headers] that use Datatype99 so that they will not be compiled each time they are included. It is helpful to reduce compilation times, but they are not mandatory.
 
 [Metalang99]: https://github.com/Hirrolot/metalang99
-[precompiled headers]: https://en.wikipedia.org/wiki/Precompiled_header
+[Precompile headers]: https://en.wikipedia.org/wiki/Precompiled_header
 [`-ftrack-macro-expansion=0`]: https://gcc.gnu.org/onlinedocs/gcc/Preprocessor-Options.html
 [`-fmacro-backtrace-limit=1`]: https://clang.llvm.org/docs/ClangCommandLineReference.html#cmdoption-clang-fmacro-backtrace-limit
 
