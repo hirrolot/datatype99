@@ -26,11 +26,7 @@
  2. Add `datatype99` and `metalang99/include` to your include paths.
  3. `#include <datatype99.h>` beforehand.
 
-There are a few more things to consider:
-
- - **PLEASE**, use Datatype99 only with [`-ftrack-macro-expansion=0`] (GCC), [`-fmacro-backtrace-limit=1`] (Clang), or something similar, otherwise it will throw your compiler to the moon.
-
- - Use [precompiled headers] to reduce compilation times. It is helpful but not mandatory.
+**PLEASE**, use Datatype99 only with [`-ftrack-macro-expansion=0`] (GCC), [`-fmacro-backtrace-limit=1`] (Clang), or something similar, otherwise it will throw your compiler to the moon. Also, consider using [precompiled headers] in order to reduce compilation times. It is helpful but not mandatory.
 
 [Metalang99]: https://github.com/Hirrolot/metalang99
 [precompiled headers]: https://en.wikipedia.org/wiki/Precompiled_header
