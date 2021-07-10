@@ -392,7 +392,12 @@ A: Some kinds of syntactic errors are detected by the library itself (`-E` flag)
 ```c
 // !"Metalang99 error" (ML99_assertIsTuple): "Bar(int) must be (x1, ..., xN)"
 datatype(A, (Foo, int), Bar(int));
+
+// !"Metalang99 error" (ML99_assertIsTuple): "(Foo, int) (Bar, int) must be (x1, ..., xN), did you miss a comma?"
+datatype(A, (Foo, int) (Bar, int));
 ```
+
+(For better diagnostics, use the latest Metalang99.)
 
 The others are understandable as well:
 
