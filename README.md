@@ -389,13 +389,33 @@ A: [Metalang99] is a functional language for metaprogramming, whereas Datatype99
 
 A: Some kinds of syntactic errors are detected by the library itself (`-E` flag):
 
+\[`playground.c`\]
 ```c
-// !"Metalang99 error" (ML99_assertIsTuple): "Bar(int) must be (x1, ..., xN)"
 datatype(A, (Foo, int), Bar(int));
+```
 
-// !"Metalang99 error" (ML99_assertIsTuple): "(Foo, int) (Bar, int) must be (x1, ..., xN), did you miss a comma?"
+\[`/bin/sh`\]
+```
+playground.c: In function ‘ml99_error’:
+playground.c:3:1: error: call to ‘ml99_error’ declared with attribute error: ML99_assertIsTuple: Bar(int) must be (x1, ..., xN)
+    3 | datatype(A, (Foo, int), Bar(int));
+      | ^~~~~~~~
+```
+
+\[`playground.c`\]
+```c
 datatype(A, (Foo, int) (Bar, int));
 ```
+
+\[`/bin/sh`\]
+```
+playground.c: In function ‘ml99_error’:
+playground.c:3:1: error: call to ‘ml99_error’ declared with attribute error: ML99_assertIsTuple: (Foo, int) (Bar, int) must be (x1, ..., xN), did you miss a comma?
+    3 | datatype(A, (Foo, int) (Bar, int));
+      | ^~~~~~~~
+```
+
+(If you use GCC, you can see such neat errors right from the console. Otherwise, you have to preprocess your file with `-E` and search for Metalang99 errors by yourself.)
 
 (For better diagnostics, use the latest Metalang99.)
 
