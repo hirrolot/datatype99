@@ -425,10 +425,12 @@ The others are understandable as well:
 
 #### Error: unknown type name specified in `datatype`
 
+\[`playground.c`\]
 ```c
 datatype(Foo, (FooA, NonExistingType));
 ```
 
+\[`/bin/sh`\]
 ```
 playground.c:3:1: error: unknown type name ‘NonExistingType’
     3 | datatype(
@@ -441,6 +443,7 @@ playground.c:3:1: error: unknown type name ‘NonExistingType’
 
 #### Error: non-exhaustive `match`
 
+\[`playground.c`\]
 ```c
 match(*tree) {
     of(Leaf, x) return *x;
@@ -448,6 +451,7 @@ match(*tree) {
 }
 ```
 
+\[`/bin/sh`\]
 ```
 playground.c: In function ‘sum’:
 playground.c:6:5: warning: enumeration value ‘NodeTag’ not handled in switch [-Wswitch]
@@ -459,6 +463,7 @@ playground.c:6:5: warning: enumeration value ‘NodeTag’ not handled in switch
 
 #### Error: excess binders in `of`
 
+\[`playground.c`\]
 ```c
 match(*tree) {
     of(Leaf, x, excess) return *x;
@@ -466,6 +471,7 @@ match(*tree) {
 }
 ```
 
+\[`/bin/sh`\]
 ```
 playground.c: In function ‘sum’:
 playground.c:15:9: error: unknown type name ‘Leaf_1’; did you mean ‘Leaf_0’?
@@ -482,10 +488,12 @@ playground.c:15:9: error: ‘BinaryTreeLeaf’ has no member named ‘_1’; did
 
 #### Error: improperly typed variant arguments
 
+\[`playground.c`\]
 ```c
 BinaryTree tree = Leaf("hello world");
 ```
 
+\[`/bin/sh`\]
 ```
 playground.c: In function ‘main’:
 playground.c:18:28: warning: passing argument 1 of ‘Leaf’ makes integer from pointer without a cast [-Wint-conversion]
@@ -502,6 +510,7 @@ playground.c:6:1: note: expected ‘int’ but argument is of type ‘char *’
 
 #### Error: an undereferenced binder
 
+\[`playground.c`\]
 ```c
 int sum(const BinaryTree *tree) {
     match(*tree) {
@@ -511,6 +520,7 @@ int sum(const BinaryTree *tree) {
 }
 ```
 
+\[`/bin/sh`\]
 ```
 playground.c: In function ‘sum’:
 playground.c:17:28: warning: returning ‘Leaf_0 *’ {aka ‘int *’} from a function with return type ‘int’ makes integer from pointer without a cast [-Wint-conversion]
