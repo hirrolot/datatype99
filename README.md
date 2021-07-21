@@ -387,7 +387,7 @@ A: [Metalang99] is a functional language for metaprogramming, whereas Datatype99
 
 ### Q: What about compile-time errors?
 
-A: Some kinds of syntactic errors are detected by the library itself (`-E` flag):
+A: Some kinds of syntactic errors are detected by the library itself:
 
 \[`playground.c`\]
 ```c
