@@ -396,8 +396,9 @@ datatype(A, (Foo, int), Bar(int));
 
 \[`/bin/sh`\]
 ```
-playground.c: In function ‘ml99_error’:
-playground.c:3:1: error: call to ‘ml99_error’ declared with attribute error: ML99_assertIsTuple: Bar(int) must be (x1, ..., xN)
+$ gcc playground.c -Imetalang99/include -Idatatype99 -ftrack-macro-expansion=0
+playground.c: In function ‘ml99_error_3’:
+playground.c:3:1: error: call to ‘ml99_error_3’ declared with attribute error: ML99_assertIsTuple: `Bar(int)` must be (x1, ..., xN)
     3 | datatype(A, (Foo, int), Bar(int));
       | ^~~~~~~~
 ```
@@ -409,8 +410,9 @@ datatype(A, (Foo, int) (Bar, int));
 
 \[`/bin/sh`\]
 ```
-playground.c: In function ‘ml99_error’:
-playground.c:3:1: error: call to ‘ml99_error’ declared with attribute error: ML99_assertIsTuple: (Foo, int) (Bar, int) must be (x1, ..., xN), did you miss a comma?
+$ gcc playground.c -Imetalang99/include -Idatatype99 -ftrack-macro-expansion=0
+playground.c: In function ‘ml99_error_3’:
+playground.c:3:1: error: call to ‘ml99_error_3’ declared with attribute error: ML99_assertIsTuple: `(Foo, int) (Bar, int)` must be (x1, ..., xN), did you miss a comma?
     3 | datatype(A, (Foo, int) (Bar, int));
       | ^~~~~~~~
 ```
