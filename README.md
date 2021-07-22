@@ -359,7 +359,7 @@ Thanks to Rust and ML for their implementations of sum types.
 
 A:
 
- - Datatype99 can be integrated into existing codebases written in pure C. There are lots of them; C is #1 programming language as of 2020, [according to TIOBE](https://jaxenter.com/c-programming-may-2020-171598.html).
+ - Datatype99 can be seamlessly integrated into existing codebases written in pure C -- just `#include <datatype99.h>` and you are ready to go. On the other hand, other languages force you to separate native C files from their sources, which is clearly less convenient. There is a lot of software written in plain C that can benefit from Datatype99; C is #1 programming language as of 2020, [according to TIOBE](https://jaxenter.com/c-programming-may-2020-171598.html).
  - In some environments, developers strick to pure C for historical reasons (e.g., embedded devices, Linux and other operating systems).
  - C has a stable ABI which is vital for some projects (e.g., plugin systems).
  - C has a complete specification, unlike Rust. This has far-reaching implications, such as multiple implementations and fixed language behaviour.
