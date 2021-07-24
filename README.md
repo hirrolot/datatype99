@@ -394,6 +394,8 @@ A: [Metalang99] is a functional language for metaprogramming, whereas Datatype99
 
 A: Some kinds of syntactic errors are detected by the library itself:
 
+#### Error: `Bar(int)` instead of `(Bar, int)`
+
 \[`playground.c`\]
 ```c
 datatype(A, (Foo, int), Bar(int));
@@ -408,6 +410,10 @@ playground.c:3:1: error: call to ‘ml99_error_3’ declared with attribute erro
       | ^~~~~~~~
 ```
 
+----------
+
+#### Error: Missing comma
+
 \[`playground.c`\]
 ```c
 datatype(A, (Foo, int) (Bar, int));
@@ -421,6 +427,10 @@ playground.c:3:1: error: call to ‘ml99_error_3’ declared with attribute erro
     3 | datatype(A, (Foo, int) (Bar, int));
       | ^~~~~~~~
 ```
+
+----------
+
+#### Error: Trailing comma is prohibited
 
 \[`playground.c`\]
 ```c
@@ -441,8 +451,6 @@ playground.c:3:1: error: call to ‘ml99_error_3’ declared with attribute erro
 (For better diagnostics, use the latest Metalang99.)
 
 The others are understandable as well:
-
-----------
 
 #### Error: unknown type name specified in `datatype`
 
