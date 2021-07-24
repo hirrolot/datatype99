@@ -422,6 +422,20 @@ playground.c:3:1: error: call to ‘ml99_error_3’ declared with attribute erro
       | ^~~~~~~~
 ```
 
+\[`playground.c`\]
+```c
+datatype(A, (Foo, int), (Bar, int), /* trailing comma is prohibited */);
+```
+
+\[`/bin/sh`\]
+```
+$ gcc playground.c -Imetalang99/include -Idatatype99 -ftrack-macro-expansion=0
+playground.c: In function ‘ml99_error_3’:
+playground.c:3:1: error: call to ‘ml99_error_3’ declared with attribute error: ML99_assertIsTuple: must be (x1, ..., xN)
+    3 | datatype(A, (Foo, int), (Bar, int), /* trailing comma is prohibited */);
+      | ^~~~~~~~
+```
+
 (If you use GCC, you can see such neat errors right from the console. Otherwise, you have to preprocess your file with `-E` and search for Metalang99 errors by yourself.)
 
 (For better diagnostics, use the latest Metalang99.)
