@@ -104,13 +104,13 @@ static const UnitT99 unit_v99 = '\0';
 
 #define DATATYPE99_datatype_IMPL(x, ...)                                                           \
     ML99_TERMS(                                                                                    \
-        ML99_CAT(DATATYPE99_PRIV_WITH_DERIVE_, DATATYPE99_PRIV_IS_DERIVE(x))(x, __VA_ARGS__),      \
+        ML99_CAT(DATATYPE99_PRIV_withDerive_, DATATYPE99_PRIV_IS_DERIVE(x))(x, __VA_ARGS__),       \
         v(ML99_TRAILING_SEMICOLON()))
 
-#define DATATYPE99_PRIV_WITH_DERIVE_0(name, ...)                                                   \
-    DATATYPE99_PRIV_WITH_DERIVE_1(derive(dummy), name, __VA_ARGS__)
+#define DATATYPE99_PRIV_withDerive_0(name, ...)                                                    \
+    DATATYPE99_PRIV_withDerive_1(derive(dummy), name, __VA_ARGS__)
 
-#define DATATYPE99_PRIV_WITH_DERIVE_1(derivers, name, ...)                                         \
+#define DATATYPE99_PRIV_withDerive_1(derivers, name, ...)                                          \
     ML99_call(                                                                                     \
         DATATYPE99_PRIV_genDatatype,                                                               \
         v(name),                                                                                   \
