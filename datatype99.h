@@ -89,7 +89,7 @@ SOFTWARE.
 #define DATATYPE99_RECORD_DERIVE_dummy_IMPL(...) ML99_empty()
 
 #define DATATYPE99_MAJOR 1
-#define DATATYPE99_MINOR 2
+#define DATATYPE99_MINOR 3
 #define DATATYPE99_PATCH 0
 
 // } (Various public stuff)
