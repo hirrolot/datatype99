@@ -61,7 +61,7 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 
 ```ebnf
 <datatype>      ::= "datatype(" [ <derive-clause> "," ] <datatype-name> { "," <variant> }+ ")" ;
-<record>        ::= "record(" [ <derive-clause> "," ] <record-name> { "," <field> } ")" ;
+<record>        ::= "record(" [ <derive-clause> "," ] <record-name> { "," <field> }* ")" ;
 <datatype-name> ::= <ident> ;
 <record-name>   ::= <ident> ;
 
@@ -140,7 +140,7 @@ struct <datatype-name> {
 <details>
   <summary>Note on char dummy;</summary>
 
-  (`char dummy;` is needed to make the union contain at least one item, according to the standard, even if all variants are empty. Such a `datatype` would enforce strict type checking unlike plain C `enum`s.)
+`char dummy;` is needed to make the union contain at least one item, according to the standard, even if all variants are empty. Such a `datatype` would enforce strict type checking unlike plain C `enum`s.
 </details>
 
  6. For each variant, the following function called a _value constructor_ is generated:
@@ -173,11 +173,22 @@ Put simply, a deriver is a [Metalang99-compliant](https://metalang99.readthedocs
 
 ```
 typedef struct <record-name> {
+    // Only if <record-name> has no fields:
+    char dummy;
+
     <type>0 <field-name>0;
     ...
     <type>N <field-name>N;
 } <record-name>;
 ```
+
+<details>
+  <summary>Note on char dummy;</summary>
+
+`char dummy;` is needed to make the structure contain at least one item, according to the standard. Such `record(Foo)` can be used to implement interfaces for it (see [Interface99]).
+</details>
+
+[Interface99]: https://github.com/Hirrolot/interface99
 
  2. Each deriver is invoked sequentially, from left to right, as
 
@@ -186,7 +197,7 @@ ML99_call(DATATYPE99_RECORD_DERIVE_##<deriver-name>, v(<record-name>), fields...
 ```
 
 where
- - `fields...` is a [list] of fields represented as two-place [tuples]: `(<type>, <field-name>)`.
+ - `fields...` is a [list] of fields represented as two-place [tuples]: `(<type>, <field-name>)`. If a record contains no fields, the list would consist only of `(char, dummy)`.
 
 #### `match`
 

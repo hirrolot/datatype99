@@ -136,22 +136,34 @@ static const UnitT99 unit_v99 = '\0';
 // } (Sum type generation)
 
 // Record type generation {
-#define DATATYPE99_record_IMPL(x, ...)                                                             \
+#define DATATYPE99_record_IMPL(...)                                                                \
     ML99_TERMS(                                                                                    \
-        ML99_CAT(DATATYPE99_PRIV_RECORD_WITH_DERIVE_, DATATYPE99_PRIV_IS_DERIVE(x))(               \
-            x,                                                                                     \
-            __VA_ARGS__),                                                                          \
+        ML99_CAT(                                                                                  \
+            DATATYPE99_PRIV_recordWithDerive_,                                                     \
+            DATATYPE99_PRIV_IS_DERIVE(ML99_VARIADICS_GET(0)(__VA_ARGS__)))(__VA_ARGS__),           \
         v(ML99_TRAILING_SEMICOLON()))
 
-#define DATATYPE99_PRIV_RECORD_WITH_DERIVE_0(name, ...)                                            \
-    DATATYPE99_PRIV_RECORD_WITH_DERIVE_1(derive(dummy), name, __VA_ARGS__)
+#define DATATYPE99_PRIV_recordWithDerive_0(...)                                                    \
+    DATATYPE99_PRIV_recordWithDerive_1(derive(dummy), __VA_ARGS__)
 
-#define DATATYPE99_PRIV_RECORD_WITH_DERIVE_1(derivers, name, ...)                                  \
+#define DATATYPE99_PRIV_recordWithDerive_1(derivers, ...)                                          \
     ML99_call(                                                                                     \
         DATATYPE99_PRIV_genRecord,                                                                 \
-        v(name),                                                                                   \
-        DATATYPE99_PRIV_parseFields(__VA_ARGS__),                                                  \
+        DATATYPE99_PRIV_recordName(__VA_ARGS__),                                                   \
+        DATATYPE99_PRIV_recordFields(__VA_ARGS__),                                                 \
         v(DATATYPE99_PRIV_ELIM_##derivers))
+
+#define DATATYPE99_PRIV_recordName(...) v(ML99_VARIADICS_GET(0)(__VA_ARGS__))
+
+#define DATATYPE99_PRIV_recordFields(...)                                                          \
+    ML99_IF(                                                                                       \
+        ML99_VARIADICS_IS_SINGLE(__VA_ARGS__),                                                     \
+        DATATYPE99_PRIV_recordFieldsDummy,                                                         \
+        DATATYPE99_PRIV_recordFieldsSeq)                                                           \
+    (__VA_ARGS__)
+
+#define DATATYPE99_PRIV_recordFieldsDummy(...)      ML99_list(v((char, dummy)))
+#define DATATYPE99_PRIV_recordFieldsSeq(_name, ...) DATATYPE99_PRIV_parseFields(__VA_ARGS__)
 
 #define DATATYPE99_PRIV_genRecord_IMPL(name, fields, ...)                                          \
     ML99_TERMS(                                                                                    \
@@ -193,7 +205,7 @@ static const UnitT99 unit_v99 = '\0';
 // } (Variant)
 
 // Derivation {
-#define DATATYPE99_PRIV_IS_DERIVE(x)          ML99_IS_TUPLE(DATATYPE99_PRIV_IS_DERIVE_##x)
+#define DATATYPE99_PRIV_IS_DERIVE(x)          ML99_IS_TUPLE(ML99_CAT(DATATYPE99_PRIV_IS_DERIVE_, x))
 #define DATATYPE99_PRIV_IS_DERIVE_derive(...) ()
 
 #define DATATYPE99_PRIV_ELIM_derive(...) __VA_ARGS__

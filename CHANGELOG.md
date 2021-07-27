@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+### Added
+
+ - An empty record -- `record(Foo)`.
+
 ## [1.2.0] - 2021-06-06
 
 ### Added

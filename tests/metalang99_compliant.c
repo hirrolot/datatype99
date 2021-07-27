@@ -26,6 +26,8 @@ ML99_EVAL(DATATYPE99_record(
     v((int, x)),
     v((int, y))
 ));
+
+ML99_EVAL(DATATYPE99_record(v(MyEmptyRecord)));
 // clang-format on
 
 int main(void) {
@@ -57,7 +59,10 @@ int main(void) {
 
     // Record type usage.
     {
-        MyRecord r = (MyRecord){.x = 3, .y = 5};
+        MyRecord r = {.x = 3, .y = 5};
         (void)r;
+
+        MyEmptyRecord empty_r = {.dummy = '\0'};
+        (void)empty_r;
     }
 }

@@ -28,6 +28,8 @@ record(
     (double, d),
     (const char *, str)
 );
+
+record(MyEmptyRecord);
 // clang-format on
 
 int main(void) {
@@ -238,6 +240,11 @@ int main(void) {
         struct MyRecord r2 = r;
         (void)r;
         (void)r2;
+
+        MyEmptyRecord empty_r = {.dummy = '\0'};
+        struct MyEmptyRecord empty_r2 = empty_r;
+        (void)empty_r;
+        (void)empty_r2;
     }
 
     UnitT dummy = unit_v;
