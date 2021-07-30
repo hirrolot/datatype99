@@ -48,6 +48,7 @@ Pattern matching is likewise intuitive. Just a few brief notes:
  - To match an empty variant, write `of(Foo) { ... }`.
  - To match the default case, i.e. when all other cases failed, write `otherwise { ... }`.
  - To ignore a variable inside `of`, write `_`: `of(Foo, a, b, _, d)`.
+ - **PLEASE**, [do **not** use `break`/`continue`](#pitfalls) inside statements provided to `of` and `ifLet`; use `goto` labels instead.
 
 Also, you can introspect your sum types at compile-time; see [`examples/derive/`](examples/derive/) for the examples.
 
