@@ -14,7 +14,7 @@
 
  - **Type-safe.** Improperly typed variants and non-exhaustive pattern matching are caught at compile-time.
 
- - **Portable.** Everything you need is a standard-conforming C99 preprocessor.
+ - **Portable.** Everything you need is a standard-conforming C99 compiler; neither the standard library, nor compiler-specific extensions or VLA are required.
 
  - **Predictable.** Datatype99 comes with formal [code generation semantics], meaning that the generated data layout is guaranteed to always be the same.
 
