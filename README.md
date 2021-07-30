@@ -12,7 +12,7 @@
 
 ## Highlights
 
- - **Type-safe.** Improperly typed variants and non-exhaustive pattern matching are caught at compile-time.
+ - **Type-safe.** Such things as improperly typed variants, non-exhaustive pattern matching, and invalid field access are caught at compile-time.
 
  - **Portable.** Everything you need is a standard-conforming C99 compiler; neither the standard library, nor compiler/platform-specific functionality or VLA are required.
 
