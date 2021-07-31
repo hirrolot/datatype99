@@ -381,6 +381,8 @@ A:
 
  - C has a complete specification, unlike Rust. This has far-reaching implications, such as multiple implementations and fixed language behaviour. I know a few stories in which Rust was rejected as a language for a new project since it lacks a complete specification, and I can understand this decision.
 
+ - Your company obligates you to use C.
+
  - Etc.
 
 See also:
