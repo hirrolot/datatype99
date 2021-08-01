@@ -4,6 +4,9 @@
   <a href="https://github.com/Hirrolot/datatype99/actions">
     <img src="https://github.com/Hirrolot/datatype99/workflows/C/C++%20CI/badge.svg">
   </a>
+  <a href="https://lists.sr.ht/~hirrolot/metalang99">
+    <img src="https://img.shields.io/badge/mailing%20list-lists.sr.ht-orange">
+  </a>
 
   Safe, intuitive [algebraic data types] with exhaustive pattern matching & compile-time introspection facilities. No external tools required, pure C99.
 </div>
