@@ -48,7 +48,7 @@ Pattern matching is likewise intuitive. Just a few brief notes:
  - To match an empty variant, write `of(Foo) { ... }`.
  - To match the default case, i.e. when all other cases failed, write `otherwise { ... }`.
  - To ignore a variable inside `of`, write `_`: `of(Foo, a, b, _, d)`.
- - **PLEASE**, [do **not** use top-level `break`/`continue`](#pitfalls) inside statements provided to `of` and `ifLet`; use `goto` labels instead.
+ - **PLEASE**, [do **not** use top-level `break`/`continue`](#top-level-breakcontinue) inside statements provided to `of` and `ifLet`; use `goto` labels instead.
 
 Also, you can introspect your sum types at compile-time; see [`examples/derive/`](examples/derive/) for the examples.
 
@@ -347,7 +347,9 @@ Comparison:
 
 ## Pitfalls
 
- - Do **not** use top-level `break`/`continue` inside statements provided to `of` and `ifLet`; use `goto` labels instead. ("Top-level" means that they occur inside a user-provided statement but outside of any `for`/`while` loops in that statement.) For example, this code is fine:
+### Top-level `break`/`continue`
+
+Do **not** use `break`/`continue` inside a statement provided to `of`/`ifLet` but outside of any `for`/`while` loops in that statement. For example, this code is fine:
 
 ```c
 match(x) {
@@ -389,8 +391,13 @@ for (int i = 0; i < 10; i++) {
 my_break:;
 ```
 
- - To specify an array as a variant parameter, you must put it into a separate `struct`; see [`examples/array_in_variant.c`](examples/array_in_variant.c).
- - Bindings introduced by `of` are **always** mutable, so make sure you do **not** mutate them if the value passed to `match` is qualified as `const`.
+### Array as a variant parameter
+
+To specify an array as a variant parameter, you must put it into a separate `struct`; see [`examples/array_in_variant.c`](examples/array_in_variant.c).
+
+### Mutable bindings
+
+Bindings introduced by `of` are **always** mutable, so make sure you do **not** mutate them if the value passed to `match` is qualified as `const`.
 
 ## Credits
 
