@@ -48,7 +48,7 @@ Pattern matching is likewise intuitive. Just a few brief notes:
  - To match an empty variant, write `of(Foo) { ... }`.
  - To match the default case, i.e. when all other cases failed, write `otherwise { ... }`.
  - To ignore a variable inside `of`, write `_`: `of(Foo, a, b, _, d)`.
- - **PLEASE**, [do **not** use `break`/`continue`](#pitfalls) inside statements provided to `of` and `ifLet`; use `goto` labels instead.
+ - **PLEASE**, [do **not** use top-level `break`/`continue`](#pitfalls) inside statements provided to `of` and `ifLet`; use `goto` labels instead.
 
 Also, you can introspect your sum types at compile-time; see [`examples/derive/`](examples/derive/) for the examples.
 
@@ -347,7 +347,30 @@ Comparison:
 
 ## Pitfalls
 
- - Do **not** use `break`/`continue` inside statements provided to `of` and `ifLet`; use `goto` labels instead.
+ - Do **not** use top-level `break`/`continue` inside statements provided to `of` and `ifLet`; use `goto` labels instead. For example, this code is fine:
+
+```c
+match(x) {
+    of(Foo, a, b, c) {
+        for (int i = 0; i < 10; i++) {
+            continue;
+        }
+    }
+}
+```
+
+But this code is **not** fine:
+
+```c
+for (int i = 0; i < 10; i++) {
+    match(x) {
+        of(Foo, a, b, c) {
+            continue;
+        }
+    }
+}
+```
+
  - To specify an array as a variant parameter, you must put it into a separate `struct`; see [`examples/array_in_variant.c`](examples/array_in_variant.c).
  - Bindings introduced by `of` are **always** mutable, so make sure you do **not** mutate them if the value passed to `match` is qualified as `const`.
 
