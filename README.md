@@ -347,7 +347,7 @@ Comparison:
 
 ## Pitfalls
 
- - Do **not** use top-level `break`/`continue` inside statements provided to `of` and `ifLet`; use `goto` labels instead. For example, this code is fine:
+ - Do **not** use top-level `break`/`continue` inside statements provided to `of` and `ifLet`; use `goto` labels instead. ("Top-level" means that they occur inside a user-provided statement but outside of any `for`/`while` loops in that statement.) For example, this code is fine:
 
 ```c
 match(x) {
@@ -365,6 +365,7 @@ But this code is **not** fine:
 for (int i = 0; i < 10; i++) {
     match(x) {
         of(Foo, a, b, c) {
+            if (a == 7) { break; }
             continue;
         }
     }
@@ -377,6 +378,7 @@ To make it valid, you can rewrite it as follows:
 for (int i = 0; i < 10; i++) {
     match(x) {
         of(Foo, a, b, c) {
+            if (a == 7) { goto my_break; }
             goto my_continue;
         }
     }
@@ -384,6 +386,7 @@ for (int i = 0; i < 10; i++) {
     // Datatype99 prohibits top-level `break`/`continue`.
     my_continue:;
 }
+my_break:;
 ```
 
  - To specify an array as a variant parameter, you must put it into a separate `struct`; see [`examples/array_in_variant.c`](examples/array_in_variant.c).
