@@ -371,6 +371,21 @@ for (int i = 0; i < 10; i++) {
 }
 ```
 
+To make it valid, you can rewrite it as follows:
+
+```c
+for (int i = 0; i < 10; i++) {
+    match(x) {
+        of(Foo, a, b, c) {
+            goto my_continue;
+        }
+    }
+
+    // Datatype99 prohibits top-level `break`/`continue`.
+    my_continue:;
+}
+```
+
  - To specify an array as a variant parameter, you must put it into a separate `struct`; see [`examples/array_in_variant.c`](examples/array_in_variant.c).
  - Bindings introduced by `of` are **always** mutable, so make sure you do **not** mutate them if the value passed to `match` is qualified as `const`.
 
