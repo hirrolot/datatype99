@@ -460,16 +460,15 @@ A: Some kinds of syntactic errors are detected by the library itself:
 
 #### Error: `Bar(int)` instead of `(Bar, int)`
 
-\[`playground.c`\]
+[`playground.c`]
 ```c
 datatype(A, (Foo, int), Bar(int));
 ```
 
-\[`/bin/sh`\]
+[`/bin/sh`]
 ```
 $ gcc playground.c -Imetalang99/include -Idatatype99 -ftrack-macro-expansion=0
-playground.c: In function ‘ml99_error_3’:
-playground.c:3:1: error: call to ‘ml99_error_3’ declared with attribute error: ML99_assertIsTuple: Bar(int) must be (x1, ..., xN)
+playground.c:3:1: error: static assertion failed: "ML99_assertIsTuple: Bar(int) must be (x1, ..., xN)"
     3 | datatype(A, (Foo, int), Bar(int));
       | ^~~~~~~~
 ```
@@ -478,16 +477,15 @@ playground.c:3:1: error: call to ‘ml99_error_3’ declared with attribute erro
 
 #### Error: Missing comma
 
-\[`playground.c`\]
+[`playground.c`]
 ```c
 datatype(A, (Foo, int) (Bar, int));
 ```
 
-\[`/bin/sh`\]
+[`/bin/sh`]
 ```
 $ gcc playground.c -Imetalang99/include -Idatatype99 -ftrack-macro-expansion=0
-playground.c: In function ‘ml99_error_3’:
-playground.c:3:1: error: call to ‘ml99_error_3’ declared with attribute error: ML99_assertIsTuple: (Foo, int) (Bar, int) must be (x1, ..., xN), did you miss a comma?
+playground.c:3:1: error: static assertion failed: "ML99_assertIsTuple: (Foo, int) (Bar, int) must be (x1, ..., xN), did you miss a comma?"
     3 | datatype(A, (Foo, int) (Bar, int));
       | ^~~~~~~~
 ```
@@ -496,21 +494,18 @@ playground.c:3:1: error: call to ‘ml99_error_3’ declared with attribute erro
 
 #### Error: Trailing comma is prohibited
 
-\[`playground.c`\]
+[`playground.c`]
 ```c
 datatype(A, (Foo, int), (Bar, int), /* trailing comma is prohibited */);
 ```
 
-\[`/bin/sh`\]
+[`/bin/sh`]
 ```
 $ gcc playground.c -Imetalang99/include -Idatatype99 -ftrack-macro-expansion=0
-playground.c: In function ‘ml99_error_3’:
-playground.c:3:1: error: call to ‘ml99_error_3’ declared with attribute error: ML99_assertIsTuple: must be (x1, ..., xN)
+playground.c:3:1: error: static assertion failed: "ML99_assertIsTuple: must be (x1, ..., xN)"
     3 | datatype(A, (Foo, int), (Bar, int), /* trailing comma is prohibited */);
       | ^~~~~~~~
 ```
-
-(If you use GCC, you can see such neat errors right from the console. Otherwise, you have to preprocess your file with `-E` and search for Metalang99 errors by yourself.)
 
 (For better diagnostics, use the latest Metalang99.)
 
@@ -518,12 +513,12 @@ The others are understandable as well:
 
 #### Error: unknown type name specified in `datatype`
 
-\[`playground.c`\]
+[`playground.c`]
 ```c
 datatype(Foo, (FooA, NonExistingType));
 ```
 
-\[`/bin/sh`\]
+[`/bin/sh`]
 ```
 playground.c:3:1: error: unknown type name ‘NonExistingType’
     3 | datatype(
@@ -536,7 +531,7 @@ playground.c:3:1: error: unknown type name ‘NonExistingType’
 
 #### Error: non-exhaustive `match`
 
-\[`playground.c`\]
+[`playground.c`]
 ```c
 match(*tree) {
     of(Leaf, x) return *x;
@@ -544,7 +539,7 @@ match(*tree) {
 }
 ```
 
-\[`/bin/sh`\]
+[`/bin/sh`]
 ```
 playground.c: In function ‘sum’:
 playground.c:6:5: warning: enumeration value ‘NodeTag’ not handled in switch [-Wswitch]
@@ -556,7 +551,7 @@ playground.c:6:5: warning: enumeration value ‘NodeTag’ not handled in switch
 
 #### Error: excess binders in `of`
 
-\[`playground.c`\]
+[`playground.c`]
 ```c
 match(*tree) {
     of(Leaf, x, excess) return *x;
@@ -564,7 +559,7 @@ match(*tree) {
 }
 ```
 
-\[`/bin/sh`\]
+[`/bin/sh`]
 ```
 playground.c: In function ‘sum’:
 playground.c:15:9: error: unknown type name ‘Leaf_1’; did you mean ‘Leaf_0’?
@@ -581,12 +576,12 @@ playground.c:15:9: error: ‘BinaryTreeLeaf’ has no member named ‘_1’; did
 
 #### Error: improperly typed variant arguments
 
-\[`playground.c`\]
+[`playground.c`]
 ```c
 BinaryTree tree = Leaf("hello world");
 ```
 
-\[`/bin/sh`\]
+[`/bin/sh`]
 ```
 playground.c: In function ‘main’:
 playground.c:18:28: warning: passing argument 1 of ‘Leaf’ makes integer from pointer without a cast [-Wint-conversion]
@@ -603,7 +598,7 @@ playground.c:6:1: note: expected ‘int’ but argument is of type ‘char *’
 
 #### Error: an undereferenced binder
 
-\[`playground.c`\]
+[`playground.c`]
 ```c
 int sum(const BinaryTree *tree) {
     match(*tree) {
@@ -613,7 +608,7 @@ int sum(const BinaryTree *tree) {
 }
 ```
 
-\[`/bin/sh`\]
+[`/bin/sh`]
 ```
 playground.c: In function ‘sum’:
 playground.c:17:28: warning: returning ‘Leaf_0 *’ {aka ‘int *’} from a function with return type ‘int’ makes integer from pointer without a cast [-Wint-conversion]
