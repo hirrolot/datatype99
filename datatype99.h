@@ -270,6 +270,9 @@ static const UnitT99 unit_v99 = '\0';
 
 #define MATCHES99(val, tag_) ((val).tag == tag_##Tag)
 
+/// @deprecated Use `MATCHES99` instead.
+#define matches99(val, tag_) DATATYPE99_PRIV_DEPRECATE_MATCHES MATCHES99(val, tag_)
+
 // Deprecate `matches99` {
 
 #define DATATYPE99_PRIV_IS_GCC_4_8_1_OR_HIGHER                                                     \
@@ -278,17 +281,10 @@ static const UnitT99 unit_v99 = '\0';
      __GNUC__ >= 5)
 
 #if defined(__clang__) || DATATYPE99_PRIV_IS_GCC_4_8_1_OR_HIGHER
-
-/// @deprecated Use `MATCHES99` instead.
-#define matches99(val, tag)                                                                        \
-    _Pragma("GCC warning \"`matches`/`matches99` are deprecated, use `MATCHES`/`MATCHES99`\"")     \
-        MATCHES99(val, tag)
-
-#endif
-
-#ifndef matches99
-/// @deprecated Use `MATCHES99` instead.
-#define matches99 MATCHES99
+#define DATATYPE99_PRIV_DEPRECATE_MATCHES                                                          \
+    _Pragma("GCC warning \"`matches`/`matches99` are deprecated, use `MATCHES`/`MATCHES99`\"")
+#else
+#define DATATYPE99_PRIV_DEPRECATE_MATCHES
 #endif
 // } (Deprecate `matches99`)
 
