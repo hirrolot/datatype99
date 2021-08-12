@@ -35,9 +35,11 @@ SOFTWARE.
 
 #ifndef DATATYPE99_NO_ALIASES
 
-#define datatype  datatype99
-#define record    record99
-#define match     match99
+#define datatype datatype99
+#define record   record99
+#define match    match99
+#define MATCHES  MATCHES99
+/// @deprecated Use `MATCHES` instead.
 #define matches   matches99
 #define ifLet     ifLet99
 #define of        of99
@@ -254,8 +256,6 @@ static const UnitT99 unit_v99 = '\0';
         DATATYPE99_PRIV_genBindingForEach(v(tag_, __VA_ARGS__)))
 // clang-format on
 
-#define matches99(val, tag_) ((val).tag == tag_##Tag)
-
 #define DATATYPE99_PRIV_genBindingForEach(...)                                                     \
     ML99_call(DATATYPE99_PRIV_genBindingForEach, __VA_ARGS__)
 #define DATATYPE99_PRIV_genBindingForEach_IMPL(tag, ...)                                           \
@@ -267,6 +267,33 @@ static const UnitT99 unit_v99 = '\0';
         ML99_empty(),                                                                              \
         v(ML99_INTRODUCE_VAR_TO_STMT(                                                              \
             tag_##_##i *x = &((tag_##SumT *)datatype99_priv_matched_val)->data.tag_._##i)))
+
+#define MATCHES99(val, tag_) ((val).tag == tag_##Tag)
+
+// Deprecate `matches99` {
+
+#define DATATYPE99_PRIV_IS_GCC_4_8_1_OR_HIGHER                                                     \
+    ((__GNUC__ == 4 &&                                                                             \
+      (__GNUC_MINOR__ >= 8 && __GNUC_PATCHLEVEL__ >= 1 || __GNUC_MINOR__ >= 9)) ||                 \
+     __GNUC__ >= 5)
+
+#if defined(__clang__) || DATATYPE99_PRIV_IS_GCC_4_8_1_OR_HIGHER
+
+/// @deprecated Use `MATCHES99` instead.
+#define matches99(val, tag)                                                                        \
+    _Pragma("GCC warning \"`matches`/`matches99` are deprecated, use `MATCHES`/`MATCHES99`\"")     \
+        MATCHES99(val, tag)
+
+#elif defined(_MSC_VER)
+#pragma deprecated("matches", "matches99")
+#endif
+
+#ifndef matches99
+/// @deprecated Use `MATCHES99` instead.
+#define matches99 MATCHES99
+#endif
+// } (Deprecate `matches99`)
+
 // } (Pattern matching)
 
 /*

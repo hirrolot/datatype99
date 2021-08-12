@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+### Added
+
+ - `MATCHES`/`MATCHES99` to know where is a macro and where is a function.
+
+### Deprecated
+
+ - `matches`/`matches99`; use `MATCHES`/`MATCHES99` instead.
+
 ## [1.3.0] - 2021-07-27
 
 ### Added

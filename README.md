@@ -78,7 +78,7 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 <deriver-name>  ::= <ident> ;
 
 <match>         ::= "match(" <lvalue> ")" { <arm> }+ ;
-<matches>       ::= "matches(" <expr> "," <ident> ")" ;
+<matches>       ::= "MATCHES(" <expr> "," <ident> ")" ;
 <if-let>        ::= "ifLet(" <lvalue> "," <variant-name> "," <ident> { "," <ident> }* ")" <stmt> ;
 <of>            ::= "of(" <variant-name> { "," <ident> }* ")" <stmt> ;
 <otherwise>     ::= "otherwise" <stmt> ;
@@ -220,9 +220,13 @@ There can be more than one `_` binding, however, non-`_` bindings must be distin
 
 To match an empty variant, write `of(Bar)`.
 
+#### `MATCHES`
+
+`MATCHES` just tests an instance of a sum type for a given variant. If the given instance corresponds to the given variant, it expands to truthfulness, otherwise it expands to falsehood.
+
 #### `matches`
 
-`matches` just tests an instance of a sum type for a given variant. If the given instance corresponds to the given variant, it expands to truthfulness, otherwise it expands to falsehood.
+**DEPRECATED**: use [`MATCHES`](#MATCHES) instead.
 
 #### `ifLet`
 
