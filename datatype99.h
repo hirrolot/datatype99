@@ -284,9 +284,6 @@ static const UnitT99 unit_v99 = '\0';
     _Pragma("GCC warning \"`matches`/`matches99` are deprecated, use `MATCHES`/`MATCHES99`\"")     \
         MATCHES99(val, tag)
 
-#elif defined(_MSC_VER)
-#pragma deprecated("matches", "matches99")
-#error MSVC detected!
 #endif
 
 #ifndef matches99
