@@ -9,7 +9,7 @@ if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
   add_compile_options(-Wall -Wextra -pedantic -std=c99
                       -ftrack-macro-expansion=0 -Wno-return-type)
 elseif(CMAKE_C_COMPILER_ID STREQUAL "Clang")
-  add_compile_options("-fmacro-backtrace-limit=1")
+  add_compile_options(-fmacro-backtrace-limit=1 -Wno-return-type)
 elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
   # Enable a standard-conforming C99/C11 preprocessor.
   add_compile_options("/std:c11")
