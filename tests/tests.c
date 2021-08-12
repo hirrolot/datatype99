@@ -79,18 +79,18 @@ int main(void) {
     (void)d_2;
     (void)d_3;
 
-    assert(matches(a, A));
-    assert(matches(b, B));
-    assert(matches(c, C));
-    assert(matches(d, D));
+    assert(MATCHES(a, A));
+    assert(MATCHES(b, B));
+    assert(MATCHES(c, C));
+    assert(MATCHES(d, D));
 
-    assert(!matches(a, C));
-    assert(!matches(b, D));
-    assert(!matches(c, B));
-    assert(!matches(d, A));
+    assert(!MATCHES(a, C));
+    assert(!MATCHES(b, D));
+    assert(!MATCHES(c, B));
+    assert(!MATCHES(d, A));
 
     // Pass an lvalue to `matches`.
-    assert(matches(A(), A));
+    assert(MATCHES(A(), A));
 
     assert(a.tag == ATag);
     assert(b.tag == BTag);
