@@ -286,6 +286,7 @@ static const UnitT99 unit_v99 = '\0';
 
 #elif defined(_MSC_VER)
 #pragma deprecated("matches", "matches99")
+#error MSVC detected!
 #endif
 
 #ifndef matches99
