@@ -40,7 +40,9 @@ SOFTWARE.
 #define match    match99
 #define MATCHES  MATCHES99
 /// @deprecated Use `MATCHES` instead.
-#define matches   matches99
+#define matches(val, tag_)                                                                         \
+    DATATYPE99_PRIV_PRAGMA_WARN("GCC warning \"`matches` is deprecated, use `MATCHES` instead\"")  \
+    MATCHES(val, tag_)
 #define ifLet     ifLet99
 #define of        of99
 #define otherwise otherwise99
@@ -271,22 +273,10 @@ static const UnitT99 unit_v99 = '\0';
 #define MATCHES99(val, tag_) ((val).tag == tag_##Tag)
 
 /// @deprecated Use `MATCHES99` instead.
-#define matches99(val, tag_) DATATYPE99_PRIV_DEPRECATE_MATCHES MATCHES99(val, tag_)
-
-// Deprecate `matches99` {
-
-#define DATATYPE99_PRIV_IS_GCC_4_8_1_OR_HIGHER                                                     \
-    ((__GNUC__ == 4 &&                                                                             \
-      (__GNUC_MINOR__ >= 8 && __GNUC_PATCHLEVEL__ >= 1 || __GNUC_MINOR__ >= 9)) ||                 \
-     __GNUC__ >= 5)
-
-#if defined(__clang__) || DATATYPE99_PRIV_IS_GCC_4_8_1_OR_HIGHER
-#define DATATYPE99_PRIV_DEPRECATE_MATCHES                                                          \
-    _Pragma("GCC warning \"`matches`/`matches99` are deprecated, use `MATCHES`/`MATCHES99`\"")
-#else
-#define DATATYPE99_PRIV_DEPRECATE_MATCHES
-#endif
-// } (Deprecate `matches99`)
+#define matches99(val, tag_)                                                                       \
+    DATATYPE99_PRIV_PRAGMA_WARN(                                                                   \
+        "GCC warning \"`matches99` is deprecated, use `MATCHES99` instead\"")                      \
+    MATCHES99(val, tag_)
 
 // } (Pattern matching)
 
@@ -399,23 +389,39 @@ static const UnitT99 unit_v99 = '\0';
 #define DATATYPE99_PRIV_genRecordField_IMPL(ty, ident) v(ty ident;)
 
 // Compiler-specific stuff {
-#if defined(__GNUC__)
-#define DATATYPE99_PRIV_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
-#endif
-
-#if defined(__GNUC__) && !defined(__clang__)
-#define DATATYPE99_PRIV_CONST __attribute__((const))
-#endif
 
 #define DATATYPE99_PRIV_CTOR_ATTRS DATATYPE99_PRIV_WARN_UNUSED_RESULT DATATYPE99_PRIV_CONST
 
-#ifndef DATATYPE99_PRIV_WARN_UNUSED_RESULT
+// DATATYPE99_PRIV_WARN_UNUSED_RESULT {
+#if defined(__GNUC__)
+#define DATATYPE99_PRIV_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
+#else
 #define DATATYPE99_PRIV_WARN_UNUSED_RESULT
 #endif
+// }
 
-#ifndef DATATYPE99_PRIV_CONST
+// DATATYPE99_PRIV_CONST {
+#if defined(__GNUC__) && !defined(__clang__)
+#define DATATYPE99_PRIV_CONST __attribute__((const))
+#else
 #define DATATYPE99_PRIV_CONST
 #endif
+// }
+
+// DATATYPE99_PRIV_PRAGMA_WARN {
+
+#define DATATYPE99_PRIV_IS_GCC_4_8_1_OR_HIGHER                                                     \
+    ((__GNUC__ == 4 &&                                                                             \
+      (__GNUC_MINOR__ >= 8 && __GNUC_PATCHLEVEL__ >= 1 || __GNUC_MINOR__ >= 9)) ||                 \
+     __GNUC__ >= 5)
+
+#if defined(__clang__) || DATATYPE99_PRIV_IS_GCC_4_8_1_OR_HIGHER
+#define DATATYPE99_PRIV_PRAGMA_WARN _Pragma
+#else
+#define DATATYPE99_PRIV_PRAGMA_WARN ML99_EMPTY
+#endif
+// }
+
 // } (Compiler-specific stuff)
 
 // Arity specifiers {
