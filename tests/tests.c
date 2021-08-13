@@ -249,8 +249,4 @@ int main(void) {
 
     UnitT dummy = unit_v;
     (void)dummy;
-
-    // Probe.
-    (void)matches(a, A);
-    (void)matches99(a, A);
 }
