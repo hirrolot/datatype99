@@ -422,6 +422,14 @@ Thanks to Rust and ML for their implementations of sum types.
 
 [_Compiling Algebraic Data Types in Pure C99_]: https://hirrolot.github.io/posts/compiling-algebraic-data-types-in-pure-c99.html
 
+## Release procedure
+
+ 1. Update `DATATYPE99_MAJOR`, `DATATYPE99_MINOR`, and `DATATYPE99_PATCH` in `datatype99.h`.
+ 2. Update `CHANGELOG.md`.
+ 3. Release the project in [GitHub Releases].
+
+[GitHub Releases]: https://github.com/Hirrolot/datatype99/releases
+
 ## FAQ
 
 ### Q: Why use C instead of Rust/Zig/whatever else?
