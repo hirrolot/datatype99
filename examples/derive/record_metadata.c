@@ -4,6 +4,7 @@
 #include <string.h>
 
 // Deriver implementation {
+
 #define DATATYPE99_RECORD_DERIVE_Metadata_IMPL(name, fields)                                       \
     ML99_TERMS(FIELDS_METADATA(name, fields), METADATA(name, fields))
 

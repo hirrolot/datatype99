@@ -4,6 +4,7 @@
 #include <string.h>
 
 // Deriver implementation {
+
 #define DATATYPE99_DERIVE_Metadata_IMPL(name, variants)                                            \
     ML99_TERMS(VARIANTS_METADATA(name, variants), METADATA(name, variants))
 

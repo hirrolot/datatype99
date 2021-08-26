@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 // Deriver implementation {
+
 #define DATATYPE99_DERIVE_Menu_IMPL(name, variants)                                                \
     ML99_prefixedBlock(                                                                            \
         v(inline static void name##_print_menu(void)),                                             \

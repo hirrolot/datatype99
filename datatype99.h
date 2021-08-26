@@ -52,7 +52,7 @@ SOFTWARE.
 
 #endif // DATATYPE99_NO_ALIASES
 
-// Various public stuff {
+// Public stuff {
 
 // Metalang99-compliant macros {
 
@@ -65,7 +65,7 @@ SOFTWARE.
 #define record99(...)          ML99_EVAL(DATATYPE99_record_IMPL(__VA_ARGS__))
 #define of99(...)              ML99_EVAL(DATATYPE99_of_IMPL(__VA_ARGS__))
 #define ifLet99(val, tag, ...) ML99_EVAL(DATATYPE99_ifLet_IMPL(val, tag, __VA_ARGS__))
-// }
+// } (Metalang99-compliant macros)
 
 // Attributes manipulation {
 
@@ -87,7 +87,7 @@ SOFTWARE.
 
 #define DATATYPE99_ATTR_VALUE(attr)          ML99_CAT(DATATYPE99_PRIV_ATTR_VALUE_, attr)
 #define DATATYPE99_PRIV_ATTR_VALUE_attr(...) __VA_ARGS__
-// }
+// } (Attributes manipulation)
 
 #define DATATYPE99_DERIVE_dummy_IMPL(...)        ML99_empty()
 #define DATATYPE99_RECORD_DERIVE_dummy_IMPL(...) ML99_empty()
@@ -95,14 +95,13 @@ SOFTWARE.
 #define DATATYPE99_MAJOR 1
 #define DATATYPE99_MINOR 4
 #define DATATYPE99_PATCH 0
-
-// } (Various public stuff)
+// } (Public stuff)
 
 // Unit type {
 
 typedef char UnitT99;
 static const UnitT99 unit_v99 = '\0';
-// }
+// } (Unit type)
 
 // Sum type generation {
 
@@ -140,6 +139,7 @@ static const UnitT99 unit_v99 = '\0';
 // } (Sum type generation)
 
 // Record type generation {
+
 #define DATATYPE99_record_IMPL(...)                                                                \
     ML99_TERMS(                                                                                    \
         ML99_CAT(                                                                                  \
@@ -182,6 +182,7 @@ static const UnitT99 unit_v99 = '\0';
 // } (Record type generation)
 
 // Parse variants {
+
 #define DATATYPE99_PRIV_parseVariants(...)                                                         \
     ML99_listFromTuples(v(DATATYPE99_PRIV_parseVariant), v(__VA_ARGS__))
 
@@ -195,6 +196,7 @@ static const UnitT99 unit_v99 = '\0';
 // } (Parse variants)
 
 // Parse fields {
+
 #define DATATYPE99_PRIV_parseFields(...)                                                           \
     ML99_listFromTuples(v(DATATYPE99_PRIV_parseField), v(__VA_ARGS__))
 
@@ -202,6 +204,7 @@ static const UnitT99 unit_v99 = '\0';
 // } (Parse fields)
 
 // Variant {
+
 #define DATATYPE99_PRIV_variant(tag, sig) ML99_tuple(tag, sig)
 
 #define DATATYPE99_PRIV_forEachVariant(f, variants)                                                \
@@ -209,6 +212,7 @@ static const UnitT99 unit_v99 = '\0';
 // } (Variant)
 
 // Derivation {
+
 #define DATATYPE99_PRIV_IS_DERIVE(x)          ML99_IS_TUPLE(ML99_CAT(DATATYPE99_PRIV_IS_DERIVE_, x))
 #define DATATYPE99_PRIV_IS_DERIVE_derive(...) ()
 
@@ -392,23 +396,17 @@ static const UnitT99 unit_v99 = '\0';
 
 #define DATATYPE99_PRIV_CTOR_ATTRS DATATYPE99_PRIV_WARN_UNUSED_RESULT DATATYPE99_PRIV_CONST
 
-// DATATYPE99_PRIV_WARN_UNUSED_RESULT {
 #if defined(__GNUC__)
 #define DATATYPE99_PRIV_WARN_UNUSED_RESULT __attribute__((warn_unused_result))
 #else
 #define DATATYPE99_PRIV_WARN_UNUSED_RESULT
 #endif
-// }
 
-// DATATYPE99_PRIV_CONST {
 #if defined(__GNUC__) && !defined(__clang__)
 #define DATATYPE99_PRIV_CONST __attribute__((const))
 #else
 #define DATATYPE99_PRIV_CONST
 #endif
-// }
-
-// DATATYPE99_PRIV_PRAGMA_WARN {
 
 #define DATATYPE99_PRIV_IS_GCC_4_8_1_OR_HIGHER                                                     \
     ((__GNUC__ == 4 &&                                                                             \
@@ -420,11 +418,10 @@ static const UnitT99 unit_v99 = '\0';
 #else
 #define DATATYPE99_PRIV_PRAGMA_WARN ML99_EMPTY
 #endif
-// }
-
 // } (Compiler-specific stuff)
 
 // Arity specifiers {
+
 #define DATATYPE99_PRIV_parseVariant_ARITY       1
 #define DATATYPE99_PRIV_parseField_ARITY         1
 #define DATATYPE99_PRIV_invokeDeriver_ARITY      2
@@ -438,6 +435,7 @@ static const UnitT99 unit_v99 = '\0';
 #define DATATYPE99_PRIV_genRecordField_ARITY     1
 
 // Public:
+
 #define DATATYPE99_datatype_ARITY            1
 #define DATATYPE99_record_ARITY              1
 #define DATATYPE99_of_ARITY                  1
@@ -445,6 +443,6 @@ static const UnitT99 unit_v99 = '\0';
 #define DATATYPE99_attrIsPresent_ARITY       1
 #define DATATYPE99_attrValue_ARITY           1
 #define DATATYPE99_assertAttrIsPresent_ARITY 1
-// }
+// } (Arity specifiers)
 
 #endif // DATATYPE99_H

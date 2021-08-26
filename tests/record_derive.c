@@ -8,6 +8,7 @@
 #ifndef __TINYC__
 
 // Common {
+
 #define assertFields(fields, n)                                                                    \
     ML99_TERMS(assertFieldsCount(fields, n), ML99_listMapInPlaceI(v(visitField), v(fields)))
 
