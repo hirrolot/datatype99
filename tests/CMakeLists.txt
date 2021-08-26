@@ -3,16 +3,30 @@ project(tests LANGUAGES C)
 
 include_directories(.. ../metalang99/include)
 
+# For the reason behind -Wno-return-type, see
+# <https://github.com/Hirrolot/datatype99/issues/9>.
+set(GCC_OPTIONS
+    -Wall
+    -Wextra
+    -pedantic
+    -std=c99
+    -ftrack-macro-expansion=0
+    -Wno-return-type
+    -fsanitize=address)
+
+set(CLANG_OPTIONS -fmacro-backtrace-limit=1 -Wno-return-type -fsanitize=address)
+
+# Enable a standard-conforming C99/C11 preprocessor.
+set(MSVC_OPTIONS /std:c11)
+
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
-  # For the reason behind -Wno-return-type, see
-  # <https://github.com/Hirrolot/datatype99/issues/9>.
-  add_compile_options(-Wall -Wextra -pedantic -std=c99
-                      -ftrack-macro-expansion=0 -Wno-return-type)
+  add_compile_options(${GCC_OPTIONS})
+  add_link_options(-fsanitize=address)
 elseif(CMAKE_C_COMPILER_ID STREQUAL "Clang")
-  add_compile_options(-fmacro-backtrace-limit=1 -Wno-return-type)
+  add_compile_options(${CLANG_OPTIONS})
+  add_link_options(-fsanitize=address)
 elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
-  # Enable a standard-conforming C99/C11 preprocessor.
-  add_compile_options("/std:c11")
+  add_compile_options(${MSVC_OPTIONS})
 elseif(CMAKE_C_COMPILER_ID STREQUAL "TinyCC")
   add_compile_definitions(ML99_ALLOW_POOR_DIAGNOSTICS)
 endif()
