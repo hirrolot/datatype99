@@ -30,7 +30,7 @@ SOFTWARE.
 #include <metalang99.h>
 
 #if !ML99_VERSION_COMPATIBLE(1, 9, 0)
-#error Please, update Metalang99 to v1.9.0 or later
+#error Please, update Metalang99 to v1.9.0 or later.
 #endif
 
 #ifndef DATATYPE99_NO_ALIASES
