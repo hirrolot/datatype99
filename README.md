@@ -282,6 +282,18 @@ To manipulate derive helper attributes, there are a few predefined macros:
 
  - The macros `DATATYPE99_MAJOR`, `DATATYPE99_MINOR`, and `DATATYPE99_PATCH` stand for the corresponding components of a version of Datatype99.
 
+ - `DATATYPE99_VERSION_COMPATIBLE(x, y, z)` and `DATATYPE99_VERSION_EQ(x, y, z)` are function-like macros that expand to a constant boolean expression:
+   - The former holds iff the current Datatype99 version is at least vx.y.z in a [SemVer]-compatible way. Thus, if the current version is v1.2.3, then `DATATYPE99_VERSION_COMPATIBLE` will hold for v1.2.3, v1.2.6, v1.6.0, but not for v2.5.0 or v3.0.0.
+   - The latter one holds iff the version is exactly vx.y.z.
+
+These macros can be used as follows:
+
+.. code:: c
+
+    #if !DATATYPE99_VERSION_COMPATIBLE(1, 2, 3)
+    #error Please, update your Datatype99 to v1.2.3 or higher!
+    #endif
+
  - If you do **not** want the shortened versions to appear (e.g., `match` without the prefix `99`), define `DATATYPE99_NO_ALIASES` before `#include <datatype99.h>`.
 
  - For each macro using `ML99_EVAL`, Datatype99 provides its [Metalang99-compliant](https://metalang99.readthedocs.io/en/latest/#definitions) counterpart which can be used inside derivers and other Metalang99-compliant macros:
@@ -297,6 +309,7 @@ To manipulate derive helper attributes, there are a few predefined macros:
 
  - There is a built-in deriver `dummy` which generates nothing. It is defined both for record and sum types.
 
+[SemVer]: https://semver.org
 [arity specifier]: https://hirrolot.gitbook.io/metalang99/partial-application
 [desugaring macro]: https://metalang99.readthedocs.io/en/latest/#definitions
 

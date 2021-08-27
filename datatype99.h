@@ -95,6 +95,13 @@ SOFTWARE.
 #define DATATYPE99_MAJOR 1
 #define DATATYPE99_MINOR 4
 #define DATATYPE99_PATCH 0
+
+#define DATATYPE99_VERSION_COMPATIBLE(x, y, z)                                                     \
+    (DATATYPE99_MAJOR == (x) &&                                                                    \
+     ((DATATYPE99_MINOR == (y) && DATATYPE99_PATCH >= (z)) || (DATATYPE99_MINOR > (y))))
+
+#define DATATYPE99_VERSION_EQ(x, y, z)                                                             \
+    (DATATYPE99_MAJOR == (x) && DATATYPE99_MINOR == (y) && DATATYPE99_PATCH == (z))
 // } (Public stuff)
 
 // Unit type {

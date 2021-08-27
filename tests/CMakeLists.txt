@@ -40,6 +40,7 @@ add_executable(tests tests.c)
 add_executable(metalang99_compliant metalang99_compliant.c)
 add_executable(derive derive.c)
 add_executable(record_derive record_derive.c)
+add_executable(version version.c)
 
 set_standard(tests 99)
 set_standard(metalang99_compliant 99)
