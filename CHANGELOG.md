@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+## [1.5.0] - 2021-08-27
+
 ### Added
 
  - `DATATYPE99_VERSION_COMPATIBLE` to check for a SemVer-compatible version.
