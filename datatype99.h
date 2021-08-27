@@ -29,8 +29,8 @@ SOFTWARE.
 
 #include <metalang99.h>
 
-#if (ML99_MAJOR == 1 && ML99_MINOR < 2) || (ML99_MAJOR > 1)
-#error "Please, update Metalang99 to v1.2.0 or later"
+#if !ML99_VERSION_COMPATIBLE(1, 9, 0)
+#error Please, update Metalang99 to v1.9.0 or later
 #endif
 
 #ifndef DATATYPE99_NO_ALIASES
