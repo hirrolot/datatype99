@@ -114,8 +114,7 @@ This is all you need to know to write most of the stuff. Here are a few more goo
  - To match the default case, i.e., when all other cases failed, write `otherwise { ... }`.
  - To ignore a variable inside `of`, write `_`: `of(Foo, a, b, _, d)`.
  - **PLEASE**, [do **not** use top-level `break`/`continue`](#top-level-breakcontinue) inside statements provided to `of` and `ifLet`; use `goto` labels instead.
-
-If you feel fancy, you can introspect your sum types at compile-time; see [`examples/derive/`](examples/derive/) for the examples.
+ - If you feel fancy, you can introspect your types at compile-time; see [`examples/derive/`](examples/derive/) for the examples.
 
 Happy hacking!
 
