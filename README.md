@@ -98,7 +98,7 @@ int sum(const BinaryTree *tree) {
 }
 ```
 
-Now you cannot access the components `lhs, x, rhs` of `Node` when you match a leaf simply because they have not been brought into the scope.
+Now you cannot access the components `lhs, x, rhs` of `Node` when you match a leaf simply because they have not been brought into the scope. Note that `of` gives you pointers to variables such as `x`, `lhs`, and `rhs`, so that you can mutate them. As shown in the code above, to obtain a value rather than a pointer, just dereference it: `return *x;`.
 
 The last thing unmentioned is how you construct variants. Internally, Datatype99 generates `inline static` functions called _value constructors_; you can use them as follows:
 
@@ -108,14 +108,14 @@ BinaryTree leaf7 = Leaf(7);
 BinaryTree node = Node(&leaf5, 123, &leaf7);
 ```
 
-This is all you need to know to write most of the stuff. There is only one more form of a variant, `(Foo)`, which holds no data. Lastly, just a few brief notes about pattern matching:
+This is all you need to know to write most of the stuff. There is only one more form of a variant, `(Foo)`, which holds no data. Pattern matching also has some goods-to-know:
 
  - To match an empty variant, write `of(Foo) { ... }`.
  - To match the default case, i.e. when all other cases failed, write `otherwise { ... }`.
  - To ignore a variable inside `of`, write `_`: `of(Foo, a, b, _, d)`.
  - **PLEASE**, [do **not** use top-level `break`/`continue`](#top-level-breakcontinue) inside statements provided to `of` and `ifLet`; use `goto` labels instead.
 
-Also, you can introspect your sum types at compile-time; see [`examples/derive/`](examples/derive/) for the examples.
+If you feel fancy, you can introspect your sum types at compile-time; see [`examples/derive/`](examples/derive/) for the examples.
 
 Happy hacking!
 
