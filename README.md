@@ -160,14 +160,20 @@ ML99_call(DATATYPE99_DERIVE_##<deriver-name>, v(<datatype-name>), variants...)
 ```
 
 where
+ - `DATATYPE99_DERIVE_##<deriver-name>` is a [Metalang99-compliant](https://metalang99.readthedocs.io/en/latest/#definitions) macro of the following form:
+
+```
+#define DATATYPE99_DERIVE_##<deriver-name>_IMPL(name, variants) // Implementation...
+```
+
  - `variants...` is a [list] of variants represented as two-place [tuples]: `(<variant-name>, types...)`, where
    - `types...` is a [list] of types of the corresponding variant.
 
-Put simply, a deriver is a [Metalang99-compliant](https://metalang99.readthedocs.io/en/latest/#definitions) macro which is meant to automatically generate something global for a sum type, like interface implementations or almost any other stuff. If you are acquainted with Rust, Datatype99's derive macros are conceptually the same as the [derive attribute]. From my experience, derive macros allow for really nice, declarative, type-safe APIs.
+Put simply, a deriver is meant to automatically generate something global for a sum type, like interface implementations or almost any other stuff. In terms of Rust, you can think of it as of the [`derive` attribute].
 
 [list]: https://metalang99.readthedocs.io/en/latest/list.html
 [tuples]: https://metalang99.readthedocs.io/en/latest/tuple.html
-[derive attribute]: https://doc.rust-lang.org/reference/attributes/derive.html
+[`derive` attribute]: https://doc.rust-lang.org/reference/attributes/derive.html
 
 #### `record`
 
