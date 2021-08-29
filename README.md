@@ -108,10 +108,10 @@ BinaryTree leaf7 = Leaf(7);
 BinaryTree node = Node(&leaf5, 123, &leaf7);
 ```
 
-This is all you need to know to write most of the stuff. There is only one more form of a variant, `(Foo)`, which holds no data. Pattern matching also has some goods-to-know:
+This is all you need to know to write most of the stuff. Here are a few more goods-to-know:
 
- - To match an empty variant, write `of(Foo) { ... }`.
- - To match the default case, i.e. when all other cases failed, write `otherwise { ... }`.
+ - A variant of the form `(Foo)` holds no data. To construct it, simply write `Foo()`; to match it, write `of(Foo) { ... }`.
+ - To match the default case, i.e., when all other cases failed, write `otherwise { ... }`.
  - To ignore a variable inside `of`, write `_`: `of(Foo, a, b, _, d)`.
  - **PLEASE**, [do **not** use top-level `break`/`continue`](#top-level-breakcontinue) inside statements provided to `of` and `ifLet`; use `goto` labels instead.
 
