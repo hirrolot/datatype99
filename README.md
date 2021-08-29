@@ -98,9 +98,17 @@ int sum(const BinaryTree *tree) {
 }
 ```
 
-Now you cannot access the components of `Node` after `of(Leaf, x)` simply because they have not been brought into the scope.
+Now you cannot access the components `lhs, x, rhs` of `Node` when you match a leaf simply because they have not been brought into the scope.
 
-This is all you need to know to write most of the stuff. There is only one more form of a variant, `(Foo)`, which represents an empty variant -- it holds no data. And lastly, just a few brief notes about pattern matching:
+The last thing unmentioned is how you construct variants. Internally, Datatype99 generates `inline static` functions called _value constructors_; you can use them as follows:
+
+```c
+BinaryTree leaf5 = Leaf(5);
+BinaryTree leaf7 = Leaf(7);
+BinaryTree node = Node(&leaf5, 123, &leaf7);
+```
+
+This is all you need to know to write most of the stuff. There is only one more form of a variant, `(Foo)`, which holds no data. Lastly, just a few brief notes about pattern matching:
 
  - To match an empty variant, write `of(Foo) { ... }`.
  - To match the default case, i.e. when all other cases failed, write `otherwise { ... }`.
