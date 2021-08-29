@@ -98,7 +98,7 @@ int sum(const BinaryTree *tree) {
 }
 ```
 
-Now you cannot access the components `lhs, x, rhs` of `Node` when you match a leaf simply because they have not been brought into the scope. Note that `of` gives you pointers to variables such as `x`, `lhs`, and `rhs`, so that you can mutate them. As shown in the code above, to obtain a value rather than a pointer, just dereference it: `return *x;`.
+`of` gives you variables called _bindings_: `x`, `lhs`, or `rhs`. Since the bindings of `Node` have not been brought into the scope after `of(Leaf, x)`, you cannot access them when matching a leaf, thus decreasing the risk of bugs. It is worth noting that bindings have pointer types, so in order to obtain a value, you must dereference them: `return *x;`.
 
 The last thing unmentioned is how you construct variants. Internally, Datatype99 generates `inline static` functions called _value constructors_; you can use them as follows:
 
