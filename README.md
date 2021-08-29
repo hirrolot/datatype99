@@ -42,11 +42,65 @@ Some handy advices:
 
 ## Usage
 
-(The full example: [`examples/binary_tree.c`](examples/binary_tree.c).)
+Put simply, Datatype99 is just a syntax sugar over [tagged unions]; the only difference is that it is more safe and concise. For example, to represent a binary tree, you would normally write something like this:
 
-A sum type is created using the `datatype` macro. I guess you have already caught the syntax but actually there exist one more kind of a variant: an empty variant which is expressed simply as `(Foo)`. It holds no data.
+```c
+typedef int BinaryTreeLeaf;
 
-Pattern matching is likewise intuitive. Just a few brief notes:
+typedef struct {
+    struct BinaryTree *lhs;
+    BinaryTreeLeaf x;
+    struct BinaryTree *rhs;
+} BinaryTreeNode;
+
+typedef struct {
+    enum { Leaf, Node } tag;
+    union {
+        BinaryTreeLeaf leaf;
+        BinaryTreeNode node;
+    } data;
+} BinaryTree;
+```
+
+To avoid this boilerplate, you can use Datatype99:
+
+```c
+datatype(
+    BinaryTree,
+    (Leaf, int),
+    (Node, BinaryTree *, int, BinaryTree *)
+);
+```
+
+Say you want to sum all nodes and leafs in your binary tree. Then you may write something like this:
+
+```c
+int sum(const BinaryTree *tree) {
+    switch (tree->tag) {
+    case Leaf:
+        return tree->data.Leaf;
+    case Node:
+        return sum(tree->data.Node.lhs) + tree->data.Node.x + sum(tree->data.Node.rhs);
+    }
+}
+```
+
+... but what if you accidentally access `tree->data.Node` after `case Leaf:`? Your compiler would not warn you, thus resulting in a business logic bug.
+
+With Datatype99, you can rewrite `sum` as follows, using a technique called _pattern matching_:
+
+```c
+int sum(const BinaryTree *tree) {
+    match(*tree) {
+        of(Leaf, x) return *x;
+        of(Node, lhs, x, rhs) return sum(*lhs) + *x + sum(*rhs);
+    }
+}
+```
+
+Now you cannot access the components of `Node` after `of(Leaf, x)` simply because they have not been brought into the scope.
+
+This is all you need to know to write most of the stuff. There is only one more form of a variant, `(Foo)`, which represents an empty variant -- it holds no data. And lastly, just a few brief notes about pattern matching:
 
  - To match an empty variant, write `of(Foo) { ... }`.
  - To match the default case, i.e. when all other cases failed, write `otherwise { ... }`.
@@ -56,6 +110,8 @@ Pattern matching is likewise intuitive. Just a few brief notes:
 Also, you can introspect your sum types at compile-time; see [`examples/derive/`](examples/derive/) for the examples.
 
 Happy hacking!
+
+[tagged unions]: https://en.wikipedia.org/wiki/Tagged_union
 
 ## Syntax and semantics
 
@@ -169,7 +225,7 @@ where
  - `variants...` is a [list] of variants represented as two-place [tuples]: `(<variant-name>, types...)`, where
    - `types...` is a [list] of types of the corresponding variant.
 
-Put simply, a deriver is meant to automatically generate something global for a sum type, like interface implementations or almost any other stuff. In terms of Rust, you can think of it as of the [`derive` attribute].
+Put simply, a deriver is meant to generate something global for a sum type, like interface implementations or almost any other stuff. In terms of Rust, you can think of it as of the [`derive` attribute].
 
 [list]: https://metalang99.readthedocs.io/en/latest/list.html
 [tuples]: https://metalang99.readthedocs.io/en/latest/tuple.html
