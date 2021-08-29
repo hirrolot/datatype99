@@ -98,7 +98,7 @@ int sum(const BinaryTree *tree) {
 }
 ```
 
-`of` gives you variables called _bindings_: `x`, `lhs`, or `rhs`. Since the bindings of `Node` have not been brought into the scope after `of(Leaf, x)`, you cannot access them when matching a leaf, thus decreasing the risk of bugs. It is worth noting that bindings have pointer types, so in order to obtain a value, you must dereference them: `return *x;`.
+`of` gives you variables called _bindings_: `x`, `lhs`, or `rhs`. The bindings of `Node` are invisible when matching a leaf and vice versa, so a compiler will emit an error message if you access components of a tagged union inappropriately. It is worth noting that bindings have pointer types, so in order to obtain a value, you must dereference them: `return *x;`.
 
 The last thing unmentioned is how you construct variants. Internally, Datatype99 generates `inline static` functions called _value constructors_; you can use them as follows:
 
