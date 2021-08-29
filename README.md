@@ -108,13 +108,20 @@ BinaryTree leaf7 = Leaf(7);
 BinaryTree node = Node(&leaf5, 123, &leaf7);
 ```
 
-This is all you need to know to write most of the stuff. Here are a few more goods-to-know:
+This is all you need to know to write most of the stuff. The following table summarises the information:
 
- - A variant of the form `(Foo)` holds no data. To construct it, write `Foo()`; to match it, write `of(Foo) { ... }`.
- - To match the default case, i.e., when all other cases failed, write `otherwise { ... }`.
- - To ignore a variable inside `of`, write `_`: `of(Foo, a, b, _, d)`.
+| Variant type | Definition | Construction | Matching |
+|--------------|------------|--------------|----------|
+| Non-empty variant | `(Foo, types...)` | `Foo(args...)` | `of(Foo, bindings...)` |
+| Empty variant | `(Foo)` | `Foo()` | `of(Foo)` |
+
+And few brief notes about pattern matching:
+
+ - To match the default case, write `otherwise { ... }` at the end of `match`.
+ - To ignore a binding, write `_`: `of(Foo, a, b, _, d)`.
  - **PLEASE**, [do **not** use top-level `break`/`continue`](#top-level-breakcontinue) inside statements provided to `of` and `ifLet`; use `goto` labels instead.
- - You can introspect your types at compile-time; see [`examples/derive/`](examples/derive/) for the examples.
+
+If you feel fancy, you can also introspect your types at compile-time; see [`examples/derive/`](examples/derive/) for the examples.
 
 Happy hacking!
 
