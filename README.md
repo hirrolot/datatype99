@@ -98,10 +98,7 @@ int sum(const BinaryTree *tree) {
 }
 ```
 
-`of` gives you variables called _bindings_: `x`, `lhs`, or `rhs`. The bindings of `Node` are invisible after `of(Leaf, x)` and vice versa, so a compiler will emit an error message if you access them inappropriately. It is worth noting that bindings have pointer types, which has two consequences:
-
- - You can mutate them if you wish.
- - In order to obtain a value, you must dereference them: `return *x;`.
+`of` gives you variables called _bindings_: `x`, `lhs`, or `rhs`. The bindings of `Node` are invisible after `of(Leaf, x)` and vice versa, so compilation will fail to proceed if you access them inappropriately. As you can see, bindings have pointer types so that you can mutate them, thereby mutating the whole `tree`; in order to obtain a value, you can dereference them, as shown in the example: `return *x;`.
 
 The last thing unmentioned is how you construct variants. Internally, Datatype99 generates `inline static` functions called _value constructors_; you can use them as follows:
 
@@ -111,13 +108,13 @@ BinaryTree leaf7 = Leaf(7);
 BinaryTree node = Node(&leaf5, 123, &leaf7);
 ```
 
-This is all you need to know to write most of the stuff. Here are a few brief notes about pattern matching:
+Finally, just a few brief notes about pattern matching:
 
  - To match the default case, write `otherwise { ... }` at the end of `match`.
  - To ignore a binding, write `_`: `of(Foo, a, b, _, d)`.
  - **PLEASE**, [do **not** use top-level `break`/`continue`](#top-level-breakcontinue) inside statements provided to `of` and `ifLet`; use `goto` labels instead.
 
-If you feel fancy, you can also introspect your types at compile-time; see [`examples/derive/`](examples/derive/) for the examples.
+Congratulations, this is all you need to know to write most of the stuff! If you feel fancy, you can also introspect your types at compile-time; see [`examples/derive/`](examples/derive/) for the examples.
 
 Happy hacking!
 
