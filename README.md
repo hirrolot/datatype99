@@ -45,18 +45,16 @@ Some handy advices:
 Put simply, Datatype99 is just a syntax sugar over [tagged unions]; the only difference is that it is more safe and concise. For example, to represent a binary tree, you would normally write something like this:
 
 ```c
-typedef int BinaryTreeLeaf;
-
 typedef struct {
     struct BinaryTree *lhs;
-    BinaryTreeLeaf x;
+    int x;
     struct BinaryTree *rhs;
 } BinaryTreeNode;
 
 typedef struct {
     enum { Leaf, Node } tag;
     union {
-        BinaryTreeLeaf leaf;
+        int leaf;
         BinaryTreeNode node;
     } data;
 } BinaryTree;
