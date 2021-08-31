@@ -76,14 +76,14 @@ Say you want to sum all nodes and leafs in your binary tree. Then you may write 
 int sum(const BinaryTree *tree) {
     switch (tree->tag) {
     case Leaf:
-        return tree->data.Leaf;
+        return tree->data.leaf;
     case Node:
-        return sum(tree->data.Node.lhs) + tree->data.Node.x + sum(tree->data.Node.rhs);
+        return sum(tree->data.node.lhs) + tree->data.node.x + sum(tree->data.node.rhs);
     }
 }
 ```
 
-... but what if you accidentally access `tree->data.Node` after `case Leaf:`? Your compiler would not warn you, thus resulting in a business logic bug.
+... but what if you accidentally access `tree->data.node` after `case Leaf:`? Your compiler would not warn you, thus resulting in a business logic bug.
 
 With Datatype99, you can rewrite `sum` as follows, using a technique called _pattern matching_:
 
