@@ -13,7 +13,7 @@ datatype(
     Complex,
     (A),
     (B, int),
-    (C, const char *, double),
+    (C, const char *, int),
     (D, char, unsigned, long long, int *)
 );
 
@@ -25,178 +25,198 @@ record(
 record(
     MyRecord,
     (int, x),
-    (double, d),
+    (long long, d),
     (const char *, str)
 );
 
 record(MyEmptyRecord);
 // clang-format on
 
-int main(void) {
-    const char *hello = "hello", *world = "world";
-    Complex a = A(), b = B(42), c = C(hello, 12.13414), d = D('~', 0, 121434551, NULL);
+#define FAIL assert(false)
 
-    ComplexTag tag;
-    tag = ATag;
-    tag = BTag;
-    tag = CTag;
-    tag = DTag;
-    (void)tag;
+static void test_complex_match(Complex *expr) {
+    match(*expr) {
+        of(A) {
+            assert(ATag == expr->tag);
 
-    ComplexVariants data = {.dummy = 0};
-    data.B._0 = 123;
-    data.C._0 = "abc";
-    data.C._1 = 124.45476;
-    data.D._0 = 'A';
-    data.D._1 = 2924;
-    data.D._2 = -198474;
-    data.D._3 = (int *)(int[]){123};
-    (void)data;
+            return;
+        }
+        of(B, x) {
+            assert(BTag == expr->tag);
 
-    const ASumT a_indirect = a;
-    const BSumT b_indirect = b;
-    const CSumT c_indirect = c;
-    const DSumT d_indirect = d;
-    (void)a_indirect;
-    (void)b_indirect;
-    (void)c_indirect;
-    (void)d_indirect;
+            assert(x == &expr->data.B._0);
 
-    B_0 b_0 = 123;
-    (void)b_0;
+            return;
+        }
+        of(C, str, x) {
+            assert(CTag == expr->tag);
 
-    C_0 c_0 = "baba";
-    C_1 c_1 = 13.31131;
-    (void)c_0;
-    (void)c_1;
+            assert(str == &expr->data.C._0);
+            assert(x == &expr->data.C._1);
 
-    D_0 d_0 = '(';
-    D_1 d_1 = 12322;
-    D_2 d_2 = -13131313;
-    D_3 d_3 = (int *)(int[]){42};
-    (void)d_0;
-    (void)d_1;
-    (void)d_2;
-    (void)d_3;
+            return;
+        }
+        of(D, c, x, y, ptr) {
+            assert(DTag == expr->tag);
 
-    assert(MATCHES(a, A));
-    assert(MATCHES(b, B));
-    assert(MATCHES(c, C));
-    assert(MATCHES(d, D));
+            assert(c == &expr->data.D._0);
+            assert(x == &expr->data.D._1);
+            assert(y == &expr->data.D._2);
+            assert(ptr == &expr->data.D._3);
 
-    assert(!MATCHES(a, C));
-    assert(!MATCHES(b, D));
-    assert(!MATCHES(c, B));
-    assert(!MATCHES(d, A));
-
-    // Pass an lvalue to `matches`.
-    assert(MATCHES(A(), A));
-
-    assert(a.tag == ATag);
-    assert(b.tag == BTag);
-    assert(c.tag == CTag);
-    assert(d.tag == DTag);
-
-    int foo = 0;
-    match(a) {
-        otherwise {
-            foo = 123;
+            return;
         }
     }
-    assert(123 == foo);
 
-    int n = 7;
+    FAIL;
+}
 
-#define TEST_MATCH(expr)                                                                           \
-    match(expr) {                                                                                  \
-        of(A) {                                                                                    \
-            foo = 0;                                                                               \
-        }                                                                                          \
-        of(B, x) {                                                                                 \
-            assert(42 == *x);                                                                      \
-                                                                                                   \
-            *x = 191;                                                                              \
-        }                                                                                          \
-        of(C, str, x) {                                                                            \
-            assert(hello == *str);                                                                 \
-            assert(12.13414 == *x);                                                                \
-                                                                                                   \
-            *str = world;                                                                          \
-            *x = 143.11;                                                                           \
-        }                                                                                          \
-        of(D, c, x, y, ptr) {                                                                      \
-            assert('~' == *c);                                                                     \
-            assert(0 == *x);                                                                       \
-            assert(121434551 == *y);                                                               \
-            assert(NULL == *ptr);                                                                  \
-                                                                                                   \
-            *c = 'A';                                                                              \
-            *x = 13;                                                                               \
-            *y = 191991;                                                                           \
-            *ptr = &n;                                                                             \
-        }                                                                                          \
-    }                                                                                              \
-    do {                                                                                           \
-    } while (0)
+int main(void) {
+    const char *const hello = "hello";
 
-#if !defined(__clang__) && __GNUC__ >= 6
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wmisleading-indentation"
-#endif
+    Complex a = A(), b = B(42), c = C(hello, 12), d = D('~', 0, 5274, NULL);
 
-    TEST_MATCH(a);
-    assert(0 == foo);
+    // Test the contents of the values.
+    {
+        assert(ATag == a.tag);
 
-    TEST_MATCH(b);
-    assert(191 == b.data.B._0);
+        assert(BTag == b.tag);
+        assert(42 == b.data.B._0);
 
-    TEST_MATCH(c);
-    assert(world == c.data.C._0);
-    assert(143.11 == c.data.C._1);
+        assert(CTag == c.tag);
+        assert(hello == c.data.C._0);
+        assert(12 == c.data.C._1);
 
-    TEST_MATCH(d);
-    assert('A' == d.data.D._0);
-    assert(13 == d.data.D._1);
-    assert(191991 == d.data.D._2);
-    assert(&n == d.data.D._3);
+        assert(DTag == d.tag);
+        assert('~' == d.data.D._0);
+        assert(0 == d.data.D._1);
+        assert(5274 == d.data.D._2);
+        assert(NULL == d.data.D._3);
+    }
 
-#if !defined(__clang__) && __GNUC__ >= 6
-#pragma GCC diagnostic pop
-#endif
+    // <datatype-name>Tag
+    {
+        ComplexTag tag;
+
+        tag = ATag;
+        tag = BTag;
+        tag = CTag;
+        tag = DTag;
+
+        (void)tag;
+    }
+
+    // <datatype-name>Variants
+    {
+        ComplexVariants data = {.dummy = 0};
+
+        data.B._0 = (int)123;
+
+        data.C._0 = (const char *)"abc";
+        data.C._1 = (int)9;
+
+        data.D._0 = (char)'A';
+        data.D._1 = (unsigned)2924;
+        data.D._2 = (long long)-1811;
+        data.D._3 = (int *)(int[]){123};
+
+        (void)data;
+    }
+
+    // <variant-name>SumT
+    {
+        const ASumT a_indirect = a;
+        const BSumT b_indirect = b;
+        const CSumT c_indirect = c;
+        const DSumT d_indirect = d;
+
+        (void)a_indirect;
+        (void)b_indirect;
+        (void)c_indirect;
+        (void)d_indirect;
+    }
+
+    // <variant-name>_I
+    {
+        B_0 b_0 = (int)123;
+        (void)b_0;
+
+        C_0 c_0 = (const char *)"baba";
+        C_1 c_1 = (int)-91;
+        (void)c_0;
+        (void)c_1;
+
+        D_0 d_0 = (char)'(';
+        D_1 d_1 = (unsigned)12322;
+        D_2 d_2 = (long long)-7;
+        D_3 d_3 = (int *)(int[]){42};
+        (void)d_0;
+        (void)d_1;
+        (void)d_2;
+        (void)d_3;
+    }
+
+    // MATCHES
+    {
+        assert(MATCHES(a, A));
+        assert(MATCHES(b, B));
+        assert(MATCHES(c, C));
+        assert(MATCHES(d, D));
+
+        assert(!MATCHES(a, C));
+        assert(!MATCHES(b, D));
+        assert(!MATCHES(c, B));
+        assert(!MATCHES(d, A));
+
+        // Pass an rvalue to `matches`.
+        assert(MATCHES(A(), A));
+    }
+
+    // Test a single `otherwise` branch.
+    {
+        match(a) {
+            otherwise goto end_single_otherwise;
+        }
+        FAIL;
+    end_single_otherwise:;
+    }
+
+    // Test `match`.
+    {
+        test_complex_match(&a);
+        test_complex_match(&b);
+        test_complex_match(&c);
+        test_complex_match(&d);
+    }
 
     // Test a nested `match`.
-    match(a) {
-        of(A) {
-            match(b) {
-                of(B) {
-                    foo = 34;
+    {
+        match(a) {
+            of(A) {
+                match(b) {
+                    of(B) goto end_nested_match;
+                    otherwise FAIL;
                 }
-                otherwise assert(false);
             }
+            otherwise FAIL;
         }
-        otherwise assert(false);
+        FAIL;
+    end_nested_match:;
     }
-
-    assert(34 == foo);
 
     // Test the reserved identifier `_`.
     {
-        const Complex expr = C("abc", 124.1404);
+        const Complex expr = C("abc", 124);
 
         match(expr) {
-            of(A) {
-                assert(false);
-            }
-            of(B, _) {
-                assert(false);
-            }
+            of(A) {}
+            of(B, _) {}
             of(C, _, x) {
-                assert(124.1404 == *x);
+                (void)x;
             }
             of(D, c, _, _, ptr) {
                 (void)c;
                 (void)ptr;
-                assert(false);
             }
         }
     }
@@ -223,18 +243,16 @@ int main(void) {
 
     // ifLet
     {
-        const Complex expr = B(42);
-        ifLet(expr, B, x) {
-            *x = 8601;
-        }
-
-        assert(8601 == expr.data.B._0);
-
+        const Complex expr = C("abc", 918);
         ifLet(expr, C, str, x) {
-            (void)str;
-            (void)x;
-            assert(false);
+            assert(str == &expr.data.C._0);
+            assert(x == &expr.data.C._1);
+            goto end_if_let;
         }
+        FAIL;
+    end_if_let:;
+
+        ifLet(expr, B, _) FAIL;
     }
 
     // Make sure that `match` and `ifLet` result in a single C statement.
@@ -256,7 +274,7 @@ int main(void) {
         (void)tiny;
         (void)tiny2;
 
-        MyRecord r = (MyRecord){.x = 123, .d = 15.25, .str = "hello world"};
+        MyRecord r = (MyRecord){.x = 123, .d = 15, .str = "hello world"};
         struct MyRecord r2 = r;
         (void)r;
         (void)r2;
