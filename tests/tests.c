@@ -201,6 +201,26 @@ int main(void) {
         }
     }
 
+    // The same identifiers from different branches shall not clash with each other.
+    {
+        const Complex expr = A();
+
+        match(expr) {
+            of(A) {}
+            of(B, same1) {
+                (void)same1;
+            }
+            of(C, same1, same2) {
+                (void)same1;
+                (void)same2;
+            }
+            of(D, same1, same2, _, _) {
+                (void)same1;
+                (void)same2;
+            }
+        }
+    }
+
     // ifLet
     {
         const Complex expr = B(42);
