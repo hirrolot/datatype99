@@ -4,13 +4,15 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-datatype(Trivial1, (Trivial1A));
-datatype(Trivial2, (Trivial2A));
-datatype(Trivial3, (Trivial3A), (Trivial3B), (Trivial3C));
-
 // clang-format off
 datatype(
-    Complex,
+    EmptyDatatype,
+    (EmptyA),
+    (EmptyB)
+);
+
+datatype(
+    ComplexDatatype,
     (A),
     (B, int),
     (C, const char *, int),
@@ -34,36 +36,51 @@ record(MyEmptyRecord);
 
 #define FAIL assert(false)
 
-static void test_complex_match(Complex *expr) {
-    match(*expr) {
+static void test_match_complex(ComplexDatatype expr) {
+    match(expr) {
         of(A) {
-            assert(ATag == expr->tag);
+            assert(ATag == expr.tag);
 
             return;
         }
         of(B, x) {
-            assert(BTag == expr->tag);
+            assert(BTag == expr.tag);
 
-            assert(x == &expr->data.B._0);
+            assert(x == &expr.data.B._0);
 
             return;
         }
         of(C, str, x) {
-            assert(CTag == expr->tag);
+            assert(CTag == expr.tag);
 
-            assert(str == &expr->data.C._0);
-            assert(x == &expr->data.C._1);
+            assert(str == &expr.data.C._0);
+            assert(x == &expr.data.C._1);
 
             return;
         }
         of(D, c, x, y, ptr) {
-            assert(DTag == expr->tag);
+            assert(DTag == expr.tag);
 
-            assert(c == &expr->data.D._0);
-            assert(x == &expr->data.D._1);
-            assert(y == &expr->data.D._2);
-            assert(ptr == &expr->data.D._3);
+            assert(c == &expr.data.D._0);
+            assert(x == &expr.data.D._1);
+            assert(y == &expr.data.D._2);
+            assert(ptr == &expr.data.D._3);
 
+            return;
+        }
+    }
+
+    FAIL;
+}
+
+static void test_match_empty(EmptyDatatype expr) {
+    match(expr) {
+        of(A) {
+            assert(EmptyATag == expr.tag);
+            return;
+        }
+        of(B) {
+            assert(EmptyBTag == expr.tag);
             return;
         }
     }
@@ -74,7 +91,8 @@ static void test_complex_match(Complex *expr) {
 int main(void) {
     const char *const hello = "hello";
 
-    Complex a = A(), b = B(42), c = C(hello, 12), d = D('~', 0, 5274, NULL);
+    const ComplexDatatype a = A(), b = B(42), c = C(hello, 12), d = D('~', 0, 5274, NULL);
+    const EmptyDatatype empty_a = EmptyA(), empty_b = EmptyB();
 
     // Test the contents of the values.
     {
@@ -92,11 +110,14 @@ int main(void) {
         assert(0 == d.data.D._1);
         assert(5274 == d.data.D._2);
         assert(NULL == d.data.D._3);
+
+        assert(EmptyATag == empty_a.tag);
+        assert(EmptyBTag == empty_b.tag);
     }
 
     // <datatype-name>Tag
     {
-        ComplexTag tag;
+        ComplexDatatypeTag tag;
 
         tag = ATag;
         tag = BTag;
@@ -108,7 +129,7 @@ int main(void) {
 
     // <datatype-name>Variants
     {
-        ComplexVariants data = {.dummy = 0};
+        ComplexDatatypeVariants data = {.dummy = 0};
 
         data.B._0 = (int)123;
 
@@ -183,10 +204,13 @@ int main(void) {
 
     // Test `match`.
     {
-        test_complex_match(&a);
-        test_complex_match(&b);
-        test_complex_match(&c);
-        test_complex_match(&d);
+        test_match_complex(a);
+        test_match_complex(b);
+        test_match_complex(c);
+        test_match_complex(d);
+
+        test_match_empty(empty_a);
+        test_match_empty(empty_b);
     }
 
     // Test a nested `match`.
@@ -206,7 +230,7 @@ int main(void) {
 
     // Test the reserved identifier `_`.
     {
-        const Complex expr = C("abc", 124);
+        const ComplexDatatype expr = C("abc", 124);
 
         match(expr) {
             of(A) {}
@@ -223,7 +247,7 @@ int main(void) {
 
     // The same identifiers from different branches shall not clash with each other.
     {
-        const Complex expr = A();
+        const ComplexDatatype expr = A();
 
         match(expr) {
             of(A) {}
@@ -243,7 +267,7 @@ int main(void) {
 
     // ifLet
     {
-        const Complex expr = C("abc", 918);
+        const ComplexDatatype expr = C("abc", 918);
         ifLet(expr, C, str, x) {
             assert(str == &expr.data.C._0);
             assert(x == &expr.data.C._1);
@@ -257,7 +281,7 @@ int main(void) {
 
     // Make sure that `match` and `ifLet` result in a single C statement.
     {
-        const Complex expr = B(42);
+        const ComplexDatatype expr = B(42);
         if (true)
             match(expr) {
                 otherwise {}
