@@ -213,21 +213,6 @@ int main(void) {
         test_match_empty(empty_b);
     }
 
-    // Test a nested `match`.
-    {
-        match(a) {
-            of(A) {
-                match(b) {
-                    of(B) goto end_nested_match;
-                    otherwise FAIL;
-                }
-            }
-            otherwise FAIL;
-        }
-        FAIL;
-    end_nested_match:;
-    }
-
     // Test the reserved identifier `_`.
     {
         const ComplexDatatype expr = C("abc", 124);
@@ -243,6 +228,37 @@ int main(void) {
                 (void)ptr;
             }
         }
+    }
+
+    // Test a nested `match`.
+    {
+        match(a) {
+            of(A) {
+                match(b) {
+                    of(B) goto end_nested_match;
+                    otherwise FAIL;
+                }
+            }
+            otherwise FAIL;
+        }
+        FAIL;
+    end_nested_match:;
+    }
+
+    // Test two `match` in the same lexical scope.
+    {
+#define TEST_MATCH                                                                                 \
+    match(a) {                                                                                     \
+        of(A);                                                                                     \
+        of(B, _);                                                                                  \
+        of(C, _, _);                                                                               \
+        of(D, _, _, _, _);                                                                         \
+    }
+
+        TEST_MATCH;
+        TEST_MATCH;
+
+#undef TEST_MATCH
     }
 
     // The same identifiers from different branches shall not clash with each other.
@@ -277,6 +293,12 @@ int main(void) {
     end_if_let:;
 
         ifLet(expr, B, _) FAIL;
+    }
+
+    // Test two `ifLet` in the same lexical scope.
+    {
+        ifLet(b, B, _);
+        ifLet(b, B, _);
     }
 
     // Make sure that `match` and `ifLet` result in a single C statement.
