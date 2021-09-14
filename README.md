@@ -713,7 +713,7 @@ If an error is not comprehensible at all, try to look at generated code (`-E`). 
 
 A: VS Code automatically enables suggestions of generated types but, of course, it does not support macro syntax highlightment.
 
-### Q: What compilers are tested?
+### Q: Which compilers are tested?
 
 A: Datatype99 is known to work on these compilers:
 
