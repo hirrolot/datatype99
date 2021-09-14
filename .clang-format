@@ -1,12 +1,17 @@
 Language: Cpp
 BasedOnStyle: LLVM
+
 IndentWidth: 4
+ContinuationIndentWidth: 4
 ColumnLimit: 100
-AlignConsecutiveMacros: true
-AlwaysBreakBeforeMultilineStrings: true
+
 AllowShortFunctionsOnASingleLine: Empty
 AllowAllArgumentsOnNextLine: false
-AlignAfterOpenBracket: AlwaysBreak
-ContinuationIndentWidth: 4
 BinPackArguments: false
+AllowAllParametersOfDeclarationOnNextLine: true
+BinPackParameters: true
+
+AlignConsecutiveMacros: true
+AlignAfterOpenBracket: AlwaysBreak
+
 StatementMacros: ["ML99_EVAL"]
