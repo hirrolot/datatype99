@@ -21,7 +21,9 @@
 
  - **Predictable.** Datatype99 comes with formal [code generation semantics], meaning that the generated data layout is guaranteed to always be the same.
 
- - **Comprehensible errors.** Despite that Datatype99 is built upon macros, compilation errors are usually [comprehensible](#q-what-about-compile-time-errors).
+ - **Comprehensible errors.** Datatype99 is [resilient to bad code].
+
+[resilient to bad code]: #q-what-about-compile-time-errors
 
 ## Installation
 
