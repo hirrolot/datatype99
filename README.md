@@ -98,7 +98,10 @@ int sum(const BinaryTree *tree) {
 }
 ```
 
-`of` gives you variables called _bindings_: `x`, `lhs`, or `rhs`. The bindings of `Node` are invisible after `of(Leaf, x)` and vice versa, so compilation will fail to proceed if you access them inappropriately. As you can see, bindings have pointer types so that you can mutate them, thereby mutating the whole `tree`; in order to obtain a value, you can dereference them, as shown in the example: `return *x;`.
+`of` gives you variables called _bindings_: `x`, `lhs`, or `rhs`. This design has a few neat aspects:
+
+ - The bindings of `Node` are invisible after `of(Leaf, x)` and vice versa, so compilation will fail to proceed if you access them inappropriately.
+ - Bindings have pointer types so that you can mutate them, thereby mutating the whole `tree`; in order to obtain a value, you can dereference them, as shown in the example: `return *x;`.
 
 The last thing unmentioned is how you construct variants. Internally, Datatype99 generates `inline static` functions called _value constructors_; you can use them as follows:
 
