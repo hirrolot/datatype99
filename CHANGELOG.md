@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+## [1.5.1] - 2021-10-06
+
+### Fixed
+
+ - Previously, shortcuts referring to functional macros were object-like (e.g., `match` or `of`). To avoid nasty compilation errors, now they are function-like too.
+
 ## [1.5.0] - 2021-08-27
 
 ### Added

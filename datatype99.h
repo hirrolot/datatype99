@@ -35,17 +35,17 @@ SOFTWARE.
 
 #ifndef DATATYPE99_NO_ALIASES
 
-#define datatype datatype99
-#define record   record99
-#define match    match99
-#define MATCHES  MATCHES99
+#define datatype(...)     datatype99(__VA_ARGS__)
+#define record(...)       record99(__VA_ARGS__)
+#define match(val)        match99(val)
+#define MATCHES(val, tag) MATCHES99(val, tag)
 /// @deprecated Use `MATCHES` instead.
-#define matches(val, tag_)                                                                         \
+#define matches(val, tag)                                                                          \
     DATATYPE99_PRIV_PRAGMA_WARN("GCC warning \"`matches` is deprecated, use `MATCHES` instead\"")  \
-    MATCHES(val, tag_)
-#define ifLet     ifLet99
-#define of        of99
-#define otherwise otherwise99
+    MATCHES(val, tag)
+#define ifLet(val, tag, ...) ifLet99(val, tag, __VA_ARGS__)
+#define of(...)              of99(__VA_ARGS__)
+#define otherwise            otherwise99
 
 #define UnitT  UnitT99
 #define unit_v unit_v99
@@ -284,10 +284,10 @@ static const UnitT99 unit_v99 = '\0';
 #define MATCHES99(val, tag_) ((val).tag == tag_##Tag)
 
 /// @deprecated Use `MATCHES99` instead.
-#define matches99(val, tag_)                                                                       \
+#define matches99(val, tag)                                                                        \
     DATATYPE99_PRIV_PRAGMA_WARN(                                                                   \
         "GCC warning \"`matches99` is deprecated, use `MATCHES99` instead\"")                      \
-    MATCHES99(val, tag_)
+    MATCHES99(val, tag)
 
 // } (Pattern matching)
 
