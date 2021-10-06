@@ -10,7 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
- - Previously, shortcuts referring to functional macros were object-like (e.g., `match` or `of`). To avoid nasty compilation errors, now they are function-like too.
+ - Previously, shortcuts referring to functional macros were object-like. To avoid nasty compilation errors, now they are function-like too:
+   - `datatype(...)`
+   - `record(...)`
+   - `match(val)`
+   - `MATCHES(val, tag)`
+   - `matches(val, tag)`
+   - `ifLet(val, tag, ...)`
+   - `of(...)`
 
 ## [1.5.0] - 2021-08-27
 
