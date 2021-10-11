@@ -150,6 +150,10 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 <otherwise>     ::= "otherwise" <stmt> ;
 ```
 
+Notes:
+
+ - Each listed identifier in the above grammar corresponds to a macro name defined in `datatype99.h` by default -- these are called _shortened versions_. On the other hand, there are also _postfixed versions_ (`match99`, `of99`, `derive99`, etc.), which are defined unconditionally. If you want to avoid name clashes caused by shortened versions, define `DATATYPE99_NO_ALIASES` before including `datatype99.h`. Library headers are strongly advised to use the postfixed macros, but without resorting to `DATATYPE99_NO_ALIASES`.
+
 ### Semantics
 
 (It might be helpful to look at the [generated data layout](https://godbolt.org/z/3TKn8T3Gj) of [`examples/binary_tree.c`](examples/binary_tree.c).)
@@ -219,19 +223,14 @@ struct <datatype-name> {
 inline static <datatype-name> <variant-name>(...) { /* ... */ }
 ```
 
- 7. Now, when a sum type is fully generated, the derivation process takes place. Each deriver is invoked sequentially, from left to right, as
+ 7. Now, when a sum type is fully generated, the derivation process takes place. Each deriver taken from `derive(...)` is invoked sequentially, from left to right, as
 
 ```
-ML99_call(DATATYPE99_DERIVE_##<deriver-name>, v(<datatype-name>), variants...)
+ML99_call(DATATYPE99_DERIVE_##<deriver-name>I, v(<datatype-name>), variants...)
 ```
 
 where
- - `DATATYPE99_DERIVE_##<deriver-name>` is a [Metalang99-compliant](https://metalang99.readthedocs.io/en/latest/#definitions) macro of the following form:
-
-```
-#define DATATYPE99_DERIVE_##<deriver-name>_IMPL(name, variants) // Implementation...
-```
-
+ - `DATATYPE99_DERIVE_##<deriver-name>I` is a [Metalang99-compliant] macro representing the deriver.
  - `variants...` is a [list] of variants represented as two-place [tuples]: `(<variant-name>, types...)`, where
    - `types...` is a [list] of types of the corresponding variant.
 
@@ -266,13 +265,14 @@ typedef struct <record-name> {
 
 [Interface99]: https://github.com/Hirrolot/interface99
 
- 2. Each deriver is invoked sequentially, from left to right, as
+ 2. Each deriver taken from `derive(...)` is invoked sequentially, from left to right, as
 
 ```
-ML99_call(DATATYPE99_RECORD_DERIVE_##<deriver-name>, v(<record-name>), fields...)
+ML99_call(DATATYPE99_RECORD_DERIVE_##<deriver-name>I, v(<record-name>), fields...)
 ```
 
 where
+ - `DATATYPE99_RECORD_DERIVE_##<deriver-name>I` is a [Metalang99-compliant] macro representing the deriver.
  - `fields...` is a [list] of fields represented as two-place [tuples]: `(<type>, <field-name>)`. If a record contains no fields, the list would consist only of `(char, dummy)`.
 
 #### `match`
@@ -317,7 +317,7 @@ A complete `ifLet` construct results in a single C statement.
 
 ## Unit type
 
-The unit type `UnitT` represents a type of a single value, `unit_v` (it should not be assigned to anything else). `UnitT` and `unit_v` are defined as follows:
+The unit type `UnitT` represents the type of a single value, `unit_v` (it should not be assigned to anything else). `UnitT` and `unit_v` are defined as follows:
 
 ```c
 typedef char UnitT;
@@ -354,9 +354,7 @@ To manipulate derive helper attributes, there are a few predefined macros:
 
  - The macros `DATATYPE99_MAJOR`, `DATATYPE99_MINOR`, `DATATYPE99_PATCH`, `DATATYPE99_VERSION_COMPATIBLE(x, y, z)`, and `DATATYPE99_VERSION_EQ(x, y, z)` have the [same semantics as of Metalang99](https://metalang99.readthedocs.io/en/latest/#version-manipulation-macros).
 
- - If you do **not** want the shortened versions to appear (e.g., `match` without the prefix `99`), define `DATATYPE99_NO_ALIASES` before `#include <datatype99.h>`.
-
- - For each macro using `ML99_EVAL`, Datatype99 provides its [Metalang99-compliant](https://metalang99.readthedocs.io/en/latest/#definitions) counterpart which can be used inside derivers and other Metalang99-compliant macros:
+ - For each macro using `ML99_EVAL`, Datatype99 provides its [Metalang99-compliant] counterpart which can be used inside derivers and other Metalang99-compliant macros:
 
 | Macro | Metalang99-compliant counterpart |
 |----------|----------|
@@ -370,6 +368,7 @@ To manipulate derive helper attributes, there are a few predefined macros:
  - There is a built-in deriver `dummy` which generates nothing. It is defined both for record and sum types.
 
 [SemVer]: https://semver.org
+[Metalang99-compliant]: https://metalang99.readthedocs.io/en/latest/#definitions
 [arity specifier]: https://hirrolot.gitbook.io/metalang99/partial-application
 [desugaring macro]: https://metalang99.readthedocs.io/en/latest/#definitions
 
