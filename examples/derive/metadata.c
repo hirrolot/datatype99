@@ -6,28 +6,28 @@
 // Deriver implementation {
 
 #define DATATYPE99_DERIVE_Metadata_IMPL(name, variants)                                            \
-    ML99_TERMS(VARIANTS_METADATA(name, variants), METADATA(name, variants))
+    ML99_TERMS(genVariantsMetadata(name, variants), genMetadata(name, variants))
 
-#define VARIANTS_METADATA(name, variants)                                                          \
+#define genVariantsMetadata(name, variants)                                                        \
     ML99_assignStmt(                                                                               \
         v(static const VariantMetadata name##_variants_metadata[]),                                \
-        GEN_VARIANTS_INITIALIZER_LIST(name, variants))
+        genVariantsInitializerList(name, variants))
 
-#define GEN_VARIANTS_INITIALIZER_LIST(name, variants)                                              \
+#define genVariantsInitializerList(name, variants)                                                 \
     ML99_braced(ML99_listMapInPlace(                                                               \
-        ML99_compose(ML99_appl(v(GEN_VARIANT), v(name)), v(ML99_untuple)),                         \
+        ML99_compose(ML99_appl(v(genVariant), v(name)), v(ML99_untuple)),                          \
         v(variants)))
 
-#define GEN_VARIANT_IMPL(name_, tag, sig)                                                          \
+#define genVariant_IMPL(name_, tag, sig)                                                           \
     ML99_TERMS(                                                                                    \
         ML99_braced(                                                                               \
             ML99_assign(v(.name), v(#tag)),                                                        \
             ML99_assign(v(.arity), ML99_listLen(v(sig))),                                          \
             ML99_assign(v(.size), v(sizeof(name_##tag)))),                                         \
         v(, ))
-#define GEN_VARIANT_ARITY 2
+#define genVariant_ARITY 2
 
-#define METADATA(name_, variants_)                                                                 \
+#define genMetadata(name_, variants_)                                                              \
     ML99_assignStmt(                                                                               \
         v(static const DatatypeMetadata name_##_metadata),                                         \
         ML99_braced(                                                                               \

@@ -8,15 +8,15 @@
         v(inline static void name##_print(name self, FILE *stream)),                               \
         ML99_prefixedBlock(                                                                        \
             v(match(self)),                                                                        \
-            ML99_listMapInPlace(ML99_compose(v(GEN_ARM), v(ML99_untuple)), v(variants))))
+            ML99_listMapInPlace(ML99_compose(v(genArm), v(ML99_untuple)), v(variants))))
 
-#define GEN_ARM_IMPL(tag, sig)                                                                     \
+#define genArm_IMPL(tag, sig)                                                                      \
     ML99_TERMS(                                                                                    \
         DATATYPE99_assertAttrIsPresent(v(tag##_Print_fmt)),                                        \
         ML99_prefixedBlock(                                                                        \
             DATATYPE99_of(v(tag), ML99_indexedArgs(ML99_listLen(v(sig)))),                         \
             ML99_invokeStmt(v(fprintf), v(stream), DATATYPE99_attrValue(v(tag##_Print_fmt)))))
-#define GEN_ARM_ARITY 1
+#define genArm_ARITY 1
 // (Deriver implementation)
 
 #define Foo_Print_fmt attr("Foo(\"%s\")", *_0)

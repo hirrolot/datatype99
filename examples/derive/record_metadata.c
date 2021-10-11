@@ -6,25 +6,25 @@
 // Deriver implementation {
 
 #define DATATYPE99_RECORD_DERIVE_Metadata_IMPL(name, fields)                                       \
-    ML99_TERMS(FIELDS_METADATA(name, fields), METADATA(name, fields))
+    ML99_TERMS(genFieltsMetadata(name, fields), genMetadata(name, fields))
 
-#define FIELDS_METADATA(name, fields)                                                              \
+#define genFieltsMetadata(name, fields)                                                            \
     ML99_assignStmt(                                                                               \
         v(static const FieldMetadata name##_fields_metadata[]),                                    \
-        GEN_FIELDS_INITIALIZER_LIST(name, fields))
+        genFieltsInitializerList(name, fields))
 
-#define GEN_FIELDS_INITIALIZER_LIST(name, fields)                                                  \
+#define genFieltsInitializerList(name, fields)                                                     \
     ML99_braced(ML99_listMapInPlace(                                                               \
-        ML99_compose(ML99_appl(v(GEN_FIELD), v(name)), v(ML99_untuple)),                           \
+        ML99_compose(ML99_appl(v(genField), v(name)), v(ML99_untuple)),                            \
         v(fields)))
 
-#define GEN_FIELD_IMPL(name_, ty, ident)                                                           \
+#define genField_IMPL(name_, ty, ident)                                                            \
     ML99_TERMS(                                                                                    \
         ML99_braced(ML99_assign(v(.name), v(#ident)), ML99_assign(v(.size), v(sizeof(ty)))),       \
         v(, ))
-#define GEN_FIELD_ARITY 2
+#define genField_ARITY 2
 
-#define METADATA(name_, fields_)                                                                   \
+#define genMetadata(name_, fields_)                                                                \
     ML99_assignStmt(                                                                               \
         v(static const RecordMetadata name_##_metadata),                                           \
         ML99_braced(                                                                               \

@@ -20,4 +20,5 @@ if [[ "$OSTYPE" == "linux-gnu" ]]; then
     run_example "derive/metadata"
     run_example "derive/record_metadata"
     run_example "derive/print"
+    run_example "derive/command_menu"
 fi
