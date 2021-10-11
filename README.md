@@ -230,7 +230,7 @@ ML99_call(DATATYPE99_DERIVE_##<deriver-name>I, v(<datatype-name>), variants...)
 ```
 
 where
- - `DATATYPE99_DERIVE_##<deriver-name>I` is a [Metalang99-compliant] macro representing the deriver.
+ - `<deriver-name>I` corresponds to a [Metalang99-compliant] macro of the form `#define DATATYPE99_DERIVE_##<deriver-name>I_IMPL(name, variants) /* ... */`.
  - `variants...` is a [list] of variants represented as two-place [tuples]: `(<variant-name>, types...)`, where
    - `types...` is a [list] of types of the corresponding variant.
 
@@ -272,7 +272,7 @@ ML99_call(DATATYPE99_RECORD_DERIVE_##<deriver-name>I, v(<record-name>), fields..
 ```
 
 where
- - `DATATYPE99_RECORD_DERIVE_##<deriver-name>I` is a [Metalang99-compliant] macro representing the deriver.
+ - `<deriver-name>I` corresponds to a [Metalang99-compliant] macro of the form `#define DATATYPE99_RECORD_DERIVE_##<deriver-name>I_IMPL(name, fields) /* ... */`.
  - `fields...` is a [list] of fields represented as two-place [tuples]: `(<type>, <field-name>)`. If a record contains no fields, the list would consist only of `(char, dummy)`.
 
 #### `match`
