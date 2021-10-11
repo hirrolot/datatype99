@@ -317,12 +317,14 @@ A complete `ifLet` construct results in a single C statement.
 
 ## Unit type
 
-The unit type `UnitT` represents the type of a single value, `unit_v` (it should not be assigned to anything else). `UnitT` and `unit_v` are defined as follows:
+The unit type `UnitT99` represents the type of a single value, `unit_v99` (it should not be assigned to anything else). These are defined as follows:
 
 ```c
-typedef char UnitT;
-static const UnitT unit_v = '\0';
+typedef char UnitT99;
+static const UnitT99 unit_v99 = '\0';
 ```
+
+If `DATATYPE99_NO_ALIASES` remains undefined prior to `#include <datatype99.h>`, `UnitT99` and `unit_v99` are also accessible through object-like macros `UnitT` & `unit_v`.
 
 ## Derive helper attributes
 
