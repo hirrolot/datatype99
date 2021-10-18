@@ -131,7 +131,7 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 
 ```ebnf
 <datatype>      ::= "datatype(" [ <derive-clause> "," ] <datatype-name> { "," <variant> }+ ")" ;
-<record>        ::= "record(" [ <derive-clause> "," ] <record-name> { "," <field> }* ")" ;
+<record>        ::= "record("   [ <derive-clause> "," ] <record-name>   { "," <field> }* ")" ;
 <datatype-name> ::= <ident> ;
 <record-name>   ::= <ident> ;
 
@@ -143,7 +143,7 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 <derive-clause> ::= "derive(" <deriver-name> { "," <deriver-name> }* ")" ;
 <deriver-name>  ::= <ident> ;
 
-<match>         ::= "match(" <lvalue> ")" { <arm> }+ ;
+<match>         ::= "match(" <lvalue> ")" { <of> }+ ;
 <matches>       ::= "MATCHES(" <expr> "," <ident> ")" ;
 <if-let>        ::= "ifLet(" <lvalue> "," <variant-name> "," <ident> { "," <ident> }* ")" <stmt> ;
 <of>            ::= "of(" <variant-name> { "," <ident> }* ")" <stmt> ;
