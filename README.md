@@ -143,7 +143,7 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 <derive-clause> ::= "derive(" <deriver-name> { "," <deriver-name> }* ")" ;
 <deriver-name>  ::= <ident> ;
 
-<match>         ::= "match(" <lvalue> ")" { <of> }+ ;
+<match>         ::= "match(" <lvalue> ")" { <of> }* [ <otherwise> ] ;
 <matches>       ::= "MATCHES(" <expr> "," <ident> ")" ;
 <if-let>        ::= "ifLet(" <lvalue> "," <variant-name> "," <ident> { "," <ident> }* ")" <stmt> ;
 <of>            ::= "of(" <variant-name> { "," <ident> }* ")" <stmt> ;
