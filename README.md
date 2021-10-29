@@ -150,10 +150,12 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
 <otherwise>     ::= "otherwise" <stmt> ;
 ```
 
-Notes:
+<details>
+  <summary>Note: shortened vs. postfixed versions</summary>
 
- - Each listed identifier in the above grammar corresponds to a macro name defined in `datatype99.h` by default -- these are called _shortened versions_. On the other hand, there are also _postfixed versions_ (`match99`, `of99`, `derive99`, etc.), which are defined unconditionally. If you want to avoid name clashes caused by shortened versions, define `DATATYPE99_NO_ALIASES` before including `datatype99.h`. Library headers are strongly advised to use the postfixed macros, but without resorting to `DATATYPE99_NO_ALIASES`.
-
+  Each listed identifier in the above grammar corresponds to a macro name defined by default -- these are called _shortened versions_. On the other hand, there are also _postfixed versions_ (`match99`, `of99`, `derive99`, etc.), which are defined unconditionally. If you want to avoid name clashes caused by shortened versions, define `DATATYPE99_NO_ALIASES` before including `datatype99.h`. Library headers are strongly advised to use the postfixed macros, but without resorting to `DATATYPE99_NO_ALIASES`.
+</details>
+  
 ### Semantics
 
 (It might be helpful to look at the [generated data layout](https://godbolt.org/z/3TKn8T3Gj) of [`examples/binary_tree.c`](examples/binary_tree.c).)
