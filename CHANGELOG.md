@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+## [1.5.2] - 2021-11-09
+
 ### Fixed
 
  - The `derive` attribute was made into a macro (see [issue 12](https://github.com/Hirrolot/datatype99/issues/12)).

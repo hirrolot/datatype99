@@ -99,7 +99,7 @@ SOFTWARE.
 
 #define DATATYPE99_MAJOR 1
 #define DATATYPE99_MINOR 5
-#define DATATYPE99_PATCH 1
+#define DATATYPE99_PATCH 2
 
 #define DATATYPE99_VERSION_COMPATIBLE(x, y, z)                                                     \
     (DATATYPE99_MAJOR == (x) &&                                                                    \
