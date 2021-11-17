@@ -4,15 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased]
+## unreleased
 
-## [1.5.2] - 2021-11-09
+## 1.5.2 - 2021-11-09
 
 ### Fixed
 
  - The `derive` attribute was made into a macro (see [issue 12](https://github.com/Hirrolot/datatype99/issues/12)).
 
-## [1.5.1] - 2021-10-06
+## 1.5.1 - 2021-10-06
 
 ### Fixed
 
@@ -25,14 +25,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
    - `ifLet(val, tag, ...)`
    - `of(...)`
 
-## [1.5.0] - 2021-08-27
+## 1.5.0 - 2021-08-27
 
 ### Added
 
  - `DATATYPE99_VERSION_COMPATIBLE` to check for a SemVer-compatible version.
  - `DATATYPE99_VERSION_EQ` to check for an exact version.
 
-## [1.4.0] - 2021-08-13
+## 1.4.0 - 2021-08-13
 
 ### Added
 
@@ -42,13 +42,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
  - `matches`/`matches99`; use `MATCHES`/`MATCHES99` instead.
 
-## [1.3.0] - 2021-07-27
+## 1.3.0 - 2021-07-27
 
 ### Added
 
  - An empty record -- `record(Foo)`.
 
-## [1.2.0] - 2021-06-06
+## 1.2.0 - 2021-06-06
 
 ### Added
 
@@ -60,7 +60,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Add the missing arity specifier for `DATATYPE99_datatype`.
  - Make Datatype99 work on TCC (see [issue 10](https://github.com/Hirrolot/datatype99/issues/10)).
 
-## [1.1.0] - 2021-04-24
+## 1.1.0 - 2021-04-24
 
 ### Added
 
@@ -82,7 +82,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Inconsistent suppression of `-Wreturn-type` ([issue 9](https://github.com/Hirrolot/datatype99/issues/9)).
  - Suppress Clang's `-Wcast-qual` in `ifLet`.
 
-## [1.0.0] - 2021-03-28
+## 1.0.0 - 2021-03-28
 
 ### Added
 
@@ -96,7 +96,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
  - Suppress Clang's `-Wcast-qual` in `match`.
 
-## [0.4.0] - 2021-03-27
+## 0.4.0 - 2021-03-27
 
 ### Added
 
@@ -112,7 +112,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Clang's `-Wused-but-marked-unused` in `of`.
  - The specification now requires an lvalue for `match`.
 
-## [0.3.1] - 2021-02-28
+## 0.3.1 - 2021-02-28
 
 ### Added
 
@@ -124,7 +124,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Suppress `-Wreturn-type` for Clang too.
  - Make it work on C++11.
 
-## [0.3.0] - 2021-02-26
+## 0.3.0 - 2021-02-26
 
 ### Changed
 
@@ -138,13 +138,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Error reporting about an unparenthesised variant like `Bar(int)`.
  - `Unit` and `unit`.
 
-## [0.2.0] - 2021-02-05
+## 0.2.0 - 2021-02-05
 
 ### Changed
 
  - Replace `Epilepsy` with `Metalang99` (more neutral).
 
-## [0.1.0] - 2021-02-04
+## 0.1.0 - 2021-02-04
 
 ### Added
 
