@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 project(examples LANGUAGES C)
 
-include_directories(.. ../metalang99/include)
-
 # For the reason behind -Wno-return-type, see
 # <https://github.com/Hirrolot/datatype99/issues/9>.
 set(GCC_OPTIONS -Wall -Wextra -pedantic -ftrack-macro-expansion=0
