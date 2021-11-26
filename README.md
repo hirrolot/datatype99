@@ -27,7 +27,7 @@
 
 ## Installation
 
-Datatype99 consists of just one header `datatype99.h` and one dependency [Metalang99] (minimum supported version -- [1.9.0](https://github.com/Hirrolot/metalang99/releases/tag/v1.9.0)); therefore, you need to add `datatype99` and `metalang99/include` to your include directories.
+Datatype99 consists of just one header `datatype99.h` and one dependency [Metalang99]; therefore, you need to add `datatype99` and `metalang99/include` to your include directories.
 
 If you use CMake, the recommended way is either [`FetchContent`] or [`add_subdirectory`], e.g.:
 
@@ -56,7 +56,7 @@ add_subdirectory(datatype99)
 target_link_libraries(MyProject datatype99)
 ```
 
-In the latter case, I encourage you to download Datatype99 as a [Git submodule] to be able to update it with `git submodule update --remote` when necessary. Also, note that by default, Datatype99's `CMakeLists.txt` downloads Metalang99 from the Git repository; if you want to override this behaviour, you can do so by invoking [`FetchContent_Declare`] earlier.
+In the latter case, I encourage you to download Datatype99 as a [Git submodule] to be able to update it with `git submodule update --remote` when necessary. Also, note that by default, Datatype99's `CMakeLists.txt` downloads Metalang99 [v1.9.0](https://github.com/Hirrolot/metalang99/releases/tag/v1.9.0) from the Git repository; if you want to override this behaviour, you can do so by invoking [`FetchContent_Declare`] earlier.
 
 [Git submodule]: https://git-scm.com/book/en/v2/Git-Tools-Submodules
 [`FetchContent_Declare`]: https://cmake.org/cmake/help/latest/module/FetchContent.html#command:fetchcontent_declare
