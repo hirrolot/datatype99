@@ -1,18 +1,10 @@
 cmake_minimum_required(VERSION 3.16)
 project(tests LANGUAGES C)
 
-include_directories(.. ../metalang99/include)
-
 # For the reason behind -Wno-return-type, see
 # <https://github.com/Hirrolot/datatype99/issues/9>.
-set(GCC_OPTIONS
-    -Wall
-    -Wextra
-    -pedantic
-    -std=c99
-    -ftrack-macro-expansion=0
-    -Wno-return-type
-    -fsanitize=address)
+set(GCC_OPTIONS -Wall -Wextra -pedantic -ftrack-macro-expansion=0
+                -Wno-return-type -fsanitize=address)
 
 set(CLANG_OPTIONS -fmacro-backtrace-limit=1 -Wno-return-type -fsanitize=address)
 
@@ -44,7 +36,19 @@ add_executable(version version.c)
 
 set_standard(tests 99)
 set_standard(metalang99_compliant 99)
+set_standard(version 99)
 
 # For `_Static_assert`, which can be used on the same line number.
 set_standard(derive 11)
 set_standard(record_derive 11)
+
+add_subdirectory(.. build)
+
+get_property(
+  TESTS
+  DIRECTORY .
+  PROPERTY BUILDSYSTEM_TARGETS)
+
+foreach(TARGET ${TESTS})
+  target_link_libraries(${TARGET} datatype99)
+endforeach()

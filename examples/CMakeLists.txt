@@ -5,14 +5,8 @@ include_directories(.. ../metalang99/include)
 
 # For the reason behind -Wno-return-type, see
 # <https://github.com/Hirrolot/datatype99/issues/9>.
-set(GCC_OPTIONS
-    -Wall
-    -Wextra
-    -pedantic
-    -std=c99
-    -ftrack-macro-expansion=0
-    -Wno-return-type
-    -fsanitize=address)
+set(GCC_OPTIONS -Wall -Wextra -pedantic -ftrack-macro-expansion=0
+                -Wno-return-type -fsanitize=address)
 
 set(CLANG_OPTIONS -fmacro-backtrace-limit=1 -Wno-return-type -fsanitize=address)
 
@@ -39,6 +33,20 @@ add_executable(token token.c)
 
 add_subdirectory(derive)
 
-foreach(TARGET ${BUILDSYSTEM_TARGETS})
-  set_target_properties(TARGET PROPERTIES C_STANDARD 99 C_STANDARD_REQUIRED ON)
+add_subdirectory(.. build)
+
+get_property(
+  EXAMPLES
+  DIRECTORY .
+  PROPERTY BUILDSYSTEM_TARGETS)
+
+get_property(
+  DERIVE_EXAMPLES
+  DIRECTORY derive
+  PROPERTY BUILDSYSTEM_TARGETS)
+
+foreach(TARGET ${EXAMPLES};${DERIVE_EXAMPLES})
+  target_link_libraries(${TARGET} datatype99)
+  set_target_properties(${TARGET} PROPERTIES C_STANDARD 99 C_STANDARD_REQUIRED
+                                                           ON)
 endforeach()
