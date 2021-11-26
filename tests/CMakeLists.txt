@@ -42,7 +42,7 @@ set_standard(version 99)
 set_standard(derive 11)
 set_standard(record_derive 11)
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/.. build)
+add_subdirectory(.. build)
 
 get_property(
   TESTS
