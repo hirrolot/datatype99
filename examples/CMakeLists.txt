@@ -33,7 +33,7 @@ add_executable(token token.c)
 
 add_subdirectory(derive)
 
-add_subdirectory(.. build)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/.. build)
 
 get_property(
   EXAMPLES

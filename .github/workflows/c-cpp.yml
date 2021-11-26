@@ -24,9 +24,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Download Metalang99
-      run: git clone https://github.com/Hirrolot/metalang99.git
-
     - name: Test
       run: bash scripts/test-all.sh
 
@@ -37,9 +34,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: Download Metalang99
-        run: git clone https://github.com/Hirrolot/metalang99.git
 
       - name: Install TCC
         run: sudo apt install tcc
