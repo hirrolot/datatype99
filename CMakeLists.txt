@@ -5,8 +5,7 @@ include(FetchContent)
 
 FetchContent_Declare(
     metalang99
-    GIT_REPOSITORY https://github.com/Hirrolot/metalang99.git
-    GIT_TAG master # TODO: change it to vx.y.z.
+    URL https://github.com/Hirrolot/metalang99/archive/refs/tags/v1.13.0.tar.gz
 )
 
 FetchContent_MakeAvailable(metalang99)
