@@ -29,8 +29,8 @@ SOFTWARE.
 
 #include <metalang99.h>
 
-#if !ML99_VERSION_COMPATIBLE(1, 9, 0)
-#error Please, update Metalang99 to v1.9.0 or later.
+#if !ML99_VERSION_COMPATIBLE(1, 13, 0)
+#error Please, update Metalang99 to v1.13.0 or later.
 #endif
 
 #ifndef DATATYPE99_NO_ALIASES
@@ -98,8 +98,8 @@ SOFTWARE.
                             <https://github.com/Hirrolot/datatype99/issues/12>. */
 
 #define DATATYPE99_MAJOR 1
-#define DATATYPE99_MINOR 5
-#define DATATYPE99_PATCH 2
+#define DATATYPE99_MINOR 6
+#define DATATYPE99_PATCH 0
 
 #define DATATYPE99_VERSION_COMPATIBLE(x, y, z)                                                     \
     (DATATYPE99_MAJOR == (x) &&                                                                    \
