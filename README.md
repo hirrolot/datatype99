@@ -806,4 +806,4 @@ int foo(void) {
 }
 ```
 
-See [issue 9](https://github.com/Hirrolot/datatype99/issues/9).
+See [issue #9](https://github.com/Hirrolot/datatype99/issues/9).
