@@ -186,7 +186,7 @@ Having a well-defined semantics of the macros, you can write an FFI which is qui
   
 ### Semantics
 
-(It might be helpful to look at the [generated data layout](https://godbolt.org/z/3TKn8T3Gj) of [`examples/binary_tree.c`](examples/binary_tree.c).)
+(It might be helpful to look at the [generated data layout](https://godbolt.org/z/rebxMxW43) of [`examples/binary_tree.c`](examples/binary_tree.c).)
 
 #### `datatype`
 
@@ -252,6 +252,8 @@ struct <datatype-name> {
 ```
 inline static <datatype-name> <variant-name>(/* ... */) { /* ... */ }
 ```
+
+If the variant has no parameters, this function will take `void` and `.data.dummy` will be initialised to `\0`. Otherwise, it will take the corresponding variant parameters and initialise the result value as expected.
 
  7. Now, when a sum type is fully generated, the derivation process takes place. Each deriver taken from `derive(...)` is invoked sequentially, from left to right, as
 

@@ -385,6 +385,8 @@ static const UnitT99 unit_v99 = '\0';
     v(inline static DATATYPE99_PRIV_CTOR_ATTRS name tag_ params {                                  \
         name result;                                                                               \
         result.tag = tag_##Tag;                                                                    \
+        result.data.dummy = '\0'; /* Ensure that we always initialise memory (even if the variant  \
+                                     has no parameters). */                                        \
         { assigned_fields }                                                                        \
         return result;                                                                             \
     })

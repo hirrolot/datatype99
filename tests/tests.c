@@ -112,7 +112,10 @@ int main(void) {
         assert(NULL == d.data.D._3);
 
         assert(EmptyATag == empty_a.tag);
+        assert('\0' == empty_a.data.dummy);
+
         assert(EmptyBTag == empty_b.tag);
+        assert('\0' == empty_b.data.dummy);
     }
 
     // <datatype-name>Tag
