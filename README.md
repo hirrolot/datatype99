@@ -257,7 +257,7 @@ struct <datatype-name> {
 inline static <datatype-name> <variant-name>(/* ... */) { /* ... */ }
 ```
 
-If the variant has no parameters, this function will take `void` and `.data.dummy` will be initialised to `\0`. Otherwise, it will take the corresponding variant parameters and initialise the result value as expected.
+If the variant has no parameters, this function will take `void` and initialise `.data.dummy` to `'\0'`; otherwise, it will take the corresponding variant parameters and initialise the result value as expected.
 
  7. Now, when a sum type is fully generated, the derivation process takes place. Each deriver taken from `derive(...)` is invoked sequentially, from left to right, as
 
