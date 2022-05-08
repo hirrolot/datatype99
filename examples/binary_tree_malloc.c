@@ -51,13 +51,14 @@ int sum(const BinaryTree *tree) {
 #define LEAF(number)              TREE(Leaf(number))
 
 int main(void) {
-    const BinaryTree *tree = NODE(NODE(LEAF(1), 2, NODE(LEAF(3), 4, LEAF(5))), 6, LEAF(7));
+    BinaryTree *tree = NODE(NODE(LEAF(1), 2, NODE(LEAF(3), 4, LEAF(5))), 6, LEAF(7));
 
     /*
      * Output:
      * 28
      */
     printf("%d\n", sum(tree));
+    destroy_tree(tree);
 
     return 0;
 }
