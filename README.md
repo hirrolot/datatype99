@@ -782,36 +782,39 @@ A: Datatype99 is known to work on these compilers:
 
 ### `warning: control reaches end of non-void function [-Wreturn-type]`
 
-This is a known false positive occurring when `match` is used to return control back to a caller. Unfortunately, we cannot fix it in the library itself, but there are two workarounds:
-
- 1. Disable this warning explicitly. With [GCC diagnostic pragmas] (or the [Clang's counterpart](https://clang.llvm.org/docs/UsersManual.html#controlling-diagnostics-via-pragmas)):
+This warning happens when you try to return control from within a `match` statement, and your compiler thinks that not all hypothetical variants are handled. For example:
 
 ```c
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wreturn-type"
-int foo(void) {
-    match(x) {
-        of(Foo, foo) return X;
-        of(Bar, bar) return Y;
+datatype(MyType, (Foo), (Bar));
+
+int handle(MyType val) {
+    match(val) {
+        of(Foo) return 5;
+        of(Bar) return 7;
     }
 }
-#pragma GCC diagnostic pop
 ```
 
-[GCC diagnostic pragmas]: https://gcc.gnu.org/onlinedocs/gcc/Diagnostic-Pragmas.html
+The above code may seem perfect at first glance, but in fact, it is not. The reason is this: `match(val)` boils down to `switch(val.tag)` under the hood, with `val.tag` being an ordinary C enumeration consisting of the variants `Foo` and `Bar`. But what if a caller provides us with neither `Foo` nor `Bar`, but with something like `42` (not a valid variant)? Since `enum` is merely another way to give integers names, a compiler would not complain on the _caller_ site. However, on the _callee_ site, we would have the warning:
 
- 2. Assign a result variable inside branches and return it after `match`:
+```
+test.c: In function ‘handle’:
+test.c:10:1: warning: control reaches end of non-void function [-Wreturn-type]
+   10 | }
+      | ^
+```
+
+The solution is to either panic or return some error-signaling code, like this:
 
 ```c
-int foo(void) {
-    int result = 0;
-
-    match(x) {
-        of(Foo, foo) result = X;
-        of(Bar, bar) result = Y;
+int handle(MyType val) {
+    match(val) {
+        of(Foo) return 5;
+        of(Bar) return 7;
     }
 
-    return result;
+    // Invalid input (no such variant).
+    return -1;
 }
 ```
 
