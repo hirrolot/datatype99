@@ -1,12 +1,10 @@
 cmake_minimum_required(VERSION 3.16)
 project(examples LANGUAGES C)
 
-# For the reason behind -Wno-return-type, see
-# <https://github.com/Hirrolot/datatype99/issues/9>.
 set(GCC_OPTIONS -Wall -Wextra -pedantic -ftrack-macro-expansion=0
-                -Wno-return-type -fsanitize=address)
+                -fsanitize=address)
 
-set(CLANG_OPTIONS -fmacro-backtrace-limit=1 -Wno-return-type -fsanitize=address)
+set(CLANG_OPTIONS -fmacro-backtrace-limit=1 -fsanitize=address)
 
 # Enable a standard-conforming C99/C11 preprocessor.
 set(MSVC_OPTIONS /std:c11)

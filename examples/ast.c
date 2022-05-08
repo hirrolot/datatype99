@@ -32,6 +32,9 @@ double eval(const Expr *expr) {
         of(Mul, lhs, rhs) return eval(*lhs) * eval(*rhs);
         of(Div, lhs, rhs) return eval(*lhs) / eval(*rhs);
     }
+
+    // Invalid input (no such variant).
+    return -1;
 }
 
 #define EXPR(expr)       ((Expr *)(Expr[]){expr})

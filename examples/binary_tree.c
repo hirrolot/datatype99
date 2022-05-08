@@ -17,6 +17,9 @@ int sum(const BinaryTree *tree) {
         of(Leaf, x) return *x;
         of(Node, lhs, x, rhs) return sum(*lhs) + *x + sum(*rhs);
     }
+
+    // Invalid input (no such variant).
+    return -1;
 }
 
 #define TREE(tree)                ((BinaryTree *)(BinaryTree[]){tree})

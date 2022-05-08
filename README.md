@@ -117,6 +117,9 @@ int sum(const BinaryTree *tree) {
     case Node:
         return sum(tree->data.node.lhs) + tree->data.node.x + sum(tree->data.node.rhs);
     }
+
+    // Invalid input (no such variant).
+    return -1;
 }
 ```
 
@@ -130,6 +133,9 @@ int sum(const BinaryTree *tree) {
         of(Leaf, x) return *x;
         of(Node, lhs, x, rhs) return sum(*lhs) + *x + sum(*rhs);
     }
+
+    // Invalid input (no such variant).
+    return -1;
 }
 ```
 
