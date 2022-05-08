@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="images/preview.png" width="600"/>
+  <img src="images/preview.png" width="600" />
   <h1>Datatype99</h1>
   <a href="https://github.com/Hirrolot/datatype99/actions">
     <img src="https://github.com/Hirrolot/datatype99/workflows/C/C++%20CI/badge.svg">
@@ -765,7 +765,7 @@ If an error is not comprehensible at all, try to look at generated code (`-E`). 
 
 ### Q: What about IDE support?
 
-![Suggestion](images/suggestion.png)
+<img src="images/suggestion.png" width="600px" />
 
 A: VS Code automatically enables suggestions of generated types but, of course, it does not support macro syntax highlighting.
 
