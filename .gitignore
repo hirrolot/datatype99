@@ -51,5 +51,5 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-# Cmake
+# CMake build files
 build/
