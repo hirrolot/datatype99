@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="preview.png" width="600"/>
+  <img src="images/preview.png" width="600"/>
   <h1>Datatype99</h1>
   <a href="https://github.com/Hirrolot/datatype99/actions">
     <img src="https://github.com/Hirrolot/datatype99/workflows/C/C++%20CI/badge.svg">
