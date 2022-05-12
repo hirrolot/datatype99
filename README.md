@@ -35,7 +35,7 @@ Datatype99 consists of just one header `datatype99.h` and one dependency [Metala
 
 [Metalang99]: https://github.com/Hirrolot/metalang99
 
-If you use CMake, the recommended way is either [`FetchContent`] or [`add_subdirectory`], e.g.:
+If you use CMake, the recommended way is [`FetchContent`]:
 
 [`FetchContent`]: https://cmake.org/cmake/help/latest/module/FetchContent.html
 
@@ -69,7 +69,10 @@ Another approach is downloading Datatype99 as a [Git submodule]; in this case, y
 [Git submodule]: https://git-scm.com/book/en/v2/Git-Tools-Submodules
 [`add_subdirectory`]: https://cmake.org/cmake/help/latest/command/add_subdirectory.html
 
-To reduce compilation times, you can try [precompiling headers] that rely on Datatype99 so that they will not be compiled each time they are included. And **PLEASE**, do not forget to specify [`-ftrack-macro-expansion=0`] (GCC), [`-fmacro-backtrace-limit=1`] (Clang), or something similar to limit macro expansion backtraces; otherwise, Datatype99 will throw your compiler to the moon.
+A few useful tips:
+
+ - To reduce compilation times, you can try [precompiling headers] that rely on Datatype99 so that they will not be compiled each time they are included.
+ - **PLEASE**, do not forget to specify [`-ftrack-macro-expansion=0`] (GCC), [`-fmacro-backtrace-limit=1`] (Clang), or something similar; otherwise, Datatype99 will throw your compiler to the moon.
 
 [precompiling headers]: https://en.wikipedia.org/wiki/Precompiled_header
 [`-ftrack-macro-expansion=0`]: https://gcc.gnu.org/onlinedocs/gcc/Preprocessor-Options.html
