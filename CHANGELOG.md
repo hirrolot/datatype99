@@ -6,9 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## unreleased
 
+## 1.6.3 - 2022-05-15
+
 ### Fixed
 
- - C++ compilation ([issue #14](https://github.com/Hirrolot/datatype99/issues/14)).
+ - Generation of binding variables when compiling on C++ ([issue #14](https://github.com/Hirrolot/datatype99/issues/14)).
 
 ## 1.6.2 - 2022-01-02
 
