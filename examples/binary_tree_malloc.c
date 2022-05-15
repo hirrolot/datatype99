@@ -23,17 +23,12 @@ BinaryTree *alloc_tree(BinaryTree tree) {
 }
 
 void destroy_tree(BinaryTree *tree) {
-    match(*tree) {
-        of(Leaf, _) {
-            free(tree);
-            return;
-        }
-        of(Node, lhs, _, rhs) {
-            destroy_tree(*lhs);
-            destroy_tree(*rhs);
-            free(tree);
-        }
+    ifLet(*tree, Node, lhs, _, rhs) {
+        destroy_tree(*lhs);
+        destroy_tree(*rhs);
     }
+
+    free(tree);
 }
 
 int sum(const BinaryTree *tree) {
