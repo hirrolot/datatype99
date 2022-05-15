@@ -336,4 +336,6 @@ int main(void) {
 
     UnitT dummy = unit_v;
     (void)dummy;
+
+    return 0;
 }

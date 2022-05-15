@@ -116,4 +116,6 @@ int main(void) {
     { ML99_EVAL(DATATYPE99_assertAttrIsPresent(v(FOO))); }
 
 #undef FOO
+
+    return 0;
 }
