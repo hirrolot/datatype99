@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 mkdir -p tests/build
 cd tests/build
 cmake ..

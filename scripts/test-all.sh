@@ -1,4 +1,6 @@
 #!/bin/bash
 
-bash scripts/test.sh
-bash scripts/test-examples.sh
+set -e
+
+./scripts/test.sh
+./scripts/test-examples.sh

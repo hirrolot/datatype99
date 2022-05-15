@@ -2,9 +2,9 @@ name: C/C++ CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   test:
@@ -22,10 +22,10 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Test
-      run: bash scripts/test-all.sh
+      - name: Test
+        run: ./scripts/test-all.sh
 
   test-tcc:
     runs-on: ubuntu-latest
@@ -39,7 +39,7 @@ jobs:
         run: sudo apt install tcc
 
       - name: Test
-        run: bash scripts/test-all.sh
+        run: ./scripts/test-all.sh
 
   check-fmt:
     runs-on: ubuntu-latest
@@ -51,4 +51,4 @@ jobs:
         run: git submodule update --init run-clang-format
 
       - name: Check code formatting
-        run: bash scripts/check-fmt.sh
+        run: ./scripts/check-fmt.sh
