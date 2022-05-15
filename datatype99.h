@@ -29,8 +29,8 @@ SOFTWARE.
 
 #include <metalang99.h>
 
-#if !ML99_VERSION_COMPATIBLE(1, 13, 1)
-#error Please, update Metalang99 to v1.13.1 or later.
+#if !ML99_VERSION_COMPATIBLE(1, 13, 2)
+#error Please, update Metalang99 to v1.13.2 or later.
 #endif
 
 #ifndef DATATYPE99_NO_ALIASES
