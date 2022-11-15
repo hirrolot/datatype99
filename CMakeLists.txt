@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.11.4)
 project(datatype99 LANGUAGES C)
 
+# Fix the warnings about `DOWNLOAD_EXTRACT_TIMESTAMP` in newer CMake versions.
+if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.24.0")
+    cmake_policy(SET CMP0135 NEW)
+endif()
+
 include(FetchContent)
 
 FetchContent_Declare(
