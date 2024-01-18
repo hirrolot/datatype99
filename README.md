@@ -570,7 +570,7 @@ A: There is a lot of software written in plain C that can benefit from Datatype9
 [Zig]: https://ziglang.org/
 
 See also:
- - [_Rust is not a good C replacement_](https://drewdevault.com/2019/03/25/Rust-is-not-a-good-C-replacement.html) by Drew DeVault.
+ - [_"Rust is not a good C replacement"_](https://drewdevault.com/2019/03/25/Rust-is-not-a-good-C-replacement.html) by Drew DeVault.
 
 Overall, if you can afford a more modern/high-level language, I encourage you to do so instead of using old C. However, many people do not have this possibility (or it would be too costly).
 
@@ -582,7 +582,7 @@ A: See [Metalang99's README >>](https://github.com/Hirrolot/metalang99#q-why-not
 
 A: In short, `datatype` expands to a tagged union with value constructors; `match` expands to a switch statement. To generate all this stuff, [Metalang99] is used, a preprocessor metaprogramming library.
 
-More on it in [_Compiling Algebraic Data Types in Pure C99_].
+More on it in [_"Compiling Algebraic Data Types in Pure C99"_](https://hirrolot.github.io/posts/compiling-algebraic-data-types-in-pure-c99.html).
 
 ### Q: Does it work on C++?
 
