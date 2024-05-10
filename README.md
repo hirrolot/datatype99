@@ -154,7 +154,7 @@ Finally, just a few brief notes about pattern matching:
 
  - To match the default case, write `otherwise { ... }` at the end of `match`.
  - To ignore a binding, write `_`: `of(Foo, a, b, _, d)`.
- - **PLEASE**, [do **not** use top-level `break`/`continue`](#top-level-breakcontinue) inside statements provided to `of` and `ifLet`; use `goto` labels instead.
+ - Please, [**do not use top-level `break`/`continue`**](#top-level-breakcontinue) inside statements provided to `of` and `ifLet`; use `goto` labels instead.
 
 Congratulations, this is all you need to know to write most of the stuff! If you feel fancy, you can also introspect your types at compile-time; see [`examples/derive/`](examples/derive/) for the examples.
 
