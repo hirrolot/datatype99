@@ -527,14 +527,14 @@ Thanks to Rust and ML for their implementations of sum types.
 
 ## Publications
 
- - [_Pretty-Printable Enumerations in Pure C_](https://hirrolot.github.io/posts/pretty-printable-enumerations-in-pure-c.html) by Hirrolot.
- - [_What’s the Point of the C Preprocessor, Actually?_](https://hirrolot.github.io/posts/whats-the-point-of-the-c-preprocessor-actually.html) by Hirrolot.
- - [_Macros on Steroids, Or: How Can Pure C Benefit From Metaprogramming_](https://hirrolot.github.io/posts/macros-on-steroids-or-how-can-pure-c-benefit-from-metaprogramming.html) by Hirrolot.
- - [_Extend Your Language, Don’t Alter It_](https://hirrolot.github.io/posts/extend-your-language-dont-alter-it.html) by Hirrolot.
- - [_Compiling Algebraic Data Types in Pure C99_] by Hirrolot.
- - [_Comparing Rust and Datatype99_](https://www.reddit.com/r/ProgrammingLanguages/comments/nc1o18/comparing_algebraic_data_types_rust_and_datatype99/) by Hirrolot.
- - [_Compile-Time Introspection of Sum Types in Pure C99_](https://hirrolot.github.io/posts/compile-time-introspection-of-sum-types-in-pure-c99.html) by Hirrolot.
- - [_Unleashing Sum Types in Pure C99_](https://hirrolot.github.io/posts/unleashing-sum-types-in-pure-c99.html) by Hirrolot.
+ - [_Pretty-Printable Enumerations in Pure C_](https://hirrolot.github.io/posts/pretty-printable-enumerations-in-pure-c.html)
+ - [_What’s the Point of the C Preprocessor, Actually?_](https://hirrolot.github.io/posts/whats-the-point-of-the-c-preprocessor-actually.html)
+ - [_Macros on Steroids, Or: How Can Pure C Benefit From Metaprogramming_](https://hirrolot.github.io/posts/macros-on-steroids-or-how-can-pure-c-benefit-from-metaprogramming.html)
+ - [_Extend Your Language, Don’t Alter It_](https://hirrolot.github.io/posts/extend-your-language-dont-alter-it.html)
+ - [_Compiling Algebraic Data Types in Pure C99_]
+ - [_Comparing Rust and Datatype99_](https://www.reddit.com/r/ProgrammingLanguages/comments/nc1o18/comparing_algebraic_data_types_rust_and_datatype99/)
+ - [_Compile-Time Introspection of Sum Types in Pure C99_](https://hirrolot.github.io/posts/compile-time-introspection-of-sum-types-in-pure-c99.html)
+ - [_Unleashing Sum Types in Pure C99_](https://hirrolot.github.io/posts/unleashing-sum-types-in-pure-c99.html)
 
 [_Compiling Algebraic Data Types in Pure C99_]: https://hirrolot.github.io/posts/compiling-algebraic-data-types-in-pure-c99.html
 
