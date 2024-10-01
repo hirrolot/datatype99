@@ -1,7 +1,7 @@
 /*
 MIT License
 
-Copyright (c) 2020-2024 Hirrolot
+Copyright (c) 2020-2024 hirrolot
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-// The official repository: <https://github.com/Hirrolot/datatype99>.
+// The official repository: <https://github.com/hirrolot/datatype99>.
 
 #ifndef DATATYPE99_H
 #define DATATYPE99_H
@@ -95,7 +95,7 @@ SOFTWARE.
 
 #define derive99(...)                                                                              \
     0derive(__VA_ARGS__) /* 0 is used as a prefix to cancel macro expansion; see                   \
-                            <https://github.com/Hirrolot/datatype99/issues/12>. */
+                            <https://github.com/hirrolot/datatype99/issues/12>. */
 
 #define DATATYPE99_MAJOR 1
 #define DATATYPE99_MINOR 6

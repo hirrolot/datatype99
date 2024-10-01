@@ -10,7 +10,7 @@ include(FetchContent)
 
 FetchContent_Declare(
     metalang99
-    URL https://github.com/Hirrolot/metalang99/archive/refs/tags/v1.13.2.tar.gz
+    URL https://github.com/hirrolot/metalang99/archive/refs/tags/v1.13.2.tar.gz
 )
 
 FetchContent_MakeAvailable(metalang99)

@@ -10,13 +10,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
- - Fix the `DOWNLOAD_EXTRACT_TIMESTAMP` CMake warning ([issue #15](https://github.com/Hirrolot/datatype99/issues/15)).
+ - Fix the `DOWNLOAD_EXTRACT_TIMESTAMP` CMake warning ([issue #15](https://github.com/hirrolot/datatype99/issues/15)).
 
 ## 1.6.3 - 2022-05-15
 
 ### Fixed
 
- - Generation of binding variables when compiling on C++ ([issue #14](https://github.com/Hirrolot/datatype99/issues/14)).
+ - Generation of binding variables when compiling on C++ ([issue #14](https://github.com/hirrolot/datatype99/issues/14)).
 
 ## 1.6.2 - 2022-01-02
 
@@ -44,7 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
- - The `derive` attribute was made into a macro (see [issue #12](https://github.com/Hirrolot/datatype99/issues/12)).
+ - The `derive` attribute was made into a macro (see [issue #12](https://github.com/hirrolot/datatype99/issues/12)).
 
 ## 1.5.1 - 2021-10-06
 
@@ -92,7 +92,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
  - Add the missing arity specifier for `DATATYPE99_datatype`.
- - Make Datatype99 work on TCC (see [issue #10](https://github.com/Hirrolot/datatype99/issues/10)).
+ - Make Datatype99 work on TCC (see [issue #10](https://github.com/hirrolot/datatype99/issues/10)).
 
 ## 1.1.0 - 2021-04-24
 
@@ -112,8 +112,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
- - `#pragma GCC diagnostic` inside functions error on GCC older than 4.6 ([issue #8](https://github.com/Hirrolot/datatype99/issues/8)).
- - Inconsistent suppression of `-Wreturn-type` ([issue #9](https://github.com/Hirrolot/datatype99/issues/9)).
+ - `#pragma GCC diagnostic` inside functions error on GCC older than 4.6 ([issue #8](https://github.com/hirrolot/datatype99/issues/8)).
+ - Inconsistent suppression of `-Wreturn-type` ([issue #9](https://github.com/hirrolot/datatype99/issues/9)).
  - Suppress Clang's `-Wcast-qual` in `ifLet`.
 
 ## 1.0.0 - 2021-03-28
@@ -142,7 +142,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
- - Avoid using `METALANG99_semicolon` because it turned out to be [dangerous](https://github.com/Hirrolot/metalang99/commit/f17f06adf1a747a8897bbc90c598b2be21c945c8).
+ - Avoid using `METALANG99_semicolon` because it turned out to be [dangerous](https://github.com/hirrolot/metalang99/commit/f17f06adf1a747a8897bbc90c598b2be21c945c8).
  - Clang's `-Wused-but-marked-unused` in `of`.
  - The specification now requires an lvalue for `match`.
 

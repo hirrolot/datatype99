@@ -1,8 +1,8 @@
 <div align="center">
   <a href="examples/binary_tree.c"><img src="images/preview.png" width="600" /></a>
   <h1>Datatype99</h1>
-  <a href="https://github.com/Hirrolot/datatype99/actions">
-    <img src="https://github.com/Hirrolot/datatype99/workflows/C/C++%20CI/badge.svg">
+  <a href="https://github.com/hirrolot/datatype99/actions">
+    <img src="https://github.com/hirrolot/datatype99/workflows/C/C++%20CI/badge.svg">
   </a>
   <a href="https://lists.sr.ht/~hirrolot/metalang99">
     <img src="https://img.shields.io/badge/mailing%20list-lists.sr.ht-orange">
@@ -33,7 +33,7 @@
 
 Datatype99 consists of one header file `datatype99.h` and one dependency [Metalang99]. To use it in your project, you need to:
 
-[Metalang99]: https://github.com/Hirrolot/metalang99
+[Metalang99]: https://github.com/hirrolot/metalang99
 
  1. Add `datatype99` and `metalang99/include` to your include directories.
  2. Specify [`-ftrack-macro-expansion=0`] (GCC) or [`-fmacro-backtrace-limit=1`] (Clang) to avoid useless macro expansion errors.
@@ -50,7 +50,7 @@ include(FetchContent)
 
 FetchContent_Declare(
     datatype99
-    URL https://github.com/Hirrolot/datatype99/archive/refs/tags/v1.2.3.tar.gz # v1.2.3
+    URL https://github.com/hirrolot/datatype99/archive/refs/tags/v1.2.3.tar.gz # v1.2.3
 )
 
 FetchContent_MakeAvailable(datatype99)
@@ -65,7 +65,7 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
 endif()
 ```
 
-(By default, `datatype99/CMakeLists.txt` downloads Metalang99 [v1.13.2](https://github.com/Hirrolot/metalang99/releases/tag/v1.13.2) from the GitHub releases; if you want to override this behaviour, you can do so by invoking [`FetchContent_Declare`] earlier.)
+(By default, `datatype99/CMakeLists.txt` downloads Metalang99 [v1.13.2](https://github.com/hirrolot/metalang99/releases/tag/v1.13.2) from the GitHub releases; if you want to override this behaviour, you can do so by invoking [`FetchContent_Declare`] earlier.)
 
 [`FetchContent_Declare`]: https://cmake.org/cmake/help/latest/module/FetchContent.html#command:fetchcontent_declare
 
@@ -304,7 +304,7 @@ typedef struct <record-name> {
 `char dummy;` is needed to make the structure contain at least one item, according to the standard. Such `record(Foo)` can be used to implement interfaces for it (see [Interface99]).
 </details>
 
-[Interface99]: https://github.com/Hirrolot/interface99
+[Interface99]: https://github.com/hirrolot/interface99
 
  2. Each deriver taken from `derive(...)` is invoked sequentially, from left to right, as
 
@@ -544,7 +544,7 @@ Thanks to Rust and ML for their implementations of sum types.
  2. Update `CHANGELOG.md`.
  3. Release the project in [GitHub Releases].
 
-[GitHub Releases]: https://github.com/Hirrolot/datatype99/releases
+[GitHub Releases]: https://github.com/hirrolot/datatype99/releases
 
 ## FAQ
 
@@ -576,7 +576,7 @@ Overall, if you can afford a more modern/high-level language, I encourage you to
 
 ### Q: Why not third-party code generators?
 
-A: See [Metalang99's README >>](https://github.com/Hirrolot/metalang99#q-why-not-third-party-code-generators).
+A: See [Metalang99's README >>](https://github.com/hirrolot/metalang99#q-why-not-third-party-code-generators).
 
 ### Q: How does it work?
 
@@ -817,4 +817,4 @@ int handle(MyType val) {
 }
 ```
 
-See [issue #9](https://github.com/Hirrolot/datatype99/issues/9).
+See [issue #9](https://github.com/hirrolot/datatype99/issues/9).
