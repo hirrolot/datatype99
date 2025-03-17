@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.11.4)
+cmake_minimum_required(VERSION 3.10.0)
 project(datatype99 LANGUAGES C)
 
 # Fix the warnings about `DOWNLOAD_EXTRACT_TIMESTAMP` in newer CMake versions.
@@ -10,7 +10,7 @@ include(FetchContent)
 
 FetchContent_Declare(
     metalang99
-    URL https://github.com/hirrolot/metalang99/archive/refs/tags/v1.13.2.tar.gz
+    URL https://github.com/hirrolot/metalang99/archive/refs/tags/v1.13.5.tar.gz
 )
 
 FetchContent_MakeAvailable(metalang99)

@@ -62,7 +62,7 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
 endif()
 ```
 
-(By default, `datatype99/CMakeLists.txt` downloads Metalang99 [v1.13.2](https://github.com/hirrolot/metalang99/releases/tag/v1.13.2) from the GitHub releases; if you want to override this behaviour, you can do so by invoking [`FetchContent_Declare`] earlier.)
+(By default, `datatype99/CMakeLists.txt` downloads Metalang99 [v1.13.5](https://github.com/hirrolot/metalang99/releases/tag/v1.13.5) from the GitHub releases; if you want to override this behaviour, you can do so by invoking [`FetchContent_Declare`] earlier.)
 
 [`FetchContent_Declare`]: https://cmake.org/cmake/help/latest/module/FetchContent.html#command:fetchcontent_declare
 
