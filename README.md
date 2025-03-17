@@ -522,7 +522,7 @@ Bindings introduced by `of` are **always** mutable, so make sure you do **not** 
 
 Thanks to Rust and ML for their implementations of sum types.
 
-## Publications
+## Blog posts
 
  - [_Pretty-Printable Enumerations in Pure C_](https://hirrolot.github.io/posts/pretty-printable-enumerations-in-pure-c.html)
  - [_What’s the Point of the C Preprocessor, Actually?_](https://hirrolot.github.io/posts/whats-the-point-of-the-c-preprocessor-actually.html)
