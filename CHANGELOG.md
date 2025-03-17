@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## unreleased
 
+## 1.6.5 - 2025-03-17
+
 ### Fixed
 
  - Update the minimum required CMake version to 3.10.0 due to deprecation (see [metalang99/issues/33](https://github.com/hirrolot/metalang99/issues/33)).
