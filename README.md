@@ -47,7 +47,7 @@ include(FetchContent)
 
 FetchContent_Declare(
     datatype99
-    URL https://github.com/hirrolot/datatype99/archive/refs/tags/v1.2.3.tar.gz # v1.2.3
+    URL https://github.com/hirrolot/datatype99/archive/refs/tags/vx.y.z.tar.gz # vx.y.z
 )
 
 FetchContent_MakeAvailable(datatype99)
